@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Devotional & Musical Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is now a three-part SPA. A main landing page offers "Daily Devotional," "Musical Companion," and "Weekly Study Companion." This structure cleanly separates interactive daily exercises, musical enrichment, and in-depth weekly study material. Each view is self-contained to prevent cognitive overload. The "Weekly Study Companion" is presented as a long-form, scrollable document, which is the most effective format for consuming a detailed discussion guide, as opposed to the tabbed daily views. This allows users to easily read, reference, and synthesize the complete lesson plan for the week. -->
+    <!-- Visualization & Content Choices: The application now integrates three distinct content types. 1) Devotional & Music Views: Retain their tab-based, interactive structure for daily engagement. 2) Weekly Study Companion View: Uses structured, semantic HTML (headings, paragraphs, blockquotes) to present the long-form text from the Google Doc. Interaction: A primary JS view switcher manages navigation between the three main experiences. Justification: This multi-faceted structure provides the right interface for each specific type of content—interactive for daily tasks, and linear for deep-reading and study. This tailored approach ensures optimal usability across all sections. Library/Method: Vanilla JS for interactions, Tailwind CSS for styling. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .view-section, .day-content {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .main-nav-button-active {
+            background-color: #a16207;
+            color: #ffffff;
+            border-color: #a16207;
+        }
+        .main-nav-button-inactive {
+            background-color: #ffffff;
+            color: #a16207;
+            border-color: #f59e0b;
+        }
+        .day-nav-button-active {
+            background-color: #f59e0b;
+            color: #ffffff;
+        }
+        .day-nav-button-inactive {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+        .study-guide-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #44403c;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f59e0b;
+        }
+        .study-guide-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #a16207;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .study-guide-content p {
+            line-height: 1.75;
+            margin-bottom: 1rem;
+        }
+        .study-guide-content blockquote {
+            border-left: 4px solid #d6d3d1;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #57534e;
+        }
+        .possible-answers {
+            background-color: #f5f5f4;
+            border: 1px solid #e7e5e4;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .possible-answers p {
+            margin-bottom: 0;
+            font-style: italic;
+            color: #3f3f46;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div id="app" class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-amber-800">Temple Covenants: A Daily Study Guide</h1>
+            <p class="mt-2 text-lg text-stone-600">Choose an experience to begin your study for September 29 - October 5, 2025.</p>
+        </header>
+
+        <div id="main-nav" class="flex flex-wrap justify-center gap-4 mb-8">
+            <button data-view="devotional" class="main-nav-button-active text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Daily Devotional</button>
+            <button data-view="songs" class="main-nav-button-inactive hover:bg-amber-50 text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Musical Companion</button>
+            <button data-view="study" class="main-nav-button-inactive hover:bg-amber-50 text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Weekly Study Companion</button>
+        </div>
+
+        <!-- Devotional View -->
+        <div id="devotional-view" class="view-section">
+            <nav class="flex flex-wrap justify-center gap-2 mb-8" id="devotional-nav"></nav>
+            <main id="devotional-content-area"></main>
+        </div>
+
+        <!-- Songs of the Soul View -->
+        <div id="songs-view" class="view-section hidden opacity-0">
+             <div class="text-center bg-white p-6 rounded-2xl shadow-lg border border-stone-200 mb-8">
+                <h2 class="text-2xl font-bold text-amber-700">Songs of the Soul</h2>
+                <p class="mt-2 text-stone-600">Sacred music has a unique power to deepen our connection to the divine. Each day's devotional is paired with a hymn and a contemporary song to enhance your study and invite the Spirit.</p>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-2 mb-8" id="songs-nav"></nav>
+            <main id="songs-content-area"></main>
+        </div>
+        
+        <!-- Weekly Study Companion View -->
+        <div id="study-view" class="view-section hidden opacity-0">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200 study-guide-content">
+                <h1 class="text-3xl font-bold text-center text-amber-800 mb-4">A Discussion Guide for “It Is Thy House, a Place of Thy Holiness”</h1>
+                <p class="text-center text-stone-600 mb-6">This guide is designed to help class members apply the principles from these sections to their own lives and to be better prepared to contribute to the class discussion. It is designed to help members deepen their understanding of the blessings of the temple and the restoration of priesthood keys.</p>
+
+                <h2>Introduction: Doctrine and Covenants 109–110</h2>
+                <p>The doors to the Kirtland Temple weren’t supposed to open until eight o’clock on the morning of March 27, 1836, but a crowd of more than a thousand people started gathering hours earlier. Some had come from as far away as Canada, and many had sacrificed immensely to build this house to the Lord. After the people were seated, the services began, lasting for nearly seven hours. The climax of the day was the dedicatory prayer, now known as <a href="https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/109" target="_blank" class="text-amber-600 hover:underline">Doctrine and Covenants 109</a>. Following the prayer, the choir sang “The Spirit of God,” a new hymn written for the occasion by W. W. Phelps. As one person who was there reported, this was followed by a spiritual outpouring a “scene of glory” that was “beyond description.”</p>
+                <p>One week later, on April 3, 1836, the Savior appeared in the temple to Joseph Smith and Oliver Cowdery and accepted the sacred edifice. Then Moses, Elias, and Elijah appeared and committed priesthood keys to Joseph and Oliver, keys that are essential to the Lord’s work in our day.</p>
+                
+                <h3>Discussion Point:</h3>
+                <p>The dedication of the Kirtland Temple was a monumental event, marked by an outpouring of the Spirit and attended by heavenly messengers. It was the culmination of immense sacrifice and the beginning of the restoration of temple blessings in our dispensation. The Saints on both sides of the veil rejoiced because a house of the Lord was once again on the earth, where God could endow His people with “power from on high.”</p>
+                
+                <h3>Discussion Question 1:</h3>
+                <p>The manual notes the "great excitement—on both sides of the veil." Why do you think the dedication of a temple was such a significant and joyous event for both the living and those who had passed on?</p>
+                <div class="possible-answers">
+                    <p><strong>Possible Answers:</strong> For the living, it was a fulfillment of prophecy and the result of tremendous sacrifice. It was a tangible sign of God's favor and the place where they would receive promised power and blessings. For those in the spirit world, it meant that the saving ordinances would once again be performed on the earth, opening the door for their eternal progression.</p>
+                </div>
+
+                <h2>Doctrine and Covenants 109 – The Dedicatory Prayer</h2>
+                <h3>Discussion Point:</h3>
+                <p>The dedicatory prayer for the Kirtland Temple, given by revelation to Joseph Smith, outlines the foundational blessings and promises associated with temple worship that are still available to us today.</p>
+                
+                <h3>Discussion Question (D&C 109:12-13, 22-23):</h3>
+                <p>Joseph prayed that the temple would be a place where God’s servants could be armed with power, where His glory would rest, and where He could manifest Himself to His people. In what ways have you felt the Lord’s power or felt His presence in His house?</p>
+                <div class="possible-answers">
+                    <p><strong>Possible Answers:</strong> Members might share feelings of peace, revelation, or strength received in the temple. This could be related to specific covenants, personal trials, or feelings of closeness to God or family members across the veil. The power could be the strength to overcome temptation, the ability to fulfill a calling, or the peace that comes from an eternal perspective.</p>
+                </div>
+                <blockquote>President Thomas S. Monson taught, “As we attend the temple, there can come to us a dimension of spirituality and a feeling of peace which will transcend any other feeling which could come into the human heart. … It is a place of peace, a place of solace, a place of inspiration.”</blockquote>
+
+                <h2>Hymn: “The Spirit of God”</h2>
+                <h3>Discussion Point:</h3>
+                <p>This hymn is a joyful anthem of the Restoration, celebrating the heavens being opened, the veil bursting, and the blessings pouring down upon the Saints.</p>
+                <h3>Discussion Question:</h3>
+                <p>As we sing or read the words to "<a href="https://www.churchofjesuschrist.org/media/music/hymns/the-spirit-of-god?lang=eng" target="_blank" class="text-amber-600 hover:underline">The Spirit of God</a>," which phrases or promises stand out to you as being particularly relevant to your temple experience?</p>
+                <div class="possible-answers">
+                    <p><strong>Possible Answers:</strong> Phrases like "the veil o'er the earth is beginning to burst," "the visions and blessings of old are returning," and "the Lord is extending the Saints' understanding" all speak to the revelatory nature of the temple. Members might connect these phrases to personal insights or feelings of connection to the work of God.</p>
+                </div>
+                
+                <h2>Doctrine and Covenants 110:1–10 – The Lord Appears</h2>
+                <h3>Discussion Point:</h3>
+                <p>After the dedication, the Lord Jesus Christ Himself appeared to Joseph Smith and Oliver Cowdery. He stood upon the breastwork of the pulpit and accepted the temple, declaring that He would manifest Himself there in mercy.</p>
+                
+                <h3>Discussion Question 1:</h3>
+                <p>The Savior’s appearance is described with powerful imagery: His eyes were as a “flame of fire,” His voice was as the “sound of the rushing of great waters.” (<a href="https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110.3#p3" target="_blank" class="text-amber-600 hover:underline">D&C 110:3</a>). What do these descriptions teach you about the character and majesty of Jesus Christ?</p>
+                <div class="possible-answers">
+                    <p><strong>Possible Answers:</strong> These descriptions convey His power, purity, and glory. A "flame of fire" suggests an all-seeing, penetrating gaze that can purify and cleanse. The "sound of the rushing of great waters" suggests immense power and authority, yet He came in mercy, showing both His might and His meekness.</p>
+                </div>
+                
+                <h3>Discussion Question 2:</h3>
+                <p>The Lord promises, “I will manifest myself to my people in mercy in this house” (<a href="https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110.7#p7" target="_blank" class="text-amber-600 hover:underline">D&C 110:7</a>). How is this promise fulfilled for us today?</p>
+                <div class="possible-answers">
+                    <p><strong>Possible Answers:</strong> While we may not have a physical vision of the Savior, He manifests Himself through the Holy Ghost. We feel His presence through peace, personal revelation, comfort, and the confirmation of truth. The ordinances themselves are manifestations of His mercy and love.</p>
+                </div>
+
+                <h2>Doctrine and Covenants 110:11–16 – The Restoration of Priesthood Keys</h2>
+                <h3>Discussion Point:</h3>
+                <p>Following the Savior's visit, three ancient prophets appeared and committed essential priesthood keys to Joseph and Oliver, unlocking the blessings that define the work of the Church today.</p>
+                
+                <h3>Discussion Question (Verse 12 - Elias):</h3>
+                <p>Elias committed the dispensation of the gospel of Abraham, which includes the celestial covenant of marriage. How does the promise that in our “seed all generations after [us] shall be blessed” influence the way we approach our temple covenants and family relationships?</p>
+                <div class="possible-answers">
+                    <p><strong>Possible Answers:</strong> This gives us an eternal perspective. It helps us see our marriage and family not just as a source of present happiness, but as a link in an eternal chain with promises that extend to our posterity. It motivates us to live worthily of those blessings and to teach our children the importance of the covenant.</p>
+                </div>
+                
+                <h3>Discussion Question (Verses 13–16 - Elijah):</h3>
+                <p>Elijah restored the sealing keys, which make it possible to perform all temple ordinances for both the living and the dead and to unite families forever. Why is turning our hearts to our fathers—our ancestors—so essential to God's plan?</p>
+                <div class="possible-answers">
+                    <p><strong>Possible Answers:</strong> Without them, we cannot be made perfect. God’s family is an eternal family, and the sealing power is what binds it all together. This work creates a "welding link" between generations, fosters love and gratitude for our heritage, and fulfills the promise that the whole earth would not be "utterly wasted at his coming" (<a href="https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/2.3#p3" target="_blank" class="text-amber-600 hover:underline">D&C 2:3</a>).</p>
+                </div>
+                <blockquote>President Russell M. Nelson taught, “The heavens are open. The keys of the priesthood, restored in the Kirtland Temple, are on the earth. With those keys, we can rejoice! With those keys, we can be endowed with power from on high. With those keys, we can seal our families for time and for all eternity. With those keys, we can bring the blessings of the temple to our ancestors. With those keys, we can see the fulfillment of the Abrahamic covenant.” (“<a href="https://www.churchofjesuschrist.org/study/general-conference/2024/04/51nelson?lang=eng" target="_blank" class="text-amber-600 hover:underline">Rejoice in the Gift of Priesthood Keys</a>,” May 2024)</blockquote>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-12 text-stone-500 text-sm">
+            <p>May your study this week bring you closer to the peace and power found in the house of the Lord.</p>
+        </footer>
+    </div>
+
+    <script>
+        const devotionalData = [
+            { id: 'monday', day: 'Monday', date: 'September 29, 2025', title: 'A Place of Peace 🏛️', text: 'In the busyness of our lives, the temple stands as a sanctuary. Joseph Smith prayed that the Kirtland Temple would be "a house of prayer, a house of fasting, a house of faith, a house of learning, a house of glory, a house of order, a house of God." This promise extends to all temples today.', prompt: 'Reflection: How has the temple been a "house of learning" or a "house of peace" for you? How can you bring that peace into your home and work life this week?', scriptureRef: 'Doctrine and Covenants 109:8', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/109?lang=eng#p8', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'tuesday', day: 'Tuesday', date: 'September 30, 2025', title: 'Armed with Thy Power 💪', text: 'In the dedicatory prayer, Joseph asked that the Saints who serve the Lord might "go forth from this house armed with thy power." This isn\'t just for full-time missionaries; it\'s for us in our callings, careers, and families. Temple covenants endow us with spiritual power to face our daily challenges.', prompt: 'Challenge: As you face a difficult task today, consciously remember your temple covenants and ask God to arm you with His power to succeed.', scriptureRef: 'Doctrine and Covenants 109:22', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/109?lang=eng#p22', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'wednesday', day: 'Wednesday', date: 'October 1, 2025', title: 'The Lord\'s Acceptance 🙏', text: 'After all the sacrifice to build the temple, the Savior appeared and declared, "I have accepted this house, and my name shall be here." The Lord sees and accepts our sincere offerings, even when they feel imperfect. He values our efforts to build His kingdom.', prompt: 'Reflection: Think of a sacrifice you have made to serve the Lord. How does it feel to know that He sees your efforts and accepts your offering?', scriptureRef: 'Doctrine and Covenants 110:7', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p7', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'thursday', day: 'Thursday', date: 'October 2, 2025', title: 'The Keys of Gathering 🔑', text: 'Moses restored the keys of the gathering of Israel. This empowers the work of gathering God\'s children on both sides of the veil. For us, this means participating in missionary work, fellowshipping new members, and reaching out to those who have strayed.', prompt: 'Challenge: Pray for an opportunity to "gather" someone today—reach out to a neighbor, a member who you haven\'t seen in a while, or a family member with a message of love.', scriptureRef: 'Doctrine and Covenants 110:11', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p11', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'friday', day: 'Friday', date: 'October 3, 2025', title: 'The Gospel of Abraham 👨‍👩‍👧‍👦', text: 'Elias restored the keys of the gospel of Abraham, which includes the covenant of eternal marriage and posterity. This is the promise that through our faithfulness, our families can be bound together forever and our posterity will be blessed.', prompt: 'Reflection: How have you seen the promises of the Abrahamic covenant fulfilled in your family? What can you do to claim these blessings for future generations?', scriptureRef: 'Doctrine and Covenants 110:12', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p12', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'saturday', day: 'Saturday', date: 'October 4, 2025', title: 'Turning Our Hearts ❤️', text: 'Elijah restored the sealing keys, giving power to bind on earth and in heaven. This is the authority that makes family history and temple work for the dead possible, turning the hearts of the children to their fathers.', prompt: 'Challenge: Take 15 minutes today to work on family history. Find a name, a story, or a photo. Feel your heart turn to your ancestors.', scriptureRef: 'Doctrine and Covenants 110:14-15', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p14', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'sunday', day: 'Sunday', date: 'October 5, 2025', title: 'A Continuing Blessing 🌟', text: 'The Savior called the restoration of these keys "the beginning of the blessing." We live in a time of unprecedented temple building and access to these blessings. As Elder Gerrit W. Gong said, "The promised blessings of Abraham, Isaac, and Jacob are fulfilled in and through the holy temple."', prompt: 'Reflection: As you worship today, ponder the blessing of having priesthood keys and temples on the earth. How does this knowledge strengthen your testimony?', scriptureRef: 'Doctrine and Covenants 110:10', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p10', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' }
+        ];
+
+        const songsData = [
+            { id: 'monday', day: 'Monday', title: 'A Place of Peace 🏛️', devotionalText: 'In the busyness of our lives, the temple stands as a sanctuary...', hymnTitle: 'The Lord Is My Light', hymnLink: 'https://www.churchofjesuschrist.org/media/music/hymns/the-lord-is-my-light?lang=eng', hymnAnalysis: 'This hymn beautifully captures the feeling of the temple as a spiritual sanctuary. The lyrics speak of the temple as a "refuge" where we can "seek the Lord," directly echoing the devotional\'s theme of the temple as a "house of God." The music itself has a calming, reassuring quality that evokes a sense of peace and order.', songTitle: 'I Love to See the Temple', songArtist: 'Janice Kapp Perry', songLink: 'https://www.youtube.com/watch?v=1Sh-cWa-p5M', songAnalysis: 'While written for children, this song’s simple and profound message resonates with all ages. It articulates the core truth of Monday\'s devotional: the temple is a sacred space where we feel closer to heaven and make promises with God.' },
+            { id: 'tuesday', day: 'Tuesday', title: 'Armed with Thy Power 💪', devotionalText: 'Temple covenants endow us with spiritual power to face our daily challenges.', hymnTitle: 'Hope of Israel', hymnLink: 'https://www.churchofjesuschrist.org/media/music/hymns/hope-of-israel?lang=eng', hymnAnalysis: '"Hope of Israel" is a powerful marching anthem that perfectly encapsulates the theme of going forth "armed with thy power." The hymn is a call to action, urging the "sons of God" to arise and join the "ranks of God." This imagery aligns with the concept of being spiritual soldiers, endowed with power and authority from the temple.', songTitle: 'The Work', songArtist: 'Nashville Tribute Band', songLink: 'https://www.youtube.com/watch?v=I6Mh93fS_6c', songAnalysis: 'This song directly addresses the commission to serve God and build His kingdom, a central part of the power received in the temple. It reflects the idea that the power we are "armed" with is not just for our own benefit but for the blessing of others.' },
+            { id: 'wednesday', day: 'Wednesday', title: 'The Lord\'s Acceptance 🙏', devotionalText: 'The Lord sees and accepts our sincere offerings, even when they feel imperfect.', hymnTitle: 'The Spirit of God', hymnLink: 'https://www.churchofjesuschrist.org/media/music/hymns/the-spirit-of-god?lang=eng', hymnAnalysis: 'This hymn was sung at the dedication of the Kirtland Temple, the very event described in the devotional. The exultant lyrics, "The Spirit of God like a fire is burning!" capture the overwhelming joy and spiritual outpouring that accompanied the Lord\'s acceptance of the temple.', songTitle: 'His Hands', songArtist: 'Kenneth Cope', songLink: 'https://www.youtube.com/watch?v=d_jp81D3a5A', songAnalysis: 'This song prompts a deep reflection on the nature of our personal offerings to the Lord. It reminds us that the Lord accepts not just grand buildings, but the small, sincere efforts of our hearts and hands, sanctifying them for His purposes.' },
+            { id: 'thursday', day: 'Thursday', title: 'The Keys of Gathering 🔑', devotionalText: 'Moses restored the keys of the gathering of Israel. This empowers the work of gathering God\'s children...', hymnTitle: 'High on the Mountain Top', hymnLink: 'https://www.churchofjesuschrist.org/media/music/hymns/high-on-the-mountain-top?lang=eng', hymnAnalysis: 'This hymn is a direct celebration of the gathering of Israel in the latter days, symbolized by the temple ("His house is reared on high"). The triumphant melody reinforces the glorious nature of this work, inspiring us to participate in gathering Israel with joy and purpose.', songTitle: 'Bring Him Home', songArtist: 'GENTRI', songLink: 'https://www.youtube.com/watch?v=sJNvRqK-b6o', songAnalysis: 'This arrangement beautifully captures the heart of the gathering of Israel. It reminds us that the work of gathering is not just a grand, global effort but a deeply personal one, driven by love and concern for each individual soul.' },
+            { id: 'friday', day: 'Friday', title: 'The Gospel of Abraham 👨‍👩‍👧‍👦', devotionalText: 'Elias restored the keys of the gospel of Abraham, which includes the covenant of eternal marriage and posterity.', hymnTitle: 'O My Father', hymnLink: 'https://www.churchofjesuschrist.org/media/music/hymns/o-my-father?lang=eng', hymnAnalysis: 'This hymn articulates one of the most profound doctrines related to the Abrahamic covenant: our divine heritage as children of heavenly parents. The hymn\'s gentle, reverent tone encourages deep contemplation on our eternal destiny and the sacred promises that make eternal families possible.', songTitle: 'Glorious', songArtist: 'David Archuleta', songLink: 'https://www.youtube.com/watch?v=7y1sa-vTzs0', songAnalysis: 'This song is about realizing one\'s divine potential and contributing to a beautiful, overarching plan. The song\'s uplifting arrangement inspires us to see our family\'s journey in a broader, eternal perspective.' },
+            { id: 'saturday', day: 'Saturday', title: 'Turning Our Hearts ❤️', devotionalText: 'Elijah restored the sealing keys, giving power to bind on earth and in heaven.', hymnTitle: 'Families Can Be Together Forever', hymnLink: 'https://www.churchofjesuschrist.org/media/music/childrens-songbook/families-can-be-together-forever?lang=eng', hymnAnalysis: 'This beloved Primary song teaches the doctrine of sealing with beautiful simplicity and power. It directly answers the "why" behind the restoration of Elijah\'s keys, expressing the joyful outcome of the sealing power.', songTitle: 'He Hears Me', songArtist: 'Hilary Weeks', songLink: 'https://www.youtube.com/watch?v=eMHw2pnI6tA', songAnalysis: 'This song has a deep connection to the work for the dead. As we search for our ancestors, we are often prompted by the Spirit. It speaks to the personal revelation that is at the heart of family history work.' },
+            { id: 'sunday', day: 'Sunday', title: 'A Continuing Blessing 🌟', devotionalText: 'The Savior called the restoration of these keys "the beginning of the blessing."', hymnTitle: 'We Thank Thee, O God, for a Prophet', hymnLink: 'https://www.churchofjesuschrist.org/media/music/hymns/we-thank-thee-o-god-for-a-prophet?lang=eng', hymnAnalysis: 'This hymn is a powerful expression of gratitude for the Restoration of the gospel, which includes the restoration of priesthood keys. Singing this hymn is a direct way to express gratitude for the "continuing blessing" of restored authority.', songTitle: 'Nearer, My God, to Thee', songArtist: 'The Piano Guys', songLink: 'https://www.youtube.com/watch?v=c2Zq2Yc_2xY', songAnalysis: 'The ultimate purpose of priesthood keys and temples is to bring us nearer to God. This stunning instrumental provides a perfect opportunity for deep, personal reflection, mirroring our own spiritual journey toward God.' }
+        ];
+
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(view => {
+                if (view.id === `${viewId}-view`) {
+                    view.classList.remove('hidden');
+                    setTimeout(() => view.style.opacity = 1, 10);
+                } else {
+                    view.style.opacity = 0;
+                    setTimeout(() => view.classList.add('hidden'), 500);
+                }
+            });
+
+            document.querySelectorAll('#main-nav button').forEach(button => {
+                if (button.dataset.view === viewId) {
+                    button.classList.remove('main-nav-button-inactive', 'hover:bg-amber-50');
+                    button.classList.add('main-nav-button-active');
+                } else {
+                    button.classList.remove('main-nav-button-active');
+                    button.classList.add('main-nav-button-inactive', 'hover:bg-amber-50');
+                }
+            });
+        }
+
+        function showDay(dayId, viewPrefix) {
+            document.querySelectorAll(`#${viewPrefix}-content-area .day-content`).forEach(content => {
+                if (content.dataset.dayId === dayId) {
+                    content.classList.remove('hidden');
+                    setTimeout(() => content.style.opacity = 1, 10);
+                } else {
+                    content.style.opacity = 0;
+                    setTimeout(() => content.classList.add('hidden'), 500);
+                }
+            });
+
+            document.querySelectorAll(`#${viewPrefix}-nav button`).forEach(button => {
+                if (button.dataset.day === dayId) {
+                    button.classList.remove('day-nav-button-inactive', 'hover:bg-gray-300');
+                    button.classList.add('day-nav-button-active');
+                } else {
+                    button.classList.remove('day-nav-button-active');
+                    button.classList.add('day-nav-button-inactive', 'hover:bg-gray-300');
+                }
+            });
+        }
+        
+        function initDevotionalView() {
+            const nav = document.getElementById('devotional-nav');
+            const contentArea = document.getElementById('devotional-content-area');
+            devotionalData.forEach(day => {
+                const navButton = document.createElement('button');
+                navButton.textContent = day.day;
+                navButton.dataset.day = day.id;
+                navButton.className = 'day-nav-button-inactive hover:bg-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors duration-300';
+                navButton.addEventListener('click', () => showDay(day.id, 'devotional'));
+                nav.appendChild(navButton);
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.dataset.dayId = day.id;
+                contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
+                contentDiv.innerHTML = `
+                    <p class="text-sm font-medium text-amber-600">${day.date}</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-4">${day.title}</h2>
+                    <p class="text-stone-700 leading-relaxed">${day.text}</p>
+                    <div class="mt-6 bg-stone-100 p-4 rounded-lg border border-stone-200">
+                        <h3 class="font-semibold text-stone-800 mb-2">${day.prompt.split(':')[0]}</h3>
+                        <p class="text-stone-700">${day.prompt.split(':').slice(1).join(':').trim()}</p>
+                    </div>
+                    <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                        <a href="${day.scriptureLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors duration-300">Read Scripture: ${day.scriptureRef}</a>
+                        <a href="${day.lessonLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-stone-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-300">View Full Lesson</a>
+                    </div>`;
+                contentArea.appendChild(contentDiv);
+            });
+            showDay('monday', 'devotional');
+        }
+
+        function initSongsView() {
+            const nav = document.getElementById('songs-nav');
+            const contentArea = document.getElementById('songs-content-area');
+            songsData.forEach(day => {
+                const navButton = document.createElement('button');
+                navButton.textContent = day.day;
+                navButton.dataset.day = day.id;
+                navButton.className = 'day-nav-button-inactive hover:bg-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors duration-300';
+                navButton.addEventListener('click', () => showDay(day.id, 'songs'));
+                nav.appendChild(navButton);
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.dataset.dayId = day.id;
+                contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
+                contentDiv.innerHTML = `
+                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mb-4">${day.title}</h2>
+                    <p class="italic text-stone-600 mb-6">"${day.devotionalText}"</p>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-700">Hymn Selection: <a href="${day.hymnLink}" target="_blank" rel="noopener noreferrer" class="underline hover:text-amber-800">${day.hymnTitle}</a></h3>
+                            <p class="mt-2 text-stone-700">${day.hymnAnalysis}</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-700">Contemporary Song: <a href="${day.songLink}" target="_blank" rel="noopener noreferrer" class="underline hover:text-amber-800">${day.songTitle}</a></h3>
+                            <p class="text-sm text-stone-500 mb-2">by ${day.songArtist}</p>
+                            <p class="mt-2 text-stone-700">${day.songAnalysis}</p>
+                        </div>
+                    </div>`;
+                contentArea.appendChild(contentDiv);
+            });
+            showDay('monday', 'songs');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDevotionalView();
+            initSongsView();
+            document.querySelectorAll('#main-nav button').forEach(button => {
+                button.addEventListener('click', (e) => showView(e.target.dataset.view));
+            });
+            showView('devotional');
+        });
+    </script>
+</body>
+</html>
+

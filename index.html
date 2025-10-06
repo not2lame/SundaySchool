@@ -9,14 +9,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: The application is now a three-part SPA. A main landing page offers "Daily Devotional," "Musical Companion," and "Weekly Study Companion." This structure cleanly separates interactive daily exercises, musical enrichment, and in-depth weekly study material. Each view is self-contained to prevent cognitive overload. The "Weekly Study Companion" is presented as a long-form, scrollable document, which is the most effective format for consuming a detailed discussion guide, as opposed to the tabbed daily views. This allows users to easily read, reference, and synthesize the complete lesson plan for the week. -->
-    <!-- Visualization & Content Choices: The application now integrates three distinct content types. 1) Devotional & Music Views: Retain their tab-based, interactive structure for daily engagement. 2) Weekly Study Companion View: Uses structured, semantic HTML (headings, paragraphs, blockquotes) to present the long-form text from the Google Doc. Interaction: A primary JS view switcher manages navigation between the three main experiences. Justification: This multi-faceted structure provides the right interface for each specific type of content—interactive for daily tasks, and linear for deep-reading and study. This tailored approach ensures optimal usability across all sections. Library/Method: Vanilla JS for interactions, Tailwind CSS for styling. -->
+    <!-- Application Structure Plan: The application is now a four-part SPA. A main landing page offers "Daily Devotional," "Youth Devotionals," "Musical Companion," and "Weekly Study Companion." The new Youth section is self-contained and features its own sub-navigation ("Young Men" / "Young Women"), preventing information overload. This structure cleanly separates adult, youth, musical, and in-depth study materials, allowing each user group to navigate directly to relevant content. -->
+    <!-- Visualization & Content Choices: The application now integrates four distinct content types. 1) Adult, YM, and YW Devotional Views: Use a consistent tab-based, interactive structure for daily engagement. 2) Musical Companion: Also uses a daily tabbed view for focused listening. 3) Weekly Study Companion View: Uses structured, semantic HTML for long-form reading. Interaction: A primary JS view switcher manages navigation between the four main experiences. Justification: This tailored structure provides the right interface for each content type and audience, enhancing usability and clarity. Library/Method: Vanilla JS for all interactions, Tailwind CSS for styling. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        .view-section, .day-content {
+        .view-section, .day-content, .youth-content-area {
             transition: opacity 0.5s ease-in-out;
         }
         .main-nav-button-active {
@@ -29,11 +29,11 @@
             color: #a16207;
             border-color: #f59e0b;
         }
-        .day-nav-button-active {
+        .day-nav-button-active, .youth-nav-button-active {
             background-color: #f59e0b;
             color: #ffffff;
         }
-        .day-nav-button-inactive {
+        .day-nav-button-inactive, .youth-nav-button-inactive {
             background-color: #e5e7eb;
             color: #374151;
         }
@@ -84,12 +84,14 @@
     <div id="app" class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
 
         <header class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-amber-800">Temple Covenants: A Daily Study Guide</h1>
-            <p class="mt-2 text-lg text-stone-600">Choose an experience to begin your study for September 29 - October 5, 2025.</p>
+            <h1 class="text-3xl sm:text-4xl font-bold text-amber-800">Come, follow Me - Resources for Individuals and Families</h1>
+            <h2 class="mt-2 text-2xl text-stone-700">Temple Covenants: A Daily Study Guide</h2>
+            <p class="mt-2 text-lg text-stone-600">September 29 - October 5, 2025</p>
         </header>
 
         <div id="main-nav" class="flex flex-wrap justify-center gap-4 mb-8">
             <button data-view="devotional" class="main-nav-button-active text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Daily Devotional</button>
+            <button data-view="youth" class="main-nav-button-inactive hover:bg-amber-50 text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Youth Devotionals</button>
             <button data-view="songs" class="main-nav-button-inactive hover:bg-amber-50 text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Musical Companion</button>
             <button data-view="study" class="main-nav-button-inactive hover:bg-amber-50 text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Weekly Study Companion</button>
         </div>
@@ -98,6 +100,22 @@
         <div id="devotional-view" class="view-section">
             <nav class="flex flex-wrap justify-center gap-2 mb-8" id="devotional-nav"></nav>
             <main id="devotional-content-area"></main>
+        </div>
+
+        <!-- Youth Devotionals View -->
+        <div id="youth-view" class="view-section hidden opacity-0">
+            <nav class="flex justify-center gap-4 mb-8" id="youth-main-nav">
+                <button data-youth-group="ym" class="youth-nav-button-active text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300">Young Men</button>
+                <button data-youth-group="yw" class="youth-nav-button-inactive hover:bg-gray-300 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300">Young Women</button>
+            </nav>
+            <div id="ym-content" class="youth-content-area">
+                <nav class="flex flex-wrap justify-center gap-2 mb-8" id="ym-nav"></nav>
+                <main id="ym-content-area"></main>
+            </div>
+            <div id="yw-content" class="youth-content-area hidden opacity-0">
+                <nav class="flex flex-wrap justify-center gap-2 mb-8" id="yw-nav"></nav>
+                <main id="yw-content-area"></main>
+            </div>
         </div>
 
         <!-- Songs of the Soul View -->
@@ -200,6 +218,26 @@
             { id: 'sunday', day: 'Sunday', date: 'October 5, 2025', title: 'A Continuing Blessing 🌟', text: 'The Savior called the restoration of these keys "the beginning of the blessing." We live in a time of unprecedented temple building and access to these blessings. As Elder Gerrit W. Gong said, "The promised blessings of Abraham, Isaac, and Jacob are fulfilled in and through the holy temple."', prompt: 'Reflection: As you worship today, ponder the blessing of having priesthood keys and temples on the earth. How does this knowledge strengthen your testimony?', scriptureRef: 'Doctrine and Covenants 110:10', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p10', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' }
         ];
 
+        const ymData = [
+            { id: 'monday', day: 'Monday', date: 'September 29, 2025', title: 'Spiritual Armor 🛡️', text: 'Think of your favorite superhero or video game character gearing up for a battle. Joseph Smith prayed that those who serve God would go from the temple "armed with thy power." The temple is where we spiritually \'gear up\' to face the world with God\'s help.', prompt: 'Challenge: What\'s one \'battle\' you\'re facing this week (a test, a game, a hard conversation)? Pray for God\'s power to help you handle it.', scriptureRef: 'D&C 109:22', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/109?lang=eng#p22', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'tuesday', day: 'Tuesday', date: 'September 30, 2025', title: 'The Ultimate Leader 👑', text: 'The Savior appeared in the Kirtland Temple, and the description is awesome: "his eyes were as a flame of fire; the hair of his head was white like the pure snow." This is our Captain, our King. Following Him gives us access to real power.', prompt: 'Reflection: How does knowing the Savior is a powerful, glorified being change how you think about Him and His commandments?', scriptureRef: 'D&C 110:3', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p3', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'wednesday', day: 'Wednesday', date: 'October 1, 2025', title: 'Mission Activated 🗺️', text: 'Moses came and restored the keys for the gathering of Israel. This is the green light for missionary work! Every time you pass the sacrament, share a gospel message online, or prepare for your mission, you are participating in the work Moses unlocked.', prompt: 'Challenge: Do one thing today to \'gather Israel.\' Invite a friend to an activity, share a scripture with your family, or study a chapter in Preach My Gospel.', scriptureRef: 'D&C 110:11', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p11', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'thursday', day: 'Thursday', date: 'October 2, 2025', title: 'Your Future Legacy 🚀', text: 'Elias restored the keys connected to Abraham\'s covenant. Because of these keys, you can one day be sealed in the temple and have the promise that your family can be eternal. The choices you make now are the foundation of that future legacy.', prompt: 'Reflection: What kind of husband and father do you want to be? How can living the gospel now help you prepare for that future?', scriptureRef: 'D&C 110:12', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p12', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'friday', day: 'Friday', date: 'October 3, 2025', title: 'The Sealing Power ⛓️', text: 'Elijah restored the keys that \'seal\' or bind families together. Think of it like a spiritual chain that connects you to your parents, your grandparents, and your future kids. This power makes families forever possible. That\'s why we do baptisms for the dead—to offer them a link in that chain.', prompt: 'Challenge: Ask a parent or grandparent to tell you a story about one of your ancestors. Get to know one of the people you are spiritually linked to.', scriptureRef: 'D&C 110:13-15', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p13', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'saturday', day: 'Saturday', date: 'October 4, 2025', title: 'Unlocking Blessings 🔑', text: 'President Russell M. Nelson taught, "Every man who has been ordained to any office in the priesthood has the authority to act in the name of the Lord. Priesthood keys, however, are the authority to direct the use of the priesthood on behalf of God’s children." These keys unlock blessings for everyone.', prompt: 'Reflection: How do the keys held by your bishop or quorum president bless your life and the lives of those in your ward?', scriptureRef: '', scriptureLink: '', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'sunday', day: 'Sunday', date: 'October 5, 2025', title: 'The Spirit of God 🔥', text: 'The hymn "The Spirit of God" was sung at the Kirtland dedication. The lyrics say, "The Spirit of God like a fire is burning!" As a priesthood holder, you have the right to the companionship of the Holy Ghost. That Spirit can be like a fire, guiding you and testifying of truth.', prompt: 'Challenge: As you watch General Conference today, listen closely to the words of the speakers and seek to feel the influence of the Holy ghost. Try to feel that "fire" of the Spirit.', scriptureRef: '', scriptureLink: '', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+        ];
+
+        const ywData = [
+            { id: 'monday', day: 'Monday', date: 'September 29, 2025', title: 'Your Safe Place 💖', text: 'In a world that can feel chaotic, the temple is a place of total peace and safety. It\'s the Lord\'s house, and you are His beloved daughter. He wants you to feel at home there. Joseph prayed that no unclean thing would be allowed to come into it.', prompt: 'Reflection: Think about a time you felt completely peaceful. What can you do to invite more of that temple peace into your everyday life?', scriptureRef: 'D&C 109:12-13', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/109?lang=eng#p12', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'tuesday', day: 'Tuesday', date: 'September 30, 2025', title: 'He Sees You ✨', text: 'When the Savior appeared in the Kirtland Temple, He came to His house to be with His people. He knows you personally. In His house, He can "manifest himself" to you. You can feel His love and know that He sees your worth.', prompt: 'Challenge: Remind yourself today, "I am a beloved daughter of God." Believe it! He does.', scriptureRef: 'D&C 110:7-8', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p7', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'wednesday', day: 'Wednesday', date: 'October 1, 2025', title: 'A Crown of Glory 👑', text: 'Joseph prayed for the Saints to be blessed with "salvation, and be crowned with honor, and immortality, and eternal life." You are a daughter of heavenly royalty with a divine destiny. The covenants you make help you claim that incredible inheritance.', prompt: 'Reflection: How do you act differently when you remember you are a daughter of a King?', scriptureRef: 'D&C 109:76', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/109?lang=eng#p76', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'thursday', day: 'Thursday', date: 'October 2, 2025', title: 'Gathering Your Friends 🤝', text: 'The keys restored by Moses are for gathering God\'s children. For you, this can be as simple as being a good friend. Your light and example can gather others to the joy of the gospel. You don\'t have to preach; just live your beliefs with kindness.', prompt: 'Challenge: Reach out to a friend who might be struggling today. Offer a kind word or just listen. That\'s a form of gathering!', scriptureRef: 'D&C 110:11', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p11', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'friday', day: 'Friday', date: 'October 3, 2025', title: 'Your Forever Family Tree 🌳', text: 'Elijah restored the keys that link families together forever. You are an essential link in the chain of your family. Learning about your grandmothers and great-grandmothers can give you strength and help you feel connected to a legacy of powerful women.', prompt: 'Challenge: Ask your mom or another relative to share a story about one of your female ancestors. What qualities did she have that you admire?', scriptureRef: 'D&C 110:15', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p15', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'saturday', day: 'Saturday', date: 'October 4, 2025', title: 'Endless Possibilities 🌌', text: 'The keys restored by Elias confirm God\'s covenant with Abraham—which includes the promise of "generations" and blessings. This means your potential is limitless. Through covenants, God promises you a future filled with blessings for you and your family.', prompt: 'Reflection: What are some of your righteous dreams for the future? How can your relationship with God help you achieve them?', scriptureRef: 'D&C 110:12', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p12', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+            { id: 'sunday', day: 'Sunday', date: 'October 5, 2025', title: 'Sing and Shout for Joy! 🎶', text: 'The Saints at the Kirtland Temple dedication were so joyful they sang and shouted "Hosanna!" That same joy is available to us when we appreciate the blessings of the temple. The gospel is a message of pure joy!', prompt: 'Challenge: Listen to the hymn "The Spirit of God." As you worship today, find a reason to feel joyful about the gospel and share that happy feeling with someone else.', scriptureRef: '', scriptureLink: '', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/40-doctrine-and-covenants-109-110?lang=eng' },
+        ];
+
         const songsData = [
             { id: 'monday', day: 'Monday', title: 'A Place of Peace 🏛️', devotionalText: 'In the busyness of our lives, the temple stands as a sanctuary...', hymnTitle: 'The Lord Is My Light', hymnLink: 'https://www.churchofjesuschrist.org/media/music/hymns/the-lord-is-my-light?lang=eng', hymnAnalysis: 'This hymn beautifully captures the feeling of the temple as a spiritual sanctuary. The lyrics speak of the temple as a "refuge" where we can "seek the Lord," directly echoing the devotional\'s theme of the temple as a "house of God." The music itself has a calming, reassuring quality that evokes a sense of peace and order.', songTitle: 'I Love to See the Temple', songArtist: 'Janice Kapp Perry', songLink: 'https://www.youtube.com/watch?v=1Sh-cWa-p5M', songAnalysis: 'While written for children, this song’s simple and profound message resonates with all ages. It articulates the core truth of Monday\'s devotional: the temple is a sacred space where we feel closer to heaven and make promises with God.' },
             { id: 'tuesday', day: 'Tuesday', title: 'Armed with Thy Power 💪', devotionalText: 'Temple covenants endow us with spiritual power to face our daily challenges.', hymnTitle: 'Hope of Israel', hymnLink: 'https://www.churchofjesuschrist.org/media/music/hymns/hope-of-israel?lang=eng', hymnAnalysis: '"Hope of Israel" is a powerful marching anthem that perfectly encapsulates the theme of going forth "armed with thy power." The hymn is a call to action, urging the "sons of God" to arise and join the "ranks of God." This imagery aligns with the concept of being spiritual soldiers, endowed with power and authority from the temple.', songTitle: 'The Work', songArtist: 'Nashville Tribute Band', songLink: 'https://www.youtube.com/watch?v=I6Mh93fS_6c', songAnalysis: 'This song directly addresses the commission to serve God and build His kingdom, a central part of the power received in the temple. It reflects the idea that the power we are "armed" with is not just for our own benefit but for the blessing of others.' },
@@ -233,7 +271,7 @@
         }
 
         function showDay(dayId, viewPrefix) {
-            document.querySelectorAll(`#${viewPrefix}-content-area .day-content`).forEach(content => {
+            document.querySelectorAll(`#${viewPrefix}-content-area .day-content, #${viewPrefix}-content .day-content`).forEach(content => {
                 if (content.dataset.dayId === dayId) {
                     content.classList.remove('hidden');
                     setTimeout(() => content.style.opacity = 1, 10);
@@ -273,7 +311,7 @@
                     <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-4">${day.title}</h2>
                     <p class="text-stone-700 leading-relaxed">${day.text}</p>
                     <div class="mt-6 bg-stone-100 p-4 rounded-lg border border-stone-200">
-                        <h3 class="font-semibold text-stone-800 mb-2">${day.prompt.split(':')[0]}</h3>
+                        <h3 class="font-semibold text-stone-800 mb-2">${day.prompt.split(':')[0]}:</h3>
                         <p class="text-stone-700">${day.prompt.split(':').slice(1).join(':').trim()}</p>
                     </div>
                     <div class="mt-6 flex flex-col sm:flex-row gap-4">
@@ -318,9 +356,99 @@
             showDay('monday', 'songs');
         }
 
+        function initYouthView() {
+            const ymNav = document.getElementById('ym-nav');
+            const ymContentArea = document.getElementById('ym-content-area');
+            ymData.forEach(day => {
+                const navButton = document.createElement('button');
+                navButton.textContent = day.day;
+                navButton.dataset.day = day.id;
+                navButton.className = 'day-nav-button-inactive hover:bg-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors duration-300';
+                navButton.addEventListener('click', () => showDay(day.id, 'ym'));
+                ymNav.appendChild(navButton);
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.dataset.dayId = day.id;
+                contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
+                let scriptureButton = day.scriptureLink ? `<a href="${day.scriptureLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors duration-300">Read Scripture: ${day.scriptureRef}</a>` : '';
+                contentDiv.innerHTML = `
+                    <p class="text-sm font-medium text-amber-600">${day.date}</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-4">${day.title}</h2>
+                    <p class="text-stone-700 leading-relaxed">${day.text}</p>
+                    <div class="mt-6 bg-stone-100 p-4 rounded-lg border border-stone-200">
+                        <h3 class="font-semibold text-stone-800 mb-2">${day.prompt.split(':')[0]}:</h3>
+                        <p class="text-stone-700">${day.prompt.split(':').slice(1).join(':').trim()}</p>
+                    </div>
+                    <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                        ${scriptureButton}
+                        <a href="${day.lessonLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-stone-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-300">View Full Lesson</a>
+                    </div>`;
+                ymContentArea.appendChild(contentDiv);
+            });
+
+            const ywNav = document.getElementById('yw-nav');
+            const ywContentArea = document.getElementById('yw-content-area');
+            ywData.forEach(day => {
+                const navButton = document.createElement('button');
+                navButton.textContent = day.day;
+                navButton.dataset.day = day.id;
+                navButton.className = 'day-nav-button-inactive hover:bg-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors duration-300';
+                navButton.addEventListener('click', () => showDay(day.id, 'yw'));
+                ywNav.appendChild(navButton);
+
+                const contentDiv = document.createElement('div');
+                contentDiv.dataset.dayId = day.id;
+                contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
+                 let scriptureButton = day.scriptureLink ? `<a href="${day.scriptureLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors duration-300">Read Scripture: ${day.scriptureRef}</a>` : '';
+                contentDiv.innerHTML = `
+                    <p class="text-sm font-medium text-amber-600">${day.date}</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-4">${day.title}</h2>
+                    <p class="text-stone-700 leading-relaxed">${day.text}</p>
+                    <div class="mt-6 bg-stone-100 p-4 rounded-lg border border-stone-200">
+                        <h3 class="font-semibold text-stone-800 mb-2">${day.prompt.split(':')[0]}:</h3>
+                        <p class="text-stone-700">${day.prompt.split(':').slice(1).join(':').trim()}</p>
+                    </div>
+                    <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                        ${scriptureButton}
+                        <a href="${day.lessonLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-stone-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-300">View Full Lesson</a>
+                    </div>`;
+                ywContentArea.appendChild(contentDiv);
+            });
+            
+            document.querySelectorAll('#youth-main-nav button').forEach(button => {
+                button.addEventListener('click', (e) => showYouthGroup(e.target.dataset.youthGroup));
+            });
+
+            showDay('monday', 'ym');
+            showDay('monday', 'yw');
+        }
+        
+        function showYouthGroup(groupId) {
+            document.querySelectorAll('.youth-content-area').forEach(area => {
+                if (area.id === `${groupId}-content`) {
+                    area.classList.remove('hidden');
+                    setTimeout(() => area.style.opacity = 1, 10);
+                } else {
+                    area.style.opacity = 0;
+                    setTimeout(() => area.classList.add('hidden'), 500);
+                }
+            });
+
+            document.querySelectorAll('#youth-main-nav button').forEach(button => {
+                if (button.dataset.youthGroup === groupId) {
+                    button.classList.remove('youth-nav-button-inactive', 'hover:bg-gray-300');
+                    button.classList.add('youth-nav-button-active');
+                } else {
+                    button.classList.remove('youth-nav-button-active');
+                    button.classList.add('youth-nav-button-inactive', 'hover:bg-gray-300');
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             initDevotionalView();
             initSongsView();
+            initYouthView();
             document.querySelectorAll('#main-nav button').forEach(button => {
                 button.addEventListener('click', (e) => showView(e.target.dataset.view));
             });
@@ -329,4 +457,6 @@
     </script>
 </body>
 </html>
+
+
 

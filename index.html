@@ -131,8 +131,8 @@
         <!-- Weekly Study Companion View -->
         <div id="study-view" class="view-section hidden opacity-0">
             <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200 study-guide-content">
-                <h1 class="text-3xl font-bold text-center text-amber-800 mb-4">Discussion Guide for “Oct 6-12 - I Will Order All Things for Your Good”</h1>
-                <p class="text-center text-stone-600 mb-6">This guide is designed to help class members apply the principles from these sections to their own lives and to be better prepared to contribute to the class discussion.</p>
+                <h1 class="text-3xl font-bold text-center text-amber-800 mb-4">Discussion Guide for Oct 6-12 “I Will Order All Things for Your Good”</h1>
+                <p class="text-center text-stone-600 mb-6">This guide is designed to help class members apply the principles from these sections to their own lives and to be better prepared to contribute to the class discussion. It is designed to help members deepen their understanding of the blessings of the temple and the restoration of priesthood keys.</p>
 
                 <h2>Introduction: "I Will Order All Things for Your Good"</h2>
                 <h3>Discussion Point:</h3>
@@ -204,7 +204,7 @@
         </div>
         
         <footer class="text-center mt-12 text-stone-500 text-sm">
-            <p>May your study this week bring you closer to our Lord Jesus Christ.</p>
+            <p>May your study this week bring you closer to the peace and power found in the house of the Lord.</p>
         </footer>
     </div>
 
@@ -293,7 +293,7 @@
             });
         }
         
-        function initDevotionalView() {
+        function initDevotionalView(defaultDayId) {
             const nav = document.getElementById('devotional-nav');
             const contentArea = document.getElementById('devotional-content-area');
             devotionalData.forEach(day => {
@@ -321,10 +321,10 @@
                     </div>`;
                 contentArea.appendChild(contentDiv);
             });
-            showDay('monday', 'devotional');
+            showDay(defaultDayId, 'devotional');
         }
 
-        function initSongsView() {
+        function initSongsView(defaultDayId) {
             const nav = document.getElementById('songs-nav');
             const contentArea = document.getElementById('songs-content-area');
             songsData.forEach(day => {
@@ -354,10 +354,10 @@
                     </div>`;
                 contentArea.appendChild(contentDiv);
             });
-            showDay('monday', 'songs');
+            showDay(defaultDayId, 'songs');
         }
 
-        function initYouthView() {
+        function initYouthView(defaultDayId) {
             const ymNav = document.getElementById('ym-nav');
             const ymContentArea = document.getElementById('ym-content-area');
             ymData.forEach(day => {
@@ -420,8 +420,8 @@
                 button.addEventListener('click', (e) => showYouthGroup(e.target.dataset.youthGroup));
             });
 
-            showDay('monday', 'ym');
-            showDay('monday', 'yw');
+            showDay(defaultDayId, 'ym');
+            showDay(defaultDayId, 'yw');
         }
         
         function showYouthGroup(groupId) {
@@ -447,15 +447,27 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            initDevotionalView();
-            initSongsView();
-            initYouthView();
+            // --- UPDATED LOGIC START ---
+            // Determine the current day to show as the default.
+            // We create a map to link the numeric day from getDay() to our string IDs.
+            const dayIdMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            const todayIndex = new Date().getDay(); // 0 for Sunday, 1 for Monday, etc.
+            const currentDayId = dayIdMap[todayIndex];
+            // --- UPDATED LOGIC END ---
+
+            // Initialize all views, passing the current day ID so they default correctly.
+            initDevotionalView(currentDayId);
+            initSongsView(currentDayId);
+            initYouthView(currentDayId);
+            
+            // Set up main view navigation.
             document.querySelectorAll('#main-nav button').forEach(button => {
                 button.addEventListener('click', (e) => showView(e.target.dataset.view));
             });
+            
+            // Set the initial view to be the Daily Devotional.
             showView('devotional');
         });
     </script>
 </body>
 </html>
-

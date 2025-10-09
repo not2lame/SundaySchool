@@ -84,7 +84,7 @@
     <div id="app" class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
 
         <header class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-amber-800">Come, Follow Me - Resources for Individuals and Families</h1>
+            <h1 class="text-3xl sm:text-4xl font-bold text-amber-800">Come, follow Me - Resources for Individuals and Families</h1>
             <h2 class="mt-2 text-2xl text-stone-700">Jesus Christ Will Order All Things for Your Good</h2>
             <p class="mt-2 text-lg text-stone-600">October 6 - October 12, 2025</p>
         </header>
@@ -131,8 +131,8 @@
         <!-- Weekly Study Companion View -->
         <div id="study-view" class="view-section hidden opacity-0">
             <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200 study-guide-content">
-                <h1 class="text-3xl font-bold text-center text-amber-800 mb-4">Discussion Guide for Oct 6-12 “I Will Order All Things for Your Good”</h1>
-                <p class="text-center text-stone-600 mb-6">This guide is designed to help class members apply the principles from these sections to their own lives and to be better prepared to contribute to the class discussion.</p>
+                <h1 class="text-3xl font-bold text-center text-amber-800 mb-4">An Adult Discussion Guide for “I Will Order All Things for Your Good”</h1>
+                <p class="text-center text-stone-600 mb-6">This guide is designed to help class members apply the principles from these sections to their own lives and to be better prepared to contribute to the class discussion. It is designed to help members deepen their understanding of the blessings of the temple and the restoration of priesthood keys.</p>
 
                 <h2>Introduction: "I Will Order All Things for Your Good"</h2>
                 <h3>Discussion Point:</h3>
@@ -204,7 +204,7 @@
         </div>
         
         <footer class="text-center mt-12 text-stone-500 text-sm">
-            <p>May your scripture study this week bring you closer to the Lord Jesus Christ</p>
+            <p>May your study this week bring you closer to the peace and power found in the house of the Lord.</p>
         </footer>
     </div>
 
@@ -248,6 +248,43 @@
             { id: 'saturday', day: 'Saturday', title: 'Enduring Trials of Faith', devotionalText: 'Less than a year after the glorious dedication of the Kirtland Temple, many members, including apostles, fell away. Our endurance is tested in the valleys, not on the mountaintops.', hymnTitle: 'How Firm a Foundation', hymnLink: 'https://www.churchofjesuschrist.org/media/music/songs/how-firm-a-foundation?lang=eng', hymnAnalysis: 'This hymn is a powerful anthem of endurance and divine assurance, making it an ideal anchor for times of trial. It speaks directly to the soul that feels tested, offering the Lord\'s promise: "Fear not, I am with thee; oh, be not dismayed, For I am thy God and will still give thee aid." The lyrics acknowledge the reality of deep and fiery trials, promising that "The flame shall not hurt thee; I only design Thy dross to consume and thy gold to refine."', songTitle: 'Beautiful Heartbreak', songArtist: 'Hilary Weeks', songLink: 'https://www.youtube.com/watch?v=xyX-I-um5Kk', songAnalysis: 'This song offers a profound and mature perspective on enduring trials. It speaks to the pain of life\'s heartbreaks but reframes them as experiences that can lead to greater faith and closeness to God. The key lyric, "I used to pray he\'d take it all away, but instead it became a beautiful heartbreak," captures the shift from wanting to escape a trial to finding the growth within it.' },
             { id: 'sunday', day: 'Sunday', title: 'The Peace of a Pure Heart', devotionalText: 'Amidst all the conflict and turmoil, the Lord\'s counsel was simple: "Purify your hearts before me." When we cleanse our inner vessel through repentance and sincere effort, we invite the Spirit, which brings peace regardless of the chaos around us.', hymnTitle: 'More Holiness Give Me', hymnLink: 'https://www.churchofjesuschrist.org/media/music/songs/more-holiness-give-me?lang=eng', hymnAnalysis: 'This hymn is a humble and earnest prayer for the very purity of heart described in the devotional. Each line is a petition to become more like the Savior. The lyrics "More purity give me, More strength to o\'ercome, More freedom from earth-stains, More longing for home" are a perfect articulation of the desire to "cleanse our inner vessel."', songTitle: 'Peace in Christ', songArtist: '2018 Youth Theme', songLink: 'https://www.youtube.com/watch?v=R46J-GjbRWA&list=RDR46J-GjbRWA&start_radio=1', songAnalysis: 'This song is a direct and powerful testimony of the source of true peace. The lyrics acknowledge the turmoil of the world, but firmly declare that the ultimate solace is found only in the Savior. The chorus is a simple, yet profound, affirmation: "When there\'s no peace on earth, there is peace in Christ". This message perfectly aligns with the devotional\'s teaching that the Spirit brings peace "regardless of the chaos around us."' }
         ];
+
+        // --- UPDATED: REFACTORED to a generic function ---
+        // This function formats content for sharing and copies it to the clipboard.
+        function copyContentToClipboard(dayId, dataArray, buttonElement) {
+            const day = dataArray.find(d => d.id === dayId);
+            if (!day) return;
+
+            const promptParts = day.prompt.split(':');
+            const promptLabel = promptParts[0];
+            const promptText = promptParts.slice(1).join(':').trim();
+
+            const textToCopy = `✨ Daily Devotional ✨\n\n${day.date}\n*${day.title}*\n\n${day.text}\n\n*${promptLabel}:* ${promptText}\n\nScripture: ${day.scriptureRef}\n${day.scriptureLink}\n\nFull Lesson:\n${day.lessonLink}`;
+
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            textArea.style.position = 'fixed';
+            textArea.style.top = '-9999px';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    const originalContent = buttonElement.innerHTML;
+                    buttonElement.innerHTML = 'Copied to Clipboard!';
+                    buttonElement.disabled = true;
+                    setTimeout(() => {
+                        buttonElement.innerHTML = originalContent;
+                        buttonElement.disabled = false;
+                    }, 2500);
+                }
+            } catch (err) {
+                console.error('Unable to copy to clipboard', err);
+            }
+            document.body.removeChild(textArea);
+        }
 
         function showView(viewId) {
             document.querySelectorAll('.view-section').forEach(view => {
@@ -318,9 +355,23 @@
                     <div class="mt-6 flex flex-col sm:flex-row gap-4">
                         <a href="${day.scriptureLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors duration-300">Read Scripture: ${day.scriptureRef}</a>
                         <a href="${day.lessonLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-stone-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-300">View Full Lesson</a>
+                    </div>
+                    <div class="mt-4 border-t pt-4">
+                        <button data-day-id="${day.id}" class="share-button w-full text-center bg-sky-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-sky-700 transition-colors duration-300 flex items-center justify-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+                            Share this Devotional
+                        </button>
                     </div>`;
                 contentArea.appendChild(contentDiv);
             });
+
+            contentArea.querySelectorAll('.share-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    // Pass the main devotionalData array to the copy function
+                    copyContentToClipboard(button.dataset.dayId, devotionalData, button);
+                });
+            });
+
             showDay(defaultDayId, 'devotional');
         }
 
@@ -372,6 +423,7 @@
                 contentDiv.dataset.dayId = day.id;
                 contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
                 let scriptureButton = day.scriptureLink ? `<a href="${day.scriptureLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors duration-300">Read Scripture: ${day.scriptureRef}</a>` : '';
+                // --- MODIFIED CONTENT: Added the "Share" button for YM ---
                 contentDiv.innerHTML = `
                     <p class="text-sm font-medium text-amber-600">${day.date}</p>
                     <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-4">${day.title}</h2>
@@ -383,9 +435,23 @@
                     <div class="mt-6 flex flex-col sm:flex-row gap-4">
                         ${scriptureButton}
                         <a href="${day.lessonLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-stone-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-300">View Full Lesson</a>
+                    </div>
+                     <div class="mt-4 border-t pt-4">
+                        <button data-day-id="${day.id}" class="share-button w-full text-center bg-sky-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-sky-700 transition-colors duration-300 flex items-center justify-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+                            Share this Devotional
+                        </button>
                     </div>`;
                 ymContentArea.appendChild(contentDiv);
             });
+            
+            // --- NEW: Add event listener for YM share buttons ---
+            ymContentArea.querySelectorAll('.share-button').forEach(button => {
+                button.addEventListener('click', () => {
+                     copyContentToClipboard(button.dataset.dayId, ymData, button);
+                });
+            });
+
 
             const ywNav = document.getElementById('yw-nav');
             const ywContentArea = document.getElementById('yw-content-area');
@@ -401,6 +467,7 @@
                 contentDiv.dataset.dayId = day.id;
                 contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
                  let scriptureButton = day.scriptureLink ? `<a href="${day.scriptureLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors duration-300">Read Scripture: ${day.scriptureRef}</a>` : '';
+                // --- MODIFIED CONTENT: Added the "Share" button for YW ---
                 contentDiv.innerHTML = `
                     <p class="text-sm font-medium text-amber-600">${day.date}</p>
                     <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-4">${day.title}</h2>
@@ -412,10 +479,23 @@
                     <div class="mt-6 flex flex-col sm:flex-row gap-4">
                         ${scriptureButton}
                         <a href="${day.lessonLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-stone-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-300">View Full Lesson</a>
+                    </div>
+                    <div class="mt-4 border-t pt-4">
+                        <button data-day-id="${day.id}" class="share-button w-full text-center bg-sky-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-sky-700 transition-colors duration-300 flex items-center justify-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+                            Share this Devotional
+                        </button>
                     </div>`;
                 ywContentArea.appendChild(contentDiv);
             });
             
+             // --- NEW: Add event listener for YW share buttons ---
+            ywContentArea.querySelectorAll('.share-button').forEach(button => {
+                button.addEventListener('click', () => {
+                     copyContentToClipboard(button.dataset.dayId, ywData, button);
+                });
+            });
+
             document.querySelectorAll('#youth-main-nav button').forEach(button => {
                 button.addEventListener('click', (e) => showYouthGroup(e.target.dataset.youthGroup));
             });
@@ -447,27 +527,21 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- UPDATED LOGIC START ---
-            // Determine the current day to show as the default.
-            // We create a map to link the numeric day from getDay() to our string IDs.
             const dayIdMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-            const todayIndex = new Date().getDay(); // 0 for Sunday, 1 for Monday, etc.
+            const todayIndex = new Date().getDay();
             const currentDayId = dayIdMap[todayIndex];
-            // --- UPDATED LOGIC END ---
 
-            // Initialize all views, passing the current day ID so they default correctly.
             initDevotionalView(currentDayId);
             initSongsView(currentDayId);
             initYouthView(currentDayId);
             
-            // Set up main view navigation.
             document.querySelectorAll('#main-nav button').forEach(button => {
                 button.addEventListener('click', (e) => showView(e.target.dataset.view));
             });
             
-            // Set the initial view to be the Daily Devotional.
             showView('devotional');
         });
     </script>
 </body>
 </html>
+

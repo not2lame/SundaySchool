@@ -3,622 +3,625 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Devotional & Musical Companion</title>
+    <title>Come, Follow Me Companion</title>
+    
+    <!-- Tailwind CSS (Styling) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts: Inter (Body) and Merriweather (Headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- React & ReactDOM (Switched to Cloudflare CDN for better firewall access) -->
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel (to compile JSX in browser) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        stone: { 50: '#fafaf9', 100: '#f5f5f4', 200: '#e7e5e4', 300: '#d6d3d1', 400: '#a8a29e', 500: '#78716c', 600: '#57534e', 700: '#44403c', 800: '#292524', 900: '#1c1917' },
+                        amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309', 800: '#92400e', 900: '#78350f' }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .view-section, .day-content, .youth-content-area {
-            transition: opacity 0.5s ease-in-out;
-        }
-        .main-nav-button-active {
-            background-color: #a16207;
-            color: #ffffff;
-            border-color: #a16207;
-        }
-        .main-nav-button-inactive {
-            background-color: #ffffff;
-            color: #a16207;
-            border-color: #f59e0b;
-        }
-        .day-nav-button-active, .youth-nav-button-active {
-            background-color: #f59e0b;
-            color: #ffffff;
-        }
-        .day-nav-button-inactive, .youth-nav-button-inactive {
-            background-color: #e5e7eb;
-            color: #374151;
-        }
-        .study-guide-content h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #44403c;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #f59e0b;
-        }
-        .study-guide-content h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #a16207;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-        .study-guide-content p {
-            line-height: 1.75;
-            margin-bottom: 1rem;
-        }
-        .study-guide-content blockquote {
-            border-left: 4px solid #d6d3d1;
-            padding-left: 1rem;
-            margin: 1rem 0;
-            font-style: italic;
-            color: #57534e;
-        }
-        .possible-answers {
-            background-color: #f5f5f4;
-            border: 1px solid #e7e5e4;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-top: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .possible-answers p {
-            margin-bottom: 0;
-            font-style: italic;
-            color: #3f3f46;
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-study-section, #printable-study-section * {
+                visibility: visible;
+            }
+            #printable-study-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+            .no-print {
+                display: none !important;
+            }
         }
     </style>
 </head>
-<body class="bg-stone-50 text-stone-800">
+<body class="bg-stone-100 text-stone-800 h-screen flex flex-col overflow-hidden">
 
-    <div id="app" class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-
-        <header class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-amber-800">Come, Follow Me - Resources for Individuals and Families</h1>
-            <!-- Updated Header Title -->
-            <h2 class="mt-2 text-2xl text-stone-700">Prepare Ye for the Coming of the Bridegroom</h2>
-            <!-- Updated Date Range -->
-            <p class="mt-2 text-lg text-stone-600">November 17 - November 23, 2025</p>
-        </header>
-
-        <div id="main-nav" class="flex flex-wrap justify-center gap-4 mb-8">
-            <button data-view="devotional" class="main-nav-button-active text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Daily Devotional</button>
-            <button data-view="youth" class="main-nav-button-inactive hover:bg-amber-50 text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Youth Devotionals</button>
-            <button data-view="songs" class="main-nav-button-inactive hover:bg-amber-50 text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Musical Companion</button>
-            <button data-view="study" class="main-nav-button-inactive hover:bg-amber-50 text-lg font-semibold py-3 px-6 rounded-lg border-2 transition-colors duration-300">Weekly Study Companion</button>
-        </div>
-
-        <!-- Devotional View -->
-        <div id="devotional-view" class="view-section">
-            <nav class="flex flex-wrap justify-center gap-2 mb-8" id="devotional-nav"></nav>
-            <main id="devotional-content-area"></main>
-        </div>
-
-        <!-- Youth Devotionals View -->
-        <div id="youth-view" class="view-section hidden opacity-0">
-            <nav class="flex justify-center gap-4 mb-8" id="youth-main-nav">
-                <button data-youth-group="ym" class="youth-nav-button-active text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300">Young Men</button>
-                <button data-youth-group="yw" class="youth-nav-button-inactive hover:bg-gray-300 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300">Young Women</button>
-            </nav>
-            <div id="ym-content" class="youth-content-area">
-                <nav class="flex flex-wrap justify-center gap-2 mb-8" id="ym-nav"></nav>
-                <main id="ym-content-area"></main>
-            </div>
-            <div id="yw-content" class="youth-content-area hidden opacity-0">
-                <nav class="flex flex-wrap justify-center gap-2 mb-8" id="yw-nav"></nav>
-                <main id="yw-content-area"></main>
+    <!-- Loading Fallback -->
+    <div id="root" class="h-full flex flex-col">
+        <div class="flex items-center justify-center h-full bg-stone-100 text-stone-500 p-4 text-center">
+            <div>
+                <h2 class="text-xl font-bold mb-2">Loading App...</h2>
+                <p class="text-sm">If this takes longer than a few seconds, your network may be blocking the script libraries (React).</p>
             </div>
         </div>
-
-        <!-- Songs of the Soul View -->
-        <div id="songs-view" class="view-section hidden opacity-0">
-             <div class="text-center bg-white p-6 rounded-2xl shadow-lg border border-stone-200 mb-8">
-                <h2 class="text-2xl font-bold text-amber-700">Songs of the Soul</h2>
-                <p class="mt-2 text-stone-600">Sacred music has a unique power to deepen our connection to the divine. Each day's devotional is paired with a hymn and a contemporary song to enhance your study and invite the Spirit.</p>
-            </div>
-            <nav class="flex flex-wrap justify-center gap-2 mb-8" id="songs-nav"></nav>
-            <main id="songs-content-area"></main>
-        </div>
-        
-        <!-- Weekly Study Companion View -->
-        <div id="study-view" class="view-section hidden opacity-0">
-            <!-- Updated Study Guide Content -->
-            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200 study-guide-content">
-                <h1 class="text-3xl font-bold text-center text-amber-800 mb-4">A Discussion Guide for “Prepare Ye for the Coming of the Bridegroom”</h1>
-                <p class="text-center text-stone-600 mb-6">This guide is designed to help class members apply the principles from these sections to their own lives and to be better prepared to contribute to the class discussion.</p>
-                
-                <h2>Background</h2>
-                <p>This week's lesson covers two important revelations. Section 133 of the Doctrine and Covenants was received by Joseph Smith in November 1831. It was intended to be the appendix for the Book of Commandments, the first compilation of the Lord's latter-day revelations. In 1833, before the book could be finished, a mob destroyed the Church's printing press in Missouri, scattering the pages. This revelation, however, was preserved and serves as a powerful call to prepare for the Second Coming of Jesus Christ.</p>
-                <p>Section 134 was written in August 1835 as a declaration of the Church's beliefs regarding governments and laws. This was a necessary clarification. The early Saints had been violently forced out of Jackson County, Missouri, in 1833 and received no protection or help from the local or national government. This declaration affirmed their belief that governments are instituted by God for the benefit of mankind and that citizens have a responsibility to uphold the law.</p>
-
-                <h2>Introduction: "Prepare Ye for the Coming of the Bridegroom"</h2>
-                <h3>Discussion Point:</h3>
-                <p>The introduction explains the historical setting for section 133. It was meant to be the concluding chapter, or "appendix," for the Book of Commandments. Despite the violent opposition and destruction of the press, the Lord's words were preserved. This serves as a powerful witness that His work cannot be stopped and His promises will be fulfilled. The core message of this revelation is a repeated call found throughout scripture: leave worldliness (Babylon), build Zion, and prepare the world for the Savior's return.</p>
-                <h3>Discussion Question:</h3>
-                <p>What does the preservation of section 133, despite the destruction of the printing press, teach us about the nature of God's work in the latter days?</p>
-                <div class="possible-answers">
-                    <p><strong>Possible Answers:</strong> It teaches us that God's purposes cannot be frustrated by man. Even when faced with intense opposition and setbacks, His work will roll forward. It shows that His words are enduring and will be made available to His children as He has promised.</p>
-                </div>
-
-                <h2>Jesus Christ calls me to reject Babylon and come to Zion.</h2>
-                <h3>Discussion Point:</h3>
-                <p>Throughout the scriptures, the ancient city of Babylon is used as a symbol for wickedness, worldliness, and spiritual bondage. In contrast, Zion represents the community of the pure in heart, living in unity and righteousness. In these verses, the Lord gives a clear command to "go ye out from Babylon" and gather to Zion. This is a call to separate ourselves from the spiritually corrupting influences of the world.</p>
-                <blockquote>Doctrine and Covenants 133:5, 14: "Go ye out from Babylon. Be ye clean that bear the vessels of the Lord... Go ye out from among the nations, even from Babylon, from the midst of wickedness, which is spiritual Babylon."</blockquote>
-                <h3>Discussion Question 1:</h3>
-                <p>In a world where we are constantly surrounded by the influences of "Babylon," what are some practical things we can do to "go... out" and keep ourselves and our families spiritually clean?</p>
-                <div class="possible-answers">
-                    <p><strong>Possible Answers:</strong> We can be intentional about the media we consume, choosing uplifting content over that which is degrading. We can choose friends who share our values. We can prioritize time for prayer, scripture study, and temple worship over worldly pursuits. It means consciously choosing to live by gospel standards even when they conflict with the world's standards.</p>
-                </div>
-                <h3>Discussion Question 2:</h3>
-                <p>How does gathering to "Zion"—whether in our homes, our wards, or the temple—provide safety and peace amid the uncertainties of the world?</p>
-                <div class="possible-answers">
-                    <p><strong>Possible Answers:</strong> Zion is a place of spiritual safety. When we create a Zion-like environment in our homes, we create a refuge from the world. When we participate in our wards, we are strengthened by a community of believers. The temple is the ultimate symbol of Zion on earth, a place where we can feel God's presence and find peace that the world cannot provide.</p>
-                </div>
-
-                <h2>I can prepare now for the Savior’s Second Coming.</h2>
-                <h3>Discussion Point:</h3>
-                <p>Both the preface (Section 1) and the original appendix (Section 133) of the Doctrine and Covenants begin with the same plea from the Lord: "Hearken, O ye people of my church." This emphasizes the critical importance of listening to and obeying His counsel as we prepare for His return. These verses outline specific actions we must take to prepare both ourselves and the world.</p>
-                <h3>Discussion Question 1:</h3>
-                <p>The manual suggests listing things the Lord wants us to do to (1) prepare ourselves and (2) help prepare the world. Based on verses 1-19, what are some actions that would be on each list?</p>
-                <div class="possible-answers">
-                    <p><strong>Possible Answers:</strong> For ourselves: sanctify ourselves, be sober, pray always, and trim our lamps. For the world: go forth and preach the gospel, warn our neighbors, and gather the Saints from among the nations.</p>
-                </div>
-                <h3>Discussion Question 2 :</h3>
-                <p>How does actively participating in the work of preparation, as described in these verses, help replace fear of the Second Coming with joyful anticipation?</p>
-                <div class="possible-answers">
-                    <p><strong>Possible Answers:</strong> The Lord's work is a source of joy. When we are engaged in serving others, fulfilling our callings, and sharing the gospel, we become more like the Savior. This process purifies us and helps us feel His love, which casts out fear. Preparation gives us a sense of purpose and helps us focus on the "great" part of that "great and dreadful day."</p>
-                </div>
-
-                <h2>The Second Coming of Jesus Christ will be joyful for the righteous.</h2>
-                <h3>Discussion Point:</h3>
-                <p>While many descriptions of the Second Coming focus on destruction and judgment, these verses paint a picture of a glorious, triumphant, and joyful day for the faithful. We will see the Lord in His glory, hear His voice, and remember His loving-kindness. The faithful, both living and dead, will be crowned with glory and filled with "songs of everlasting joy." It will be a day of redemption and reunion.</p>
-                <h3>Discussion Question 1:</h3>
-                <p>What words, phrases, or images in verses 19-56 stand out to you and help you look forward to the Savior's return?</p>
-                <div class="possible-answers">
-                    <p><strong>Possible Answers:</strong> The idea that He will "stand in the midst of his people". The image of His glory being so bright that "the sun shall hide his face in shame". The promise that the faithful will be "crowned with glory" and sing "songs of everlasting joy". The tender promise that "in his love and in his pity he redeemed them".</p>
-                </div>
-                <blockquote>Doctrine and Covenants 133:52: "And they shall mention the loving kindness of their Lord, and all that he has bestowed upon them according to his goodness, and according to his loving kindness, forever and ever."</blockquote>
-                <h3>Discussion Question 2:</h3>
-                <p>Why is remembering what the Lord has already done for us a powerful way to prepare to meet Him?</p>
-                <div class="possible-answers">
-                    <p><strong>Possible Answers:</strong> Remembering His past goodness builds our faith and trust in Him for the future. It solidifies our testimony of His personal love for us. When we recognize His hand in our lives now, we can have confidence that His return will be the ultimate expression of His love and mercy for those who have followed Him.</p>
-                </div>
-
-                <h2>"Governments were instituted of God for the benefit of man."</h2>
-                <h3>Discussion Point:</h3>
-                <p>This section clarifies the Church's position on secular governments. It teaches that governments are ordained by God to protect the rights and freedoms of individuals, including religious freedom, and to maintain public order. In return, citizens have a duty to uphold the law and support their government. This was a crucial declaration for the early Saints, who were often falsely accused of rejecting earthly authority.</p>
-                <blockquote>Articles of Faith 1:12: “We believe in being subject to kings, presidents, rulers, and magistrates, in obeying, honoring, and sustaining the law.”</blockquote>
-                <h3>Discussion Question:</h3>
-                <p>According to Doctrine and Covenants 134: verses 1, 2, and 5, what are the primary responsibilities of governments, and what corresponding duties do citizens have?</p>
-                <div class="possible-answers">
-                    <p><strong>Possible Answers:</strong> Governments are responsible for creating and administering laws for the good and safety of society and to "secure to each individual the free exercise of conscience, the right and control of property, and the protection of life". Citizens are responsible for sustaining their government and obeying the law and are encouraged to seek out and uphold leaders who will act with wisdom and honesty.</p>
-                </div>
-
-                <h2>Lesson Summary</h2>
-                <p>This week's lesson is a powerful reminder that the Lord is hastening His work and preparing the world for His glorious return. He calls us to leave the wickedness of the world (Babylon) and gather to the safety and righteousness of Zion. By heeding His call, serving others, and remembering His goodness, we can replace any fear of the future with a joyful, faith-filled anticipation of meeting Him. His coming will be a "great day" for the righteous. We are also reminded of our civic duty to uphold righteous laws and governments that God has instituted for our benefit.</p>
-            </div>
-        </div>
-        
-        <footer class="text-center mt-12 text-stone-500 text-sm">
-            <!-- Updated Valediction -->
-            <p>May you embrace the future with faith, preparing your heart with joy for His return.</p>
-        </footer>
     </div>
 
-    <script>
-        // Updated Devotional Data for Nov 17-23
-        const devotionalData = [
-            { id: 'monday', day: 'Monday', date: 'November 17, 2025', title: 'Are You Ready for the Wedding? 💍', text: 'The Savior’s Second Coming is often compared to a bridegroom coming for his bride. This beautiful analogy reminds us that this is an event to be anticipated with joy, not fear. Like the wise virgins in the parable, our daily efforts to live the gospel fill our lamps with oil, ensuring we are ready and waiting to greet Him with gladness when He comes.', prompt: 'Challenge: Identify one small, specific thing you can do this week to "add oil to your lamp." Perhaps it\'s five extra minutes of scripture study, a sincere prayer for a neighbor, or a conscious effort to be more patient with a loved one.', scriptureRef: 'Matthew 25:1-13', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/nt/matt/25?lang=eng#p1', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'tuesday', day: 'Tuesday', date: 'November 18, 2025', title: 'Leaving Babylon Behind 🏙️', text: 'In the scriptures, "Babylon" represents worldliness, spiritual bondage, and confusion. The Lord\'s call to "go ye out from Babylon" is an invitation to detach ourselves from the noise and temptations of the world and gather in the safety of Zion—a community of the pure in heart. This isn\'t just a physical move; it\'s a spiritual shift in our priorities, desires, and focus.', prompt: 'Reflection: What aspects of modern "Babylon" (e.g., materialism, contention, digital distractions) are most challenging for you? How can you create more "Zion" in your heart and home this week?', scriptureRef: 'D&C 133:5, 14', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p5', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'wednesday', day: 'Wednesday', date: 'November 19, 2025', title: 'Preparation Through Participation 🙏', text: 'Sometimes we wonder if we are "enough" to be ready for the Savior\'s return. Elder Steven D. Shumway taught, "As we participate in God\'s work, we prepare ourselves and others for Christ\'s return." Our callings, ministering, and temple worship are not just items on a to-do list; they are the Lord\'s customized curriculum to help us become more like Him, the very best preparation we can have.', prompt: 'Challenge: This week, approach one of your church responsibilities—whether it\'s ministering, a calling, or family history—with the conscious thought, "This is helping me prepare to meet my Savior." Notice how it changes your perspective.', scriptureRef: 'Moroni 7:48', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/bofm/moro/7?lang=eng#p48', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'thursday', day: 'Thursday', date: 'November 20, 2025', title: 'A Great, Not Dreadful, Day ✨', text: 'The scriptures describe the events preceding the Second Coming as both "great and dreadful." While the world may experience turmoil, for the righteous, that day will be anything but dreadful. It will be a day of deliverance, glory, and reunion. As we trust in Jesus Christ, our fear is replaced with faith, and our anxiety is swallowed up in anticipation of His glorious return.', prompt: 'Reflection: When you hear about the "signs of the times," do you feel fear or faith? Ponder the promises in D&C 133:19-56 and choose one promise to focus on that brings you peace.', scriptureRef: 'D&C 133:49', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p49', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'friday', day: 'Friday', date: 'November 21, 2025', title: 'Remembering His Loving-Kindness ❤️', text: 'Amidst the grand descriptions of His return, the scriptures tenderly remind us to "mention the loving kindness of [our] Lord, and all that he has bestowed upon [us]." The Second Coming is the ultimate expression of His love and goodness—the fulfillment of His plan to redeem His people and heal the earth. Recognizing His hand in our lives now helps us trust His hand in the future.', prompt: 'Challenge: Take a few minutes today to write down or share with a loved one a specific experience where you felt the Savior\'s loving-kindness. Let gratitude fill your heart and strengthen your faith in Him.', scriptureRef: 'D&C 133:52-53', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p52', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'saturday', day: 'Saturday', date: 'November 22, 2025', title: 'Good Citizens in God\'s Kingdom 🏛️', text: 'Doctrine and Covenants 134 clarifies that governments are "instituted of God for the benefit of man." As disciples of Christ, we have a responsibility to be good citizens—to obey, honor, and sustain the law. Our righteous influence in our communities and nations is part of preparing the world for its rightful King, who will "reign over all flesh."', prompt: 'Reflection: How can you be a positive influence for good in your local community or nation? Consider how upholding civic responsibilities can be an expression of your discipleship.', scriptureRef: 'D&C 134:1-2', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/134?lang=eng#p1', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'sunday', day: 'Sunday', date: 'November 23, 2025', title: 'Embrace the Future with Faith ☀️', text: 'Ultimately, preparing for the future is an act of faith. President Russell M. Nelson taught us to "embrace the future with faith." We don\'t know the day or the hour, but we know the Savior. We trust His promises. We follow His prophets. By living the gospel with hope and joy, we can confidently look forward to the day when He will stand in our midst, and we will be filled with "songs of everlasting joy."', prompt: 'Challenge: As you partake of the sacrament today, focus on your covenants and the hope they provide for the future. Commit to move forward this week, replacing any worries about the future with faith in your Savior, Jesus Christ.', scriptureRef: 'D&C 133:33', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p33', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' }
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ==========================================
+        // DATA CONSTANTS
+        // ==========================================
+
+        const WEEK_INFO = {
+            title: "He Has Sealed His Mission and His Works with His Own Blood",
+            dateRange: "November 24 - November 30, 2025",
+            valediction: "May you find safety for your soul as you seal your testimony with faith in the Lord Jesus Christ."
+        };
+
+        const DEVOTIONAL_DATA = [
+            { id: 'monday', day: 'Mon', fullDay: 'Monday', date: 'Nov 24', title: 'Sealed with Blood 🩸', text: 'The martyrdom of Joseph and Hyrum Smith was not merely a tragic end; it was a divine seal upon their work. As we study the closing moments of their lives, we see that they went to Carthage knowing they would not return, yet they submitted to keep the Saints safe. Elder Jeffrey R. Holland powerfully teaches that these men would not have died for a "fictitious" book or a church created out of "whole cloth". Their willingness to die rather than deny the truth stands as an unimpeachable witness of the Restoration.', prompt: 'Reflection: How does the knowledge that Joseph and Hyrum sealed their testimony with their blood strengthen your confidence in the Book of Mormon today?', scriptureRef: 'D&C 135:3', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p3', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'tuesday', day: 'Tue', fullDay: 'Tuesday', date: 'Nov 25', title: 'Finding Comfort in the Storm 📖', text: 'It is profound to consider what the Prophet and Patriarch did in their final hours to find peace. While in Carthage Jail, facing imminent death, Hyrum Smith read from the Book of Mormon—specifically Ether chapter 12—to find comfort. The verses he read spoke of charity and the grace of God making weak things strong. If the scriptures could provide peace to prophets facing martyrdom, think of the solace they can offer us in our daily stresses and trials.', prompt: 'Challenge: Read Ether 12:36–38 today and look for the specific words that might have comforted Hyrum’s heart.', scriptureRef: 'D&C 135:5', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p5', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'wednesday', day: 'Wed', fullDay: 'Wednesday', date: 'Nov 26', title: 'The Work Goes On ⏩', text: 'When Joseph Smith fell, enemies of the Church believed the "Mormon" problem was solved. Yet, the martyrdom was not the end of the Restoration; "there was more work to do and more revelation that would guide the Church forward". The end of the Prophet\'s mortal life was merely a transition in the ongoing work of God. Just as the early Saints had to look forward with faith, we are reminded that this is Christ\'s church, and He continues to direct it regardless of the obstacles we face.', prompt: 'Challenge: Read Revelation 6:9-11 for a poignant vision of the martyrs in the spirit world, awaiting the Lord\'s timing.', scriptureRef: 'D&C 135:6', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p6', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'thursday', day: 'Thu', fullDay: 'Thursday', date: 'Nov 27', title: 'A Legacy of Gratitude 🙏', text: 'On this day of Thanksgiving, we have much to be grateful for regarding the Prophet Joseph Smith. Scripture declares that he "has done more, save Jesus only, for the salvation of men in this world, than any other man that ever lived in it". Through him, we received the Book of Mormon, the Doctrine and Covenants, and the ordinances of the temple—gifts that bind us to God and our families for eternity. Our gratitude for the message is often best expressed by how we honor the messenger\'s sacrifice.', prompt: 'Challenge: Share a brief thought at your dinner table or with a friend about one specific truth restored through Joseph Smith that you are thankful for.', scriptureRef: 'D&C 135:3', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p3', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'friday', day: 'Fri', fullDay: 'Friday', date: 'Nov 28', title: 'The Journey is the Lesson ⛺', text: 'After the tragedy of Carthage, the Saints faced a grueling 1,300-mile trek west. In Doctrine and Covenants 136, the Lord taught them that "their conduct on the journey was as important as their destination". This revelation transformed a desperate migration into a "shared spiritual experience". We are all on a covenant path; often, the Lord is less concerned with how fast we arrive and more concerned with who we are becoming along the way.', prompt: 'Reflection: What is a current "journey" or trial you are facing? How might the Lord be using this time to refine your character?', scriptureRef: 'D&C 136:31', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/136?lang=eng#p31', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'saturday', day: 'Sat', fullDay: 'Saturday', date: 'Nov 29', title: 'Safety for the Soul ⚓', text: 'Elder Holland reminds us that God "always provides safety for the soul," and through the Book of Mormon, He has done that again in our time. Joseph and Hyrum were willing to die rather than deny the divine origin of that book. Elder Holland asks us to trust that these men would not blaspheme before God in their final hour by fixing their lives to a lie. The Book of Mormon is true, and it is a source of safety and truth for us today.', prompt: 'Reflection: If you haven\'t already accepted Monroni\'s challenge in Moroni 10:3-5, then read the Book of Mormon and ask God if it is true with a sincere heart and real intent.', scriptureRef: 'Moroni 10:3-5', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/bofm/moro/10?lang=eng#3', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'sunday', day: 'Sun', fullDay: 'Sunday', date: 'Nov 30', title: 'Accomplishing His Will 🕊️', text: 'As we conclude this week\'s study, we look at the transition of leadership to Brigham Young and the Quorum of the Twelve. Doctrine and Covenants 136 is a reminder that we can "accomplish the Lord\'s will" when we follow His counsel. Whether it is crossing the plains or navigating modern life, the Lord promises that if we are faithful in keeping our covenants, His spirit will guide us. We honor the martyrs not just by remembering their deaths, but by living the gospel they died to restore.', prompt: 'Challenge: Identify one specific piece of counsel from D&C 136 (such as praising the Lord, caring for the poor, or ceasing contention) to focus on this coming week.', scriptureRef: 'D&C 136:42', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/136?lang=eng#p42', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' }
         ];
 
-        // Updated YM Data for Nov 17-23
-        const ymData = [
-            { id: 'monday', day: 'Monday', date: 'November 17, 2025', title: 'Game Day is Coming! 🏈', text: 'This week\'s lesson is all about preparing for the Second Coming. Think of it like the ultimate Super Bowl. The Savior is coming back, and we\'re on His team. We don\'t know the exact time of the game, but we know it\'s coming. The Lord asks us to "hearken" and get ready now, so we\'re prepared for the big day!', prompt: 'Challenge: What\'s one thing you can do this week to get "spiritually in shape" for the Savior\'s return? Maybe it\'s reading your scriptures for 10 extra minutes or doing a service for someone without being asked.', scriptureRef: 'D&C 133:1-3', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p1', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'tuesday', day: 'Tuesday', date: 'November 18, 2025', title: 'Choose Your Team: Zion or Babylon? ⚔️', text: 'The scriptures tell us to "go ye out from Babylon" and gather to Zion. Babylon represents all the worldly distractions and pressures that pull us away from God—the stuff that makes us spiritually weak. Zion is where we stand together, united and strong in the gospel. It\'s about choosing who you follow and where you find your strength.', prompt: 'Challenge: Identify one "Babylon" influence in your life (like a bad habit, negative media, or peer pressure). Now, think of one "Zion" activity you can replace it with.', scriptureRef: 'D&C 133:5, 9', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p5', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'wednesday', day: 'Wednesday', date: 'November 19, 2025', title: 'Great, Not Dreadful 🤯', text: 'We hear about earthquakes, wars, and chaos when people talk about the Second Coming, calling it the "great and dreadful day." But that\'s only half the story! For those who are trying to follow Christ, the "great" part will completely outweigh the "dreadful." It’s a day of deliverance and glory for the righteous. Don\'t fear the signs; see them as signs that the King is coming!', prompt: 'Reflection: When you hear about unsettling world events, how can you shift your focus from fear to faith in the Savior\'s ultimate victory?', scriptureRef: 'D&C 110:16', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/110?lang=eng#p16', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'thursday', day: 'Thursday', date: 'November 20, 2025', title: 'The Ultimate Victory Lap 🏆', text: 'Forget the scary stuff for a minute and picture this: When the Savior returns, He will be so full of glory the sun will "hide his face in shame." The faithful will be filled with "songs of everlasting joy." It\'s not an ending; it\'s the beginning of His reign and the ultimate victory celebration. This is the moment all of history has been building toward.', prompt: 'Challenge: Listen to an epic, uplifting song today (like a movie soundtrack or a powerful hymn). As you listen, imagine the joyful return of the Savior described in the scriptures.', scriptureRef: 'D&C 133:33, 49', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p33', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'friday', day: 'Friday', date: 'November 21, 2025', title: 'Priesthood Prep 💪', text: 'So how do we actually get ready? One of the best ways is by magnifying your priesthood. Every time you prepare, bless, or pass the sacrament, minister to someone, or serve in your quorum, you are preparing to meet the Savior. As Elder Steven D. Shumway taught, "In earnestly seeking to represent the Savior, we become more like Him. That is the best preparation."', prompt: 'Challenge: Look for an extra opportunity to use your priesthood to serve someone today. It could be a family member, a friend, or someone in your quorum.', scriptureRef: 'D&C 133:7-8', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p7', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'saturday', day: 'Saturday', date: 'November 22, 2025', title: 'Obey, Honor, and Sustain 🇺🇸', text: 'It might seem like a topic change, but Doctrine and Covenants 134 is about respecting governments and laws. Why is that part of preparing for Christ? Because being His disciple means having integrity everywhere, including as a citizen. The Lord "instituted [governments] for the benefit of man." Honoring the law (when it doesn\'t conflict with God\'s law) is a way we show respect for His order.', prompt: 'Reflection: Think about a law or rule you follow (at school, at home, on the road). How does following that rule help create order and benefit everyone?', scriptureRef: 'D&C 134:1-2', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/134?lang=eng#p1', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'sunday', day: 'Sunday', date: 'November 23, 2025', title: 'Ready and Waiting 🙏', text: 'At the end of the day, preparing for the Second Coming isn\'t about fear or a crazy checklist. It\'s about knowing the Savior and loving Him. The scriptures invite us to "mention the loving kindness of [our] Lord." As you take the sacrament today, think about His love and sacrifice for you. Because of Him, we don\'t have to be afraid. We can look forward to His return with hope and joy.', prompt: 'Challenge: During the sacrament today, make a specific mental list of three things you are grateful for that the Savior has done for you personally. Hold on to that feeling of gratitude throughout the day.', scriptureRef: 'D&C 133:52-53', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p52', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' }
+        const YM_DATA = [
+             { id: 'monday', day: 'Mon', date: 'Nov 24', title: 'Sealed with Blood 🩸', text: 'When Joseph and Hyrum Smith rode to Carthage, they knew they weren\'t coming back. They didn\'t run away; they faced danger head-on to protect the Saints and seal their testimony of the truth. It takes massive courage to stand by what you know is right when the world is against you. As a holder of the Aaronic Priesthood, you share in the legacy of these men who valued their testimony more than their own lives.', prompt: 'Challenge: Think of a time you defended your beliefs or standards. Write down one sentence in your phone notes about why the gospel is worth fighting for.', scriptureRef: 'D&C 135:1', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p1', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'tuesday', day: 'Tue', date: 'Nov 25', title: '20 Years that Changed the World 🌎', text: 'In just 20 years, Joseph Smith brought forth the Book of Mormon, restored the Priesthood, built temples, and organized the Church. He didn\'t have much money or education, but he had the Lord. It’s proof that God doesn\'t look for "perfect" people; He looks for willing hands. Because of what the Lord did through Joseph, we have priesthood power and the roadmap to return to Heavenly Father.', prompt: 'Reflection: If you had to explain to a friend what Joseph Smith actually did for us, what is the first thing you would mention?', scriptureRef: 'D&C 135:3', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p3', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'wednesday', day: 'Wed', date: 'Nov 26', title: 'Calm in the Storm ⛈️', text: 'Imagine sitting in a jail cell, knowing a mob is outside waiting to kill you. What would you do? Hyrum Smith chose to read the scriptures. Specifically, he read from Ether 12 in the Book of Mormon about how God turns weakness into strength. Even in the scariest moment of his life, Hyrum found peace in the word of God. That same power is available to you whenever you are stressed, anxious, or afraid.', prompt: 'Challenge: Read the verses Hyrum read (Ether 12:36-38). Next time you feel stressed this week, open the Book of Mormon instead of social media for just 5 minutes.', scriptureRef: 'D&C 135:5', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p5', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'thursday', day: 'Thu', date: 'Nov 27', title: 'Praise and Gratitude 🙏', text: 'Happy Thanksgiving! In Doctrine and Covenants 136, as the Saints were preparing for a hard trek west, the Lord commanded them to "praise the Lord with singing, with music, with dancing, and with a prayer of praise and thanksgiving." Gratitude isn\'t just for when things are going well; it\'s the fuel that keeps us moving forward during hard journeys. A grateful Priesthood holder is a happy Priesthood holder.', prompt: 'Challenge: In your prayer tonight, try offering a "prayer of praise" where you only thank Heavenly Father for blessings and don\'t ask for anything.', scriptureRef: 'D&C 136:28', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/136?lang=eng#p28', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'friday', day: 'Fri', date: 'Nov 28', title: 'No Man Left Behind 🤝', text: 'When the Saints left Nauvoo, they made a covenant (a promise) that they wouldn\'t leave the poor, the widows, or the fatherless behind. They pledged to use all their "influence and property" to help everyone get to Zion. That is the spirit of the Priesthood! We look out for the guys in our quorum who are struggling, the lonely, and those who need a lift. We move forward together.', prompt: 'Challenge: Send a text to a member of your quorum or a friend you haven\'t seen at church in a while just to check in and see how they are doing.', scriptureRef: 'D&C 136:8-9', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/136?lang=eng#p8', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'saturday', day: 'Sat', date: 'Nov 29', title: 'They Would Not Die for a Lie 📖', text: 'Elder Jeffrey R. Holland once asked a powerful question: Would Joseph and Hyrum continue to fix their lives on a book (The Book of Mormon) if it were a lie? Would they die for something they made up? "They would not do that!" They were willing to die rather than deny the divine truth of that book. Their death is one of the most powerful evidences that the Book of Mormon is truly the word of God.', prompt: 'Reflection: How does the sacrifice of Joseph and Hyrum affect the way you treat your copy of the Book of Mormon?', scriptureRef: 'D&C 135:6', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p6', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'sunday', day: 'Sun', date: 'Nov 30', title: 'Your Personal Liahona 🧭', text: 'The Saints needed direction to cross the plains, but we need direction to navigate life today. Just as the Lord guided them, He wants to guide you. This is a great time to think about your Patriarchal Blessing. Prophets have called it your "personal scripture" and a "personal Liahona." If you haven\'t received yours yet, now is the time to prepare. It will help you see who you really are and who you can become.', prompt: 'Challenge: If you have your Patriarchal Blessing, read it today. If you don\'t, talk to your parents or Bishop today about what you need to do to get it.', scriptureRef: 'D&C 136:19', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/136?lang=eng#p19', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' }
         ];
 
-        // Updated YW Data for Nov 17-23
-        const ywData = [
-            { id: 'monday', day: 'Monday', date: 'November 17, 2025', title: 'The Ultimate \'Get Ready With Me\' 💁‍♀️', text: 'We watch "Get Ready With Me" videos for big events like prom or a first date, but the scriptures invite us to a spiritual GRWM for the most important event in history: the Second Coming of Jesus Christ! The Lord asks us to "prepare yourselves for the great day" that is coming. This isn\'t about fear; it\'s about excitedly getting our hearts and lives ready to meet the person who loves us most.', prompt: 'Challenge: This week, pick one small thing you can do to spiritually "get ready." It could be saying a more heartfelt prayer, reading your scriptures for five extra minutes, or doing an act of service for someone in your family.', scriptureRef: 'D&C 133:10', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p10', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'tuesday', day: 'Tuesday', date: 'November 18, 2025', title: 'Choose Your Vibe: Zion or Babylon? 💖', text: 'The scriptures talk about two symbolic places: Babylon and Zion. Think of Babylon as the world\'s vibe—full of comparison, drama, and temporary happiness. The Lord invites us to "go ye out from Babylon." In contrast, Zion is a place of unity, peace, and love. It\'s the feeling you get at girls\' camp, in the temple, or with true friends. We choose to live in Zion every time we choose kindness, purity, and faith.', prompt: 'Reflection: Where do you feel the spirit of Zion in your life? What is one "Babylon" influence (like a social media account or a negative habit) you can step away from today?', scriptureRef: 'D&C 133:5', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p5', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'wednesday', day: 'Wednesday', date: 'November 19, 2025', title: 'The Best Day EVER! 🎉', text: 'Forget what you\'ve seen in movies about the end of the world. For those who love and follow Jesus, His return will be the most joyful day ever! The scriptures promise we will be "filled with songs of everlasting joy." His glory will be so bright that it will outshine the sun. This isn\'t an event to dread; it\'s the ultimate reunion party that we get to look forward to.', prompt: 'Challenge: Listen to the hymn "Come, Ye Children of the Lord" (#58). As you listen, picture the joyful scenes described in the scriptures and think about what you are most excited for when the Savior returns.', scriptureRef: 'D&C 133:33', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p33', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'thursday', day: 'Thursday', date: 'November 20, 2025', title: 'He Remembers You ❤️', text: 'When Jesus comes again, He will show the marks in His hands and feet and say, "I have graven thee upon the palms of my hands." The same Savior who will come in majesty and glory is the one who knows you personally—your name, your struggles, and your heart. He has shown His "loving kindness" throughout your life. His return is the ultimate proof that His love for you is constant and personal.', prompt: 'Reflection: Take a moment to "mention the loving kindness" of the Lord in your own life. Write down in your journal three ways you have seen His goodness and love for you personally.', scriptureRef: 'D&C 133:52-53', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p52', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'friday', day: 'Friday', date: 'November 21, 2025', title: 'Don\'t Be Scared, Be Prepared 💪', text: 'It\'s okay to feel a little nervous about the signs of the times—wars, earthquakes, and commotion can sound scary. But President Nelson reminds us that as we prepare, we don\'t need to fear. The "great and dreadful day" will be "great" for the righteous! When you feel anxious, remember that every step you take toward Christ, like choosing the right or being kind, helps replace that fear with faith and peace.', prompt: 'Challenge: The next time you feel worried about the future or things in the world, say a prayer and ask Heavenly Father to help you feel the peace that comes from trusting in His Son.', scriptureRef: 'Matthew 24:6', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/nt/matt/24?lang=eng#p6', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'saturday', day: 'Saturday', date: 'November 22, 2025', title: 'You\'re on the Welcoming Committee! 👋', text: 'Preparing for the Second Coming isn\'t just about us. The Lord has asked us to help prepare the world! You are part of His welcoming committee. Every time you share your testimony, invite a friend to church, serve someone in need, or just live as a disciple of Christ, you are helping to "prepare the way of the Lord." You have an important part to play in this amazing work.', prompt: 'Challenge: Be part of the welcoming committee today. Share something you love about the gospel with a friend or on social media, or do a simple act of service to help someone feel the Savior\'s love.', scriptureRef: 'D&C 133:37', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/133?lang=eng#p37', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' },
-            { id: 'sunday', day: 'Sunday', date: 'November 23, 2025', title: 'Rules for a Reason 🚦', text: 'Sometimes we think of laws and rules (both God\'s and man\'s) as restrictive. But the Lord teaches that governments and laws are created "for the benefit of man" to help us live in peace and safety. Just like traffic laws prevent chaos on the roads, God\'s commandments protect us from spiritual danger and lead us to true freedom and happiness. Obeying them shows our trust in Him.', prompt: 'Reflection: Think about a commandment that has brought you peace or protected you. How has obeying God\'s laws blessed your life and helped you feel more free?', scriptureRef: 'D&C 134:1', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/134?lang=eng#p1', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/47-doctrine-and-covenants-133-134?lang=eng' }
+        const YW_DATA = [
+            { id: 'monday', day: 'Mon', date: 'Nov 24', title: 'Sealed with Courage ❤️‍🔥', text: 'Have you ever wondered if you could stand up for what you believe in when it really counts? In the final moments of their lives, Joseph and Hyrum Smith didn\'t run away. As Elder Jeffrey R. Holland taught, men don\'t die for a lie. They were willing to seal their testimony with their blood because they knew the Book of Mormon was true. Their courage reminds us that because the gospel is true, we can be brave in our own daily battles, too.', prompt: 'Challenge: Is there a standard (like modesty, language, or honesty) that is hard for you to keep right now? Pray for the courage to "seal" your commitment to it today, just for one day.', scriptureRef: 'D&C 135:3', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p3', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'tuesday', day: 'Tue', date: 'Nov 25', title: 'Comfort in the Pages 📖', text: 'When Joseph and Hyrum were in Carthage Jail, facing imminent danger, what did they do to find peace? They didn\'t panic; they read the Book of Mormon. Specifically, they read words of comfort from the prophet Moroni. If the prophet of the Restoration turned to the scriptures for peace in his darkest hour, think of how much power those same pages hold for your bad days, test anxieties, or loneliness.', prompt: 'Reflection: Keep your scriptures (or your phone with the app) next to your bed tonight. Before you scroll through social media, read just three verses to invite the Spirit before you sleep.', scriptureRef: 'D&C 135:5', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p5', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'wednesday', day: 'Wed', date: 'Nov 26', title: 'Your Personal Liahona 🧭', text: 'We often talk about scriptures for the whole world, but did you know God has scripture written just for you? Prophets have called your Patriarchal Blessing a "personal Liahona". If you are wondering if you are "ready" or "old enough" to get yours, remember that readiness is less about age and more about your desire to know who you are. It’s a message of God’s deep, personal love for you.', prompt: 'Challenge: If you have your blessing, read it today. If you don’t, take a moment to ask your parents or leaders about their experience receiving theirs.', scriptureRef: 'D&C 6:23', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/6?lang=eng#p23', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'thursday', day: 'Thu', date: 'Nov 27', title: 'Attitude on the Journey 🏔️', text: 'After the Prophet died, the Saints had to leave their beautiful city of Nauvoo and trek across the wilderness. It was scary and sad. But the Lord told them that how they acted on the journey mattered just as much as getting to the destination. He wanted their trials to become spiritual experiences. When you are going through a "trek" of your own—maybe a hard class or a friendship issue—your attitude can turn that trial into a moment where you get to know Jesus better.', prompt: 'Reflection: What is one "hard thing" you have to do today? Try to do it without complaining, and see if you feel a difference in your spirit.', scriptureRef: 'D&C 136:31', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/136?lang=eng#p31', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'friday', day: 'Fri', date: 'Nov 28', title: 'Dance by the Fire 🔥', text: 'Even in the middle of a freezing winter trek, the Lord commanded the Saints to praise Him with "singing, with music, with dancing, and with a prayer of praise and thanksgiving". God doesn\'t expect us to be miserable just because life is hard! He wants us to find joy and utilize the gift of music to lift our spirits. Happiness is a commandment, even in Winter Quarters.', prompt: 'Challenge: Put on your favorite uplifting song or a church hymn that makes you happy. Sing along (loudly!) to shake off any stress from the week.', scriptureRef: 'D&C 136:28', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/136?lang=eng#p28', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'saturday', day: 'Sat', date: 'Nov 29', title: 'Save Jesus Only 👑', text: 'It is amazing to think that Joseph Smith did more for the salvation of people on earth than anyone else—except for Jesus. Joseph’s entire life was about pointing us to the Savior. He restored the keys, the temples, and the scriptures so that we could access the Atonement of Jesus Christ. We honor Joseph, but we worship Jesus. Because of the Restoration, we know exactly where to turn for forgiveness and strength.', prompt: 'Reflection: Complete this sentence: "Because of what the Lord restored through Joseph Smith, I know that Jesus Christ..."', scriptureRef: 'D&C 135:3', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/135?lang=eng#p3', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' },
+            { id: 'sunday', day: 'Sun', date: 'Nov 30', title: 'Faithful to the End 🏁', text: 'The lesson this week mentions that Joseph and Hyrum were "faithful... to the end" of their lives. Sometimes it\'s easy to be faithful on a Youth Conference weekend or at Girls\' Camp, but the Lord needs women who are faithful on random Tuesdays and tired Sunday mornings. Being a disciple is a lifetime journey. Just like the pioneers, we move forward one step at a time, trusting that God is leading us to our own "promised land."', prompt: 'Challenge: As you take the Sacrament today, commit to Heavenly Father that you will try to be faithful this coming week, no matter what school or life throws at you.', scriptureRef: 'D&C 136:39', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/dc-testament/dc/136?lang=eng#p39', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-doctrine-and-covenants-2025/48-doctrine-and-covenants-135-136?lang=eng' }
         ];
 
-        // Updated Songs Data for Nov 17-23
-        const songsData = [
-            { id: 'monday', day: 'Monday', title: 'Are You Ready for the Wedding? 💍', devotionalText: 'The Savior’s Second Coming is often compared to a bridegroom coming for his bride. This beautiful analogy reminds us that this is an event to be anticipated with joy, not fear. Like the wise virgins in the parable, our daily efforts to live the gospel fill our lamps with oil, ensuring we are ready and waiting to greet Him with gladness when He comes.', 
-                hymnTitle: 'Rejoice, the Lord Is King!', 
-                hymnLink: 'https://www.youtube.com/watch?v=T7tltg8fcwM', 
-                hymnAnalysis: 'This triumphant hymn perfectly captures the joyful anticipation described in the devotional. Instead of focusing on the fear that can sometimes accompany discussions of the Second Coming, the hymn commands us to "rejoice!" The lyrics invite us to "lift up the heart" and "lift up the voice," reflecting the attitude of the wise who are prepared to greet the Bridegroom with gladness. The music\'s regal and celebratory tone reinforces the idea that we are preparing for a royal wedding, a glorious reunion with our King. Listening to this hymn can shift our perspective on preparation from a burden to a joyful act of love and anticipation for His glorious return.', 
-                songTitle: 'When He Comes Again', 
-                songArtist: 'Marilee', 
-                songLink: 'https://www.youtube.com/watch?v=4P_mAW-kcNs', 
-                songAnalysis: 'This beloved children\'s song tenderly explores the heart of preparation. It asks a simple, profound question: "I wonder, when he comes again, will I be ready there?" The devotional challenges us to add small drops of oil to our lamps through daily acts of kindness and study. This song reflects that same principle, suggesting that our readiness is built on simple, Christlike actions like being "gentle and kind and good." The song reminds us that the grand event of the Second Coming is met with small, personal preparations. Its sweet, simple melody helps us focus on the individual change of heart required to be ready and waiting with joy when He appears.' },
-            { id: 'tuesday', day: 'Tuesday', title: 'Leaving Babylon Behind 🏙️', devotionalText: 'In the scriptures, "Babylon" represents worldliness, spiritual bondage, and confusion. The Lord\'s call to "go ye out from Babylon" is an invitation to detach ourselves from the noise and temptations of the world and gather in the safety of Zion—a community of the pure in heart. This isn\'t just a physical move; it\'s a spiritual shift in our priorities, desires, and focus.', 
-                hymnTitle: 'Let Zion in Her Beauty Rise', 
-                hymnLink: 'https://www.youtube.com/watch?v=2ECFF9hxjoI', 
-                hymnAnalysis: 'This hymn is a direct response to the Lord\'s call to "go ye out from Babylon". It paints a beautiful picture of the destination: Zion, a place of "beauty," "glory," and "fame." The lyrics contrast the "darkness" of the world with the light and safety of a covenant community. The devotional explains that leaving Babylon is a "spiritual shift," and this hymn provides the motivation for that shift by describing the peace and holiness we are striving for. The melody is gentle yet firm, evoking a sense of steadfast purpose. It inspires us to actively build Zion in our hearts and homes, creating a sacred space free from the world\'s confusion and contention.', 
-                songTitle: 'Zion - original mashup', 
-                songArtist: 'Blake Gillette', 
-                songLink: 'https://www.youtube.com/watch?v=JBG_G_iwHNs', 
-                songAnalysis: 'This energetic and hopeful mashup captures the active, joyful nature of building Zion. The devotional explains that leaving Babylon is a "spiritual shift in our priorities," and this song serves as an anthem for that new focus. By weaving together powerful themes from hymns like "Hope of Israel," the song frames the gathering to Zion not as a passive retreat, but as a dynamic mission. It gives a voice to the "pure in heart" who are actively working to create a holy community. The music\'s driving rhythm and passionate vocals can inspire us to answer the reflection question with purpose, motivating us to do our part to leave the world\'s confusion behind and establish Zion\'s peace in our own hearts and homes.' },
-            { id: 'wednesday', day: 'Wednesday', title: 'Preparation Through Participation 🙏', devotionalText: 'Sometimes we wonder if we are "enough" to be ready for the Savior\'s return. Elder Steven D. Shumway taught, "As we participate in God\'s work, we prepare ourselves and others for Christ\'s return." Our callings, ministering, and temple worship are not just items on a to-do list; they are the Lord\'s customized curriculum to help us become more like Him, the very best preparation we can have.', 
-                hymnTitle: 'Called to Serve', 
-                hymnLink: 'https://www.youtube.com/watch?v=H9OqRPEWdcA', 
-                hymnAnalysis: 'This hymn is a powerful anthem for the principle of "preparation through participation." The devotional states that our responsibilities are the Lord\'s "customized curriculum" to help us become more like Him. The hymn\'s lyrics, "Called to serve him, heav\'nly King of glory," frame our service not as a mundane task but as a divine appointment. The energetic, marching tempo instills a sense of purpose and forward movement, aligning perfectly with the idea of actively preparing for Christ\'s return. Singing or listening to this song can transform our perspective, helping us see our callings and ministering assignments as sacred opportunities to arm ourselves "with swords of truth and righteousness" and get ready to meet our Savior.', 
-                songTitle: 'Glorious', 
-                songArtist: 'David Archuleta', 
-                songLink: 'https://www.youtube.com/watch?v=GytW_rgr0RM', 
-                songAnalysis: 'This uplifting song speaks directly to the feeling of inadequacy mentioned in the devotional when we wonder if we are "enough." Its core message is that even our seemingly small and imperfect efforts can be made glorious through the grace of God. The lyrics "You can be glorious" and "a symphony of notes... will play a song of hope" perfectly align with the idea that our individual participation—our callings, our ministering—are essential notes in God\'s grand composition. Listening to this song helps fulfill the day\'s challenge by changing our perspective, reminding us that the Lord doesn\'t require perfection, only our willing participation, which He then magnifies to prepare us for His return.' },
-            { id: 'thursday', day: 'Thursday', title: 'A Great, Not Dreadful, Day ✨', devotionalText: 'The scriptures describe the events preceding the Second Coming as both "great and dreadful." While the world may experience turmoil, for the righteous, that day will be anything but dreadful. It will be a day of deliverance, glory, and reunion. As we trust in Jesus Christ, our fear is replaced with faith, and our anxiety is swallowed up in anticipation of His glorious return.', 
-                hymnTitle: 'The Lord Is My Light', 
-                hymnLink: 'https://www.youtube.com/watch?v=2-TChnk8zM0', 
-                hymnAnalysis: 'This hymn serves as a powerful antidote to the fear that can arise when contemplating the "dreadful" signs of the times. Its central message, "The Lord is my light; then why should I fear?" speaks directly to the devotional\'s theme of replacing fear with faith. The lyrics are a declaration of trust in God\'s power to save and protect. When the devotional asks if we feel fear or faith, this hymn provides the answer. The steady, confident melody builds a feeling of security and peace, reminding us that with Christ as our "light and salvation," we have no need to be afraid. It helps us focus on the "great" and glorious aspects of His return, seeing it as a day of ultimate deliverance.', 
-                songTitle: 'When I Found You', 
-                songArtist: 'Madilyn Paige', 
-                songLink: 'https://www.youtube.com/watch?v=gflWpvNiMe4', 
-                songAnalysis: 'This contemporary song captures the emotional journey from anxiety to faith. The devotional explains that for the righteous, the Second Coming will be a day of "deliverance, glory, and reunion," not dread. This song\'s message of becoming "fearless" through faith in a higher power resonates with that promise. The lyrics speak of finding strength and light when surrounded by darkness, which is a perfect metaphor for navigating the turmoil of the last days. The song\'s uplifting build and powerful chorus can inspire listeners to consciously choose faith over fear, trusting that the Savior\'s return is something to be anticipated with hope, not anxiety.' },
-            { id: 'friday', day: 'Friday', title: 'Remembering His Loving-Kindness ❤️', devotionalText: 'Amidst the grand descriptions of His return, the scriptures tenderly remind us to "mention the loving kindness of [our] Lord, and all that he has bestowed upon [us]." The Second Coming is the ultimate expression of His love and goodness—the fulfillment of His plan to redeem His people and heal the earth. Recognizing His hand in our lives now helps us trust His hand in the future.', 
-                hymnTitle: 'Count Your Blessings', 
-                hymnLink: 'https://www.youtube.com/watch?v=RlMvUEw4g2c', 
-                hymnAnalysis: 'This hymn is the perfect practical application of the devotional\'s message. The scripture\'s invitation to "mention the loving kindness of our Lord" is precisely what this hymn instructs us to do. The lyrics guide us to "name them one by one" and see what God has done. This process of intentional gratitude helps us recognize God\'s hand now, which, as the devotional says, helps us trust Him for the future. The simple, cheerful melody makes the act of counting blessings feel joyful, not like a chore. It directly supports the challenge to identify specific experiences of the Lord\'s love, promising that doing so will bring surprise and comfort.', 
-                songTitle: 'Consider the Lilies', 
-                songArtist: 'The Crosbys', 
-                songLink: 'https://www.youtube.com/watch?v=FSDTJRLpV28', 
-                songAnalysis: 'This beautiful version provides a powerful meditation on the Savior\'s constant, tender care, which is the essence of His "loving-kindness". The devotional encourages us to recognize God\'s hand now to build trust for the future. The song\'s message, drawn from the Savior\'s own teaching, does exactly that by pointing to the lilies and the birds as evidence of the Father\'s awareness and provision. It gently rebukes our fears, reminding us that if God cares so meticulously for the simplest of His creations, His loving-kindness towards us is infinitely greater. The peaceful, flowing music invites a spirit of trust and gratitude, helping us feel secure in His love as we prepare for the future.' },
-            { id: 'saturday', day: 'Saturday', title: 'Good Citizens in God\'s Kingdom 🏛️', devotionalText: 'Doctrine and Covenants 134 clarifies that governments are "instituted of God for the benefit of man." As disciples of Christ, we have a responsibility to be good citizens—to obey, honor, and sustain the law. Our righteous influence in our communities and nations is part of preparing the world for its rightful King, who will "reign over all flesh."', 
-                hymnTitle: 'Do What Is Right', 
-                hymnLink: 'https://www.youtube.com/watch?v=Y0k7JSb4KKg', 
-                hymnAnalysis: 'This hymn encapsulates the core principle of Christian citizenship. The devotional explains that being a good citizen is an "expression of your discipleship," and this hymn\'s recurring charge is to "do what is right; let the consequence follow". This applies perfectly to our civic duties. Obeying the law, being an honest employee, and serving in our community are all ways we do what is right. The hymn promises that as we do so, angels will "guard thee and give thee crowning success." This mirrors the idea that our righteous influence helps prepare the world for its King. The hymn\'s resolute and steady tune inspires integrity and courage in our public and private lives.', 
-                songTitle: 'Dare to Do Right', 
-                songArtist: 'Saints Channel', 
-                songLink: 'https://www.youtube.com/watch?v=wkeMAfSlAuo', 
-                songAnalysis: 'While a children\'s song, its message is a powerful reminder for all ages about civic and personal integrity. The devotional calls on us to be a "positive influence for good," and this song is a direct call to that standard. The lyrics, "Dare to do right! Dare to be true!" encourage us to uphold our values even when it\'s difficult, which is the foundation of being a righteous influence in the community. It teaches that our individual choices to be honorable and true contribute to a better whole. The song\'s simple, memorable melody reinforces a clear and unwavering commitment to being a good citizen as part of our discipleship.' },
-            { id: 'sunday', day: 'Sunday', title: 'Embrace the Future with Faith ☀️', devotionalText: 'Ultimately, preparing for the future is an act of faith. President Russell M. Nelson taught us to "embrace the future with faith." We don\'t know the day or the hour, but we know the Savior. We trust His promises. We follow His prophets. By living the gospel with hope and joy, we can confidently look forward to the day when He will stand in our midst, and we will be filled with "songs of everlasting joy."', 
-                hymnTitle: 'Come, Come, Ye Saints', 
-                hymnLink: 'https://www.youtube.com/watch?v=4ia3gYSvG8M', 
-                hymnAnalysis: 'This historical hymn is a profound anthem about embracing an unknown future with absolute faith. The devotional calls us to replace worry with trust in the Savior as we move forward. The lyrics of "Come, Come, Ye Saints" directly address this, acknowledging that the journey ahead may be difficult ("though hard to you this journey may appear"), but commanding us to proceed with joy ("Gird up your loins; fresh courage take"). The hymn\'s core message—"All is well! All is well!"—is not a statement of easy circumstance, but a declaration of ultimate faith that God is in charge and will consecBrate our trials for our good. Its steady, determined melody inspires the very courage and hope needed to "embrace the future with faith".', 
-                songTitle: 'Press Forward', 
-                songArtist: 'Noelle Bybee', 
-                songLink: 'https://www.youtube.com/watch?v=10uSvyuAol8', 
-                songAnalysis: 'This song is a modern musical expression of embracing the future with faith. The title itself, "Press Forward," is a call to action rooted in hope. The devotional encourages us to move forward by replacing worry with faith, and this song\'s lyrics provide the motivation: "Press forward with a steadfastness in Christ, having a perfect brightness of hope". The song’s energetic and optimistic melody inspires a feeling of joyful momentum. It acknowledges that the path isn\'t always clear, but we move forward trusting in the Savior. It is a perfect companion to the challenge to commit to moving forward, providing an uplifting soundtrack for our journey of faith.' }
+        const SONGS_DATA = [
+            { id: 'monday', day: 'Mon', title: 'Sealed with Blood 🩸', devotionalText: 'The martyrdom of Joseph and Hyrum Smith was not merely a tragic end; it was a divine seal upon their work. As we study the closing moments of their lives, we see that they went to Carthage knowing they would not return, yet they submitted to keep the Saints safe. Elder Jeffrey R. Holland powerfully teaches that these men would not have died for a "fictitious" book or a church created out of "whole cloth". Their willingness to die rather than deny the truth stands as an unimpeachable witness of the Restoration.', 
+                hymnTitle: 'Joseph Smith\'s First Prayer', hymnLink: 'https://www.youtube.com/watch?v=KuIIrQNjEnE', hymnAnalysis: 'This stirring performance captures the emotional weight of the Prophet\'s mission from beginning to end. While a hymn, this modern arrangement emphasizes the solitude and the "divine seal" upon his work mentioned in the devotional. The lyrics recount the moment God called him, while the soaring orchestration reflects the "unimpeachable witness" of the Restoration that he eventually sealed with his life. It invites a spirit of deep reverence for the cost of the Restoration and the integrity of the Prophet.', 
+                songTitle: 'A Poor Wayfaring Man of Grief', songArtist: 'Sharon Hopkins', songLink: 'https://www.youtube.com/watch?v=ylplmSaVmQ0', songAnalysis: 'This hymn, beautifully sung by Sharon Hopkins, is historically inseparable from the events of this day’s devotional. It was the very song John Taylor sang to Joseph and Hyrum in Carthage Jail shortly before the martyrdom to bring comfort to their heavy hearts. The lyrics describe a series of trials where the narrator serves a stranger who turns out to be the Savior. This mirrors the devotional\'s theme of submission and sacrifice. Listening to this hymn allows us to sit in that jail cell with them, feeling the somber resolve and the deep love for the Savior that empowered them to seal their testimony with their blood.' },
+            { id: 'tuesday', day: 'Tue', title: 'Finding Comfort in the Storm 📖', devotionalText: 'It is profound to consider what the Prophet and Patriarch did in their final hours to find peace. While in Carthage Jail, facing imminent death, Hyrum Smith read from the Book of Mormon—specifically Ether chapter 12—to find comfort. The verses he read spoke of charity and the grace of God making weak things strong. If the scriptures could provide peace to prophets facing martyrdom, think of the solace they can offer us in our daily stresses and trials.', 
+                hymnTitle: 'Where Can I Turn for Peace?', hymnLink: 'https://www.youtube.com/watch?v=1Lv3Qv9pjjc', hymnAnalysis: 'The devotional asks us to consider how we find peace in our own "daily stresses and trials," just as Hyrum sought comfort in scripture. This hymn is the ultimate musical answer to that question. The lyrics, "Where is the quiet hand to calm my anguish? Who, who can understand? He, only One," point us to the same source of solace Hyrum found in Ether 12: the grace of Jesus Christ. The melody is gentle and pleading, perfectly matching the emotional state of seeking "comfort in the storm."', 
+                songTitle: 'God Will Prepare a Way', songArtist: 'Shawna Edwards', songLink: 'https://www.youtube.com/watch?v=qqRRzamdYvU', songAnalysis: 'This song acknowledges the reality that we, like the early Saints, face difficult times where we feel weak or afraid. The devotional highlights Hyrum reading about "weak things becoming strong," and this song amplifies that message by teaching that we can keep moving forward because "He is with us." It bridges the gap between the extreme historical context of Carthage and our modern personal struggles, reminding us that the same God who comforted Hyrum is available to comfort us.' },
+            { id: 'wednesday', day: 'Wed', title: 'The Work Goes On ⏩', devotionalText: 'When Joseph Smith fell, enemies of the Church believed the "Mormon" problem was solved. Yet, the martyrdom was not the end of the Restoration; "there was more work to do and more revelation that would guide the Church forward". The end of the Prophet\'s mortal life was merely a transition in the ongoing work of God. Just as the early Saints had to look forward with faith, we are reminded that this is Christ\'s church, and He continues to direct it regardless of the obstacles we face.', 
+                hymnTitle: 'Let Us All Press On', hymnLink: 'https://www.youtube.com/watch?v=CEkeJPRgv8s', hymnAnalysis: 'The title of this hymn epitomizes the spirit of the Saints immediately following the martyrdom. Despite the shock and grief, the "work goes on," and this hymn is a rallying cry to continue that work. The lyrics "Fear not, though the enemy deride; God is on our side" directly address the devotional\'s note that enemies thought the Church would collapse. The energetic tempo and determined lyrics capture the resilience required to "look forward with faith" during times of transition and opposition.', 
+                songTitle: 'A Great Work', songArtist: 'Nik Day (Strive to Be)', songLink: 'https://www.youtube.com/watch?v=KjSTiLrXxjo', songAnalysis: 'This upbeat contemporary song connects the historical resilience of the Saints to our modern responsibility. The devotional reminds us that there is "more work to do," and this song is a call to action for the rising generation to take up that mantle. The lyrics speak of being trusted by the Lord to carry the work forward "at this time" and "in this place," reinforcing the idea that the Restoration is ongoing and that we play a vital role in it today, regardless of the obstacles mentioned in the text.' },
+            { id: 'thursday', day: 'Thu', title: 'A Legacy of Gratitude 🙏', devotionalText: 'On this day of Thanksgiving, we have much to be grateful for regarding the Prophet Joseph Smith. Scripture declares that he "has done more, save Jesus only, for the salvation of men in this world, than any other man that ever lived in it". Through him, we received the Book of Mormon, the Doctrine and Covenants, and the ordinances of the temple—gifts that bind us to God and our families for eternity. Our gratitude for the message is often best expressed by how we honor the messenger\'s sacrifice.', 
+                hymnTitle: 'Praise to the Man', hymnLink: 'https://www.youtube.com/watch?v=LeXrjFgNPTc', hymnAnalysis: 'This hymn is the definitive musical expression of the scripture quoted in today\'s devotional (D&C 135:3). It is a song of high gratitude and triumph. While it honors Joseph Smith, it ultimately directs that praise to "Jehovah" for appointing a prophet. The line "Great is his glory and endless his priesthood" celebrates the specific gifts mentioned in the devotional—the ordinances that bind us to God. Singing this on Thanksgiving is a powerful way to fulfill the challenge of honoring the messenger and our God who sent him.', 
+                songTitle: 'Grateful for the Rain', songArtist: 'Strive to Be', songLink: 'https://www.youtube.com/watch?v=dKYUPjBROnU', songAnalysis: 'Since this devotional falls on Thanksgiving, this song provides a modern expression of the "Legacy of Gratitude." It moves beyond generic thankfulness into a deep spiritual recognition of God\'s hand in our lives, even in difficult times. The lyrics focus on praising God for His plan and His love, which aligns with the devotional\'s focus on the gifts of salvation. It sets a joyful, reflective tone perfect for a Thanksgiving dinner discussion about the truths we are thankful for.' },
+            { id: 'friday', day: 'Fri', title: 'The Journey is the Lesson ⛺', devotionalText: 'After the tragedy of Carthage, the Saints faced a grueling 1,300-mile trek west. In Doctrine and Covenants 136, the Lord taught them that "their conduct on the journey was as important as their destination". This revelation transformed a desperate migration into a "shared spiritual experience". We are all on a covenant path; often, the Lord is less concerned with how fast we arrive and more concerned with who we are becoming along the way.', 
+                hymnTitle: 'Come, Come, Ye Saints', hymnLink: 'https://www.youtube.com/watch?v=_eInUpiY9s8', hymnAnalysis: 'This hymn was written during the very journey described in the devotional. It captures the essence of D&C 136, transforming the "grueling trek" into a journey of faith. The refrain "All is well" is not a denial of hardship, but a declaration of the spiritual perspective the Lord commanded them to have. It perfectly illustrates the principle that our attitude and conduct on the journey define the experience. Listening to it helps us reframe our own current "journeys" or trials as opportunities to refine our character.', 
+                songTitle: 'Faith in Every Footstep', songArtist: 'The Tabernacle Choir', songLink: 'https://www.youtube.com/watch?v=6jH4mOEDu5w', songAnalysis: 'Written for the sesquicentennial of the pioneer trek, this song connects the physical journey of the early Saints to the spiritual journey we are all on today. The devotional states that "we are all on a covenant path," and this song emphasizes the step-by-step nature of that path. The lyrics remind us that "hope is the anthem of the soul," encouraging us to focus on who we are becoming as we walk, rather than just the destination. It is a majestic reminder that our personal treks are consecrated by our faith.' },
+            { id: 'saturday', day: 'Sat', title: 'Safety for the Soul ⚓', devotionalText: 'Elder Holland reminds us that God "always provides safety for the soul," and through the Book of Mormon, He has done that again in our time. Joseph and Hyrum were willing to die rather than deny the divine origin of that book. Elder Holland asks us to trust that these men would not blaspheme before God in their final hour by fixing their lives to a lie. The Book of Mormon is true, and it is a source of safety and truth for us today.', 
+                hymnTitle: 'The Iron Rod', hymnLink: 'https://www.youtube.com/watch?v=iMJBwNNosew', hymnAnalysis: 'The devotional focuses on the Book of Mormon as a source of "safety for the soul." This hymn vividly depicts the word of God as a safety rail (the iron rod) leading through mists of darkness. Just as Joseph and Hyrum clung to the truth of the Book of Mormon even in death, this hymn invites us to "hold to the rod" to avoid the confusion of the world. It musically reinforces the concept that safety comes not from the absence of danger, but from holding fast to the revealed word of God.', 
+                songTitle: 'Ask of God', songArtist: '2017 Youth Theme', songLink: 'https://www.youtube.com/watch?v=LhKlMGuxJ38', songAnalysis: 'The devotional challenges us to accept Moroni\'s promise to "ask God if it is true." This song is a dynamic invitation to do exactly that. While it references Joseph Smith\'s prayer, the chorus "Ask of God, ask in faith" applies directly to the process of gaining a testimony of the Book of Mormon. The music is confident and reassuring, encouraging the listener to seek personal revelation. It supports the reflection question by providing a musical model of what it looks like to approach God with a "sincere heart and real intent."' },
+            { id: 'sunday', day: 'Sun', title: 'Accomplishing His Will 🕊️', devotionalText: 'As we conclude this week\'s study, we look at the transition of leadership to Brigham Young and the Quorum of the Twelve. Doctrine and Covenants 136 is a reminder that we can "accomplish the Lord\'s will" when we follow His counsel. Whether it is crossing the plains or navigating modern life, the Lord promises that if we are faithful in keeping our covenants, His spirit will guide us. We honor the martyrs not just by remembering their deaths, but by living the gospel they died to restore.', 
+                hymnTitle: 'Guide Us, O Thou Great Jehovah', hymnLink: 'https://www.youtube.com/watch?v=twP_cR1ymiQ', hymnAnalysis: 'This hymn is a prayer for divine guidance, perfectly suiting the theme of D&C 136 where the Saints looked to the Lord to lead them across the plains. The lyrics "Guide us... Pilgrim through this barren land" acknowledge our dependence on God to "accomplish His will." The rousing chorus, "Songs of praises, I will ever give to thee," aligns with the specific counsel in D&C 136 to praise the Lord. It is a fitting conclusion to the week, turning our hearts toward the future with faith that He will lead us.', 
+                songTitle: 'I Will Walk with Jesus', songArtist: 'Stephen Nelson', songLink: 'https://www.youtube.com/watch?v=gv7ctPUv2Jc', songAnalysis: 'The devotional emphasizes that we honor the martyrs by "living the gospel they died to restore" and keeping our covenants. "I Will Walk with Jesus" is a beautiful declaration of intent to do just that. The lyrics about walking in His way and having His spirit "guide" us (as mentioned in the text) make this a personal anthem of discipleship. It simplifies the complex history of the week into a singular, actionable commitment: to walk with the Savior daily, fulfilling the Lord\'s will in our modern lives.' }
         ];
 
-        // Updated copyContentToClipboard to handle missing scripture links
-        function copyContentToClipboard(dayId, dataArray, buttonElement) {
-            const day = dataArray.find(d => d.id === dayId);
-            if (!day) return;
-
-            const promptParts = day.prompt.split(':');
-            const promptLabel = promptParts[0];
-            const promptText = promptParts.slice(1).join(':').trim();
-
-            const scriptureText = (day.scriptureRef && day.scriptureLink)
-                ? `Scripture: ${day.scriptureRef}\n${day.scriptureLink}\n\n`
-                : ""; 
-
-            const textToCopy = `✨ Daily Devotional ✨\n\n${day.date}\n*${day.title}*\n\n${day.text}\n\n*${promptLabel}:* ${promptText}\n\n${scriptureText}Full Lesson:\n${day.lessonLink}`;
-
-            const textArea = document.createElement('textarea');
-            textArea.value = textToCopy;
-            textArea.style.position = 'fixed';
-            textArea.style.top = '-9999px';
-            textArea.style.left = '-9999px';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    const originalContent = buttonElement.innerHTML;
-                    buttonElement.innerHTML = 'Copied to Clipboard!';
-                    buttonElement.disabled = true;
-                    setTimeout(() => {
-                        buttonElement.innerHTML = originalContent;
-                        buttonElement.disabled = false;
-                    }, 2500);
-                }
-            } catch (err) {
-                console.error('Unable to copy to clipboard', err);
+        const STUDY_GUIDE_DATA = [
+            {
+                title: "Background",
+                content: [
+                    "This week’s lesson covers the tragic yet triumphant events surrounding the martyrdom of the Prophet Joseph Smith and his brother Hyrum, followed by the reorganization of the Camp of Israel for their westward journey.",
+                    "On June 27, 1844, Joseph and Hyrum Smith, accompanied by John Taylor and Willard Richards, were held in Carthage Jail. Despite hoping their submission to arrest would keep the Saints in Nauvoo safe, a mob stormed the jail. Section 135 is an announcement of the martyrdom, acting as a eulogy and a testament to their divine calling.",
+                    "Section 136 was received by Brigham Young in January 1847 at Winter Quarters. The Saints had been driven from their homes and faced a daunting journey west. This revelation provided the organization, covenant instructions, and spiritual guidance necessary to transform a refugee migration into a holy trek toward Zion."
+                ]
+            },
+            {
+                title: "Introduction: The Martyrdom",
+                discussionPoint: "The Prophet Joseph and Hyrum went to Carthage knowing it was likely the end of their mortal lives. In their final moments, they sought comfort in the scriptures and hymns. Specifically, Hyrum read from the Book of Mormon, Ether chapter 12, which speaks of farewells and finding grace despite weakness.",
+                quote: "Doctrine and Covenants 135:4: \"When Joseph went to Carthage to deliver himself up to the pretended requirements of the law, two or three days previous to his assassination, he said: 'I am going like a lamb to the slaughter; but I am calm as a summer’s morning; I have a conscience void of offense towards God, and towards all men. I shall die innocent, and it shall yet be said of me—he was murdered in cold blood.'\"",
+                question: "Why is it significant that Joseph and Hyrum spent their final moments reading the Book of Mormon and singing hymns? What does this tell us about the sincerity of their testimony?",
+                answer: "It shows that the Book of Mormon was not a fabrication; men do not turn to a fictional story for comfort in the face of death. It demonstrates that their testimony was their source of strength. It teaches us where to turn when we face our own darkest hours—to the word of God and sacred music."
+            },
+            {
+                title: "A Life of Consecration",
+                discussionPoint: "Section 135 verse 3 contains one of the most powerful tributes to Joseph Smith, declaring that he has done more, save Jesus only, for the salvation of men in this world. This includes the translation of the Book of Mormon, the publication of the Doctrine and Covenants, the gathering of Israel, and the establishment of ordinances.",
+                quote: "Elder Jeffrey R. Holland: \"In this their greatest and last hour of need, I ask you: would these men blaspheme before God by continuing to fix their lives, their honor, and their own search for eternal salvation on a book (and by implication a church and a ministry) they had fictitiously created out of whole cloth? ... They would not do that!\"",
+                questions: [
+                    {
+                        q: "Elder Holland asks if these men would \"blaspheme before God\" in their last moments by clinging to a hoax. How does this perspective strengthen your own confidence in the Book of Mormon?",
+                        a: "It reminds us that the Book of Mormon wasn't a casual creative writing project; it was a divine command that defined their existence. Knowing they found comfort in its pages moments before death proves they believed it was ancient scripture. It shifts the debate from \"intellectual curiosity\" to \"life-and-death integrity.\""
+                    },
+                    {
+                        q: "The scripture lists many tangible accomplishments of Joseph Smith. How have \"these things\" specifically affected your personal relationship with Heavenly Father and Jesus Christ?",
+                        a: "The Book of Mormon clarifies the Atonement of Jesus Christ. The temple sealing power allows me to be with my family forever. The Doctrine and Covenants helps me understand how God speaks to us today. Because of the Restoration, I know the nature of God is that of a loving Father, not a distant mystery."
+                    }
+                ]
+            },
+            {
+                title: "Guidance for the Journey (D&C 136)",
+                discussionPoint: "Following the death of the Prophet, the Saints were grieving and homeless. Brigham Young pleaded for guidance at Winter Quarters, and the Lord responded with Section 136. This revelation helped the Saints understand that how they traveled was just as important as where they were going. It provided structure and spiritual covenants to bind the people together.",
+                questions: [
+                    {
+                        q: "The Saints were in the middle of a \"wilderness\" experience—cold, hungry, and homeless. How does receiving personal guidance (through prayer, scriptures, or a patriarchal blessing) help us when we are in a \"wilderness\" period of our own lives?",
+                        a: "It gives us a sense of identity and purpose when we feel lost. It helps us see our trials through a spiritual lens rather than just a physical one. It reminds us that the Lord knows who we are and has a plan for us, even when current circumstances are difficult."
+                    }
+                ]
+            },
+            {
+                title: "Attitude in Adversity",
+                discussionPoint: "In the midst of their suffering, the Lord commanded the Saints to praise Him. He told them that if they were merry, they should sing and dance, and if they were sorrowful, they should pray. This teaches a profound principle: we can control our spiritual response even when we cannot control our physical circumstances.",
+                quote: "Doctrine and Covenants 136:28–29: \"If thou art merry, praise the Lord with singing, with music, with dancing, and with a prayer of praise and thanksgiving. If thou art sorrowful, call on the Lord thy God with supplication, that your souls may be joyful.\"",
+                question: "Why do you think the Lord instructed the Saints to sing and dance while they were homeless and crossing the plains? How can we apply the instruction to \"praise the Lord\" during our own trials?",
+                answer: "Singing and praising invite the Spirit, which drives out fear and contention. Gratitude changes our perspective from what we lack to what we have. It builds unity among the group. It is an act of faith to rejoice in the Lord before the trial is actually over."
+            },
+            {
+                title: "Supplemental Application: A Personal Liahona",
+                discussionPoint: "Just as the Saints needed guidance for their physical journey to the Salt Lake Valley, we need guidance for our spiritual journey through life. The article compares a patriarchal blessing to \"personal scripture for you\" or a \"personal Liahona.\"",
+                question: "D&C 136 describes moving into the unknown with faith. How does a patriarchal blessing (or reviewing it regularly) help us when we face our own unknowns?",
+                answer: "It reminds us of our eternal identity when the world tries to define us. It gives us long-term perspective during short-term trials. It assures us that God knows us personally, just as He knew the Saints in the camp of Israel."
             }
-            document.body.removeChild(textArea);
-        }
+        ];
 
-        function showView(viewId) {
-            document.querySelectorAll('.view-section').forEach(view => {
-                if (view.id === `${viewId}-view`) {
-                    view.classList.remove('hidden');
-                    setTimeout(() => view.style.opacity = 1, 10);
-                } else {
-                    view.style.opacity = 0;
-                    setTimeout(() => view.classList.add('hidden'), 500);
+        // ==========================================
+        // ICONS (Inline SVG Components)
+        // ==========================================
+        const IconSun = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>;
+        const IconUsers = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+        const IconMusic = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>;
+        const IconBookOpen = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>;
+        const IconShare = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>;
+        const IconChevronDown = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m6 9 6 6 6-6"/></svg>;
+        const IconChevronRight = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m9 18 6-6-6-6"/></svg>;
+        const IconLink = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>;
+        const IconPlayCircle = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>;
+        const IconPrinter = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>;
+
+
+        // ==========================================
+        // COMPONENTS
+        // ==========================================
+
+        // 1. Toast Notification Component
+        const Toast = ({ message, show, onClose }) => {
+            useEffect(() => {
+                if (show) {
+                    const timer = setTimeout(onClose, 3000);
+                    return () => clearTimeout(timer);
                 }
-            });
+            }, [show, onClose]);
 
-            document.querySelectorAll('#main-nav button').forEach(button => {
-                if (button.dataset.view === viewId) {
-                    button.classList.remove('main-nav-button-inactive', 'hover:bg-amber-50');
-                    button.classList.add('main-nav-button-active');
-                } else {
-                    button.classList.remove('main-nav-button-active');
-                    button.classList.add('main-nav-button-inactive', 'hover:bg-amber-50');
-                }
-            });
-        }
+            if (!show) return null;
 
-        function showDay(dayId, viewPrefix) {
-            document.querySelectorAll(`#${viewPrefix}-content-area .day-content, #${viewPrefix}-content .day-content`).forEach(content => {
-                if (content.dataset.dayId === dayId) {
-                    content.classList.remove('hidden');
-                    setTimeout(() => content.style.opacity = 1, 10);
-                } else {
-                    content.style.opacity = 0;
-                    setTimeout(() => content.classList.add('hidden'), 500);
-                }
-            });
+            return (
+                <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-stone-800 text-white px-6 py-3 rounded-full shadow-lg z-50 flex items-center gap-2 animate-bounce toast-notification">
+                    <span className="text-green-400">&#10003;</span>
+                    {message}
+                </div>
+            );
+        };
 
-            document.querySelectorAll(`#${viewPrefix}-nav button`).forEach(button => {
-                if (button.dataset.day === dayId) {
-                    button.classList.remove('day-nav-button-inactive', 'hover:bg-gray-300');
-                    button.classList.add('day-nav-button-active');
-                } else {
-                    button.classList.remove('day-nav-button-active');
-                    button.classList.add('day-nav-button-inactive', 'hover:bg-gray-300');
-                }
-            });
-        }
-        
-        function initDevotionalView(defaultDayId) {
-            const nav = document.getElementById('devotional-nav');
-            const contentArea = document.getElementById('devotional-content-area');
-            nav.innerHTML = ''; // Clear old content
-            contentArea.innerHTML = ''; // Clear old content
-            devotionalData.forEach(day => {
-                const navButton = document.createElement('button');
-                navButton.textContent = day.day;
-                navButton.dataset.day = day.id;
-                navButton.className = 'day-nav-button-inactive hover:bg-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors duration-300';
-                navButton.addEventListener('click', () => showDay(day.id, 'devotional'));
-                nav.appendChild(navButton);
-                
-                const contentDiv = document.createElement('div');
-                contentDiv.dataset.dayId = day.id;
-                contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
-                // Updated to handle missing scripture links in YW/YM data
-                let scriptureButton = (day.scriptureRef && day.scriptureLink)
-                    ? `<a href="${day.scriptureLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors duration-300">Read Scripture: ${day.scriptureRef}</a>`
-                    : '';
-                let lessonButtonClass = (day.scriptureRef && day.scriptureLink) ? 'w-full' : 'w-full';
+        // 2. Interactive Toggle Answer Component
+        const ToggleAnswer = ({ question, answer }) => {
+            const [isOpen, setIsOpen] = useState(false);
 
-                contentDiv.innerHTML = `
-                    <p class="text-sm font-medium text-amber-600">${day.date}</p>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-4">${day.title}</h2>
-                    <p class="text-stone-700 leading-relaxed">${day.text}</p>
-                    <div class="mt-6 bg-stone-100 p-4 rounded-lg border border-stone-200">
-                        <h3 class="font-semibold text-stone-800 mb-2">${day.prompt.split(':')[0]}:</h3>
-                        <p class="text-stone-700">${day.prompt.split(':').slice(1).join(':').trim()}</p>
-                    </div>
-                    <div class="mt-6 flex flex-col sm:flex-row gap-4">
-                        ${scriptureButton}
-                        <a href="${day.lessonLink}" target="_blank" rel="noopener noreferrer" class="${lessonButtonClass} text-center bg-stone-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-300">View Full Lesson</a>
-                    </div>
-                    <div class="mt-4 border-t pt-4">
-                        <button data-day-id="${day.id}" class="share-button w-full text-center bg-sky-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-sky-700 transition-colors duration-300 flex items-center justify-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
-                            Share this Devotional
-                        </button>
-                    </div>`;
-                contentArea.appendChild(contentDiv);
-            });
-
-            contentArea.querySelectorAll('.share-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    copyContentToClipboard(button.dataset.dayId, devotionalData, button);
-                });
-            });
-
-            showDay(defaultDayId, 'devotional');
-        }
-
-        function initSongsView(defaultDayId) {
-            const nav = document.getElementById('songs-nav');
-            const contentArea = document.getElementById('songs-content-area');
-            nav.innerHTML = ''; // Clear old content
-            contentArea.innerHTML = ''; // Clear old content
-            songsData.forEach(day => {
-                const navButton = document.createElement('button');
-                navButton.textContent = day.day;
-                navButton.dataset.day = day.id;
-                navButton.className = 'day-nav-button-inactive hover:bg-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors duration-300';
-                navButton.addEventListener('click', () => showDay(day.id, 'songs'));
-                nav.appendChild(navButton);
-                
-                const contentDiv = document.createElement('div');
-                contentDiv.dataset.dayId = day.id;
-                contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
-                contentDiv.innerHTML = `
-                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mb-4">${day.title}</h2>
-                    <p class="italic text-stone-600 mb-6">"${day.devotionalText}"</p>
-                    <div class="space-y-6">
-                        <div>
-                            <h3 class="text-xl font-bold text-amber-700">Hymn Selection: <a href="${day.hymnLink}" target="_blank" rel="noopener noreferrer" class="underline hover:text-amber-800">${day.hymnTitle}</a></h3>
-                            <p class="mt-2 text-stone-700">${day.hymnAnalysis}</p>
+            return (
+                <div className="mb-6 border-l-4 border-amber-200 pl-4">
+                    <button 
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="text-left font-bold text-amber-900 w-full hover:text-amber-700 transition-colors flex items-start gap-2"
+                    >
+                        <span className="mt-1">{isOpen ? <IconChevronDown className="w-5 h-5" /> : <IconChevronRight className="w-5 h-5" />}</span>
+                        <span>{question}</span>
+                    </button>
+                    
+                    {isOpen && (
+                        <div className="mt-3 p-4 bg-stone-100 rounded-lg text-stone-700 italic border border-stone-200 fade-in">
+                            <span className="font-bold not-italic text-stone-500 text-xs uppercase tracking-wider block mb-1">Possible Answer</span>
+                            {answer}
                         </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-amber-700">Contemporary Song: <a href="${day.songLink}" target="_blank" rel="noopener noreferrer" class="underline hover:text-amber-800">${day.songTitle}</a></h3>
-                            <p class="text-sm text-stone-500 mb-2">by ${day.songArtist}</p>
-                            <p class="mt-2 text-stone-700">${day.songAnalysis}</p>
-                        </div>
-                    </div>`;
-                contentArea.appendChild(contentDiv);
-            });
-            showDay(defaultDayId, 'songs');
-        }
+                    )}
+                </div>
+            );
+        };
 
-        function initYouthView(defaultDayId) {
-            const ymNav = document.getElementById('ym-nav');
-            const ymContentArea = document.getElementById('ym-content-area');
-            ymNav.innerHTML = ''; // Clear old content
-            ymContentArea.innerHTML = ''; // Clear old content
-            ymData.forEach(day => {
-                const navButton = document.createElement('button');
-                navButton.textContent = day.day;
-                navButton.dataset.day = day.id;
-                navButton.className = 'day-nav-button-inactive hover:bg-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors duration-300';
-                navButton.addEventListener('click', () => showDay(day.id, 'ym'));
-                ymNav.appendChild(navButton);
-                
-                const contentDiv = document.createElement('div');
-                contentDiv.dataset.dayId = day.id;
-                contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
-                let scriptureButton = (day.scriptureRef && day.scriptureLink)
-                    ? `<a href="${day.scriptureLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors duration-300">Read Scripture: ${day.scriptureRef}</a>`
-                    : '';
-                let lessonButtonClass = (day.scriptureRef && day.scriptureLink) ? 'w-full' : 'w-full';
-                
-                contentDiv.innerHTML = `
-                    <p class="text-sm font-medium text-amber-600">${day.date}</p>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-4">${day.title}</h2>
-                    <p class="text-stone-700 leading-relaxed">${day.text}</p>
-                    <div class="mt-6 bg-stone-100 p-4 rounded-lg border border-stone-200">
-                        <h3 class="font-semibold text-stone-800 mb-2">${day.prompt.split(':')[0]}:</h3>
-                        <p class="text-stone-700">${day.prompt.split(':').slice(1).join(':').trim()}</p>
-                    </div>
-                    <div class="mt-6 flex flex-col sm:flex-row gap-4">
-                        ${scriptureButton}
-                        <a href="${day.lessonLink}" target="_blank" rel="noopener noreferrer" class="${lessonButtonClass} text-center bg-stone-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-300">View Full Lesson</a>
-                    </div>
-                     <div class="mt-4 border-t pt-4">
-                        <button data-day-id="${day.id}" class="share-button w-full text-center bg-sky-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-sky-700 transition-colors duration-300 flex items-center justify-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
-                            Share this Devotional
-                        </button>
-                    </div>`;
-                ymContentArea.appendChild(contentDiv);
-            });
-            
-            ymContentArea.querySelectorAll('.share-button').forEach(button => {
-                button.addEventListener('click', () => {
-                     copyContentToClipboard(button.dataset.dayId, ymData, button);
-                });
-            });
+        // 3. Main App Component
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('devotional');
+            const [activeDayId, setActiveDayId] = useState('');
+            const [showToast, setShowToast] = useState(false);
+            const [youthGroup, setYouthGroup] = useState('ym'); // 'ym' or 'yw'
 
+            // Initialize Day based on current date
+            useEffect(() => {
+                const dayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                const todayIndex = new Date().getDay();
+                setActiveDayId(dayMap[todayIndex]);
+            }, []);
 
-            const ywNav = document.getElementById('yw-nav');
-            const ywContentArea = document.getElementById('yw-content-area');
-            ywNav.innerHTML = ''; // Clear old content
-            ywContentArea.innerHTML = ''; // Clear old content
-            ywData.forEach(day => {
-                const navButton = document.createElement('button');
-                navButton.textContent = day.day;
-                navButton.dataset.day = day.id;
-                navButton.className = 'day-nav-button-inactive hover:bg-gray-300 font-semibold py-2 px-4 rounded-lg transition-colors duration-300';
-                navButton.addEventListener('click', () => showDay(day.id, 'yw'));
-                ywNav.appendChild(navButton);
+            const getActiveData = (dataArray) => {
+                return dataArray.find(d => d.id === activeDayId) || dataArray[0];
+            };
 
-                const contentDiv = document.createElement('div');
-                contentDiv.dataset.dayId = day.id;
-                contentDiv.className = 'day-content hidden opacity-0 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-stone-200';
-                 let scriptureButton = (day.scriptureRef && day.scriptureLink)
-                    ? `<a href="${day.scriptureLink}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors duration-300">Read Scripture: ${day.scriptureRef}</a>`
-                    : '';
-                let lessonButtonClass = (day.scriptureRef && day.scriptureLink) ? 'w-full' : 'w-full';
+            const copyToClipboard = (dayData) => {
+                const promptParts = dayData.prompt.split(':');
+                const promptLabel = promptParts[0];
+                const promptText = promptParts.slice(1).join(':').trim();
+                const scriptureText = (dayData.scriptureRef && dayData.scriptureLink)
+                    ? `Scripture: ${dayData.scriptureRef}\n${dayData.scriptureLink}\n\n`
+                    : ""; 
 
-                contentDiv.innerHTML = `
-                    <p class="text-sm font-medium text-amber-600">${day.date}</p>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-4">${day.title}</h2>
-                    <p class="text-stone-700 leading-relaxed">${day.text}</p>
-                    <div class="mt-6 bg-stone-100 p-4 rounded-lg border border-stone-200">
-                        <h3 class="font-semibold text-stone-800 mb-2">${day.prompt.split(':')[0]}:</h3>
-                        <p class="text-stone-700">${day.prompt.split(':').slice(1).join(':').trim()}</p>
-                    </div>
-                    <div class="mt-6 flex flex-col sm:flex-row gap-4">
-                        ${scriptureButton}
-                        <a href="${day.lessonLink}" target="_blank" rel="noopener noreferrer" class="${lessonButtonClass} text-center bg-stone-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-300">View Full Lesson</a>
-                    </div>
-                    <div class="mt-4 border-t pt-4">
-                        <button data-day-id="${day.id}" class="share-button w-full text-center bg-sky-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-sky-700 transition-colors duration-300 flex items-center justify-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
-                            Share this Devotional
-                        </button>
-                    </div>`;
-                ywContentArea.appendChild(contentDiv);
-            });
-            
-            ywContentArea.querySelectorAll('.share-button').forEach(button => {
-                button.addEventListener('click', () => {
-                     copyContentToClipboard(button.dataset.dayId, ywData, button);
-                });
-            });
+                // Use dayData.date if available, otherwise fallback to empty string or generic
+                const dateStr = dayData.date ? dayData.date : "";
 
-            document.querySelectorAll('#youth-main-nav button').forEach(button => {
-                button.addEventListener('click', (e) => showYouthGroup(e.target.dataset.youthGroup));
-            });
+                const textToCopy = `✨ Daily Devotional ✨\n\n${dateStr}\n*${dayData.title}*\n\n${dayData.text}\n\n*${promptLabel}:* ${promptText}\n\n${scriptureText}Full Lesson:\n${dayData.lessonLink}`;
 
-            showDay(defaultDayId, 'ym');
-            showDay(defaultDayId, 'yw');
-        }
+                // Modern clipboard API
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                     navigator.clipboard.writeText(textToCopy).then(() => {
+                        setShowToast(true);
+                    }).catch(err => {
+                        fallbackCopy(textToCopy);
+                    });
+                } else {
+                    fallbackCopy(textToCopy);
+                }
+            };
+
+            const fallbackCopy = (text) => {
+                 try {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    
+                    // Avoid scrolling to bottom
+                    textArea.style.top = "0";
+                    textArea.style.left = "0";
+                    textArea.style.position = "fixed";
         
-        function showYouthGroup(groupId) {
-            document.querySelectorAll('.youth-content-area').forEach(area => {
-                if (area.id === `${groupId}-content`) {
-                    area.classList.remove('hidden');
-                    setTimeout(() => area.style.opacity = 1, 10);
-                } else {
-                    area.style.opacity = 0;
-                    setTimeout(() => area.classList.add('hidden'), 500);
-                }
-            });
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    setShowToast(true);
+                 } catch (err) {
+                     console.error("Fallback copy failed", err);
+                 }
+            };
 
-            document.querySelectorAll('#youth-main-nav button').forEach(button => {
-                if (button.dataset.youthGroup === groupId) {
-                    button.classList.remove('youth-nav-button-inactive', 'hover:bg-gray-300');
-                    button.classList.add('youth-nav-button-active');
-                } else {
-                    button.classList.remove('youth-nav-button-active');
-                    button.classList.add('youth-nav-button-inactive', 'hover:bg-gray-300');
-                }
-            });
-        }
+            const renderDevotional = () => {
+                const data = getActiveData(DEVOTIONAL_DATA);
+                return (
+                    <div className="space-y-6 fade-in max-w-2xl mx-auto">
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest">{data.date}</span>
+                            <h2 className="text-3xl font-serif font-bold text-stone-800 mt-2 mb-4">{data.title}</h2>
+                            <p className="text-stone-600 leading-relaxed text-lg">{data.text}</p>
+                            
+                            <div className="mt-8 p-5 bg-amber-50 rounded-xl border border-amber-100">
+                                <h3 className="font-bold text-amber-900 mb-2 flex items-center gap-2">
+                                    <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                                    {data.prompt.split(':')[0]}
+                                </h3>
+                                <p className="text-stone-700 italic">{data.prompt.split(':').slice(1).join(':')}</p>
+                            </div>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const dayIdMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-            // Since it's Sunday, Nov 16, the app will open to the Sunday Nov 16 content from the *previous* week.
-            // When the user opens it tomorrow (Monday, Nov 17), it will correctly show the new Monday, Nov 17 content.
-            const todayIndex = new Date().getDay(); 
-            const currentDayId = dayIdMap[todayIndex];
+                            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {data.scriptureLink && (
+                                    <a href={data.scriptureLink} target="_blank" className="flex items-center justify-center gap-2 bg-amber-600 text-white py-3 rounded-lg font-medium hover:bg-amber-700 transition">
+                                        <IconBookOpen className="w-4 h-4" /> Read Scripture: {data.scriptureRef}
+                                    </a>
+                                )}
+                                <a href={data.lessonLink} target="_blank" className="flex items-center justify-center gap-2 bg-stone-200 text-stone-700 py-3 rounded-lg font-medium hover:bg-stone-300 transition">
+                                    <IconLink className="w-4 h-4" /> Full Lesson
+                                </a>
+                            </div>
 
-            initDevotionalView(currentDayId);
-            initSongsView(currentDayId);
-            initYouthView(currentDayId);
-            
-            document.querySelectorAll('#main-nav button').forEach(button => {
-                button.addEventListener('click', (e) => showView(e.target.dataset.view));
-            });
-            
-            showView('devotional');
-        });
+                            <button 
+                                onClick={() => copyToClipboard(data)}
+                                className="w-full mt-4 py-4 border-t border-stone-100 text-stone-500 hover:text-amber-600 font-medium flex items-center justify-center gap-2 transition-colors"
+                            >
+                                <IconShare className="w-4 h-4" /> Share Devotional
+                            </button>
+                        </div>
+                    </div>
+                );
+            };
+
+            const renderYouth = () => {
+                const data = getActiveData(youthGroup === 'ym' ? YM_DATA : YW_DATA);
+                return (
+                    <div className="fade-in max-w-3xl mx-auto">
+                        {/* Toggle Switch for YM/YW */}
+                        <div className="flex justify-center mb-6 bg-stone-200 p-1 rounded-xl inline-flex w-full sm:w-auto mx-auto">
+                            <button 
+                                onClick={() => setYouthGroup('ym')}
+                                className={`flex-1 sm:flex-none px-8 py-2 rounded-lg font-bold transition-all ${youthGroup === 'ym' ? 'bg-white shadow-sm text-amber-700' : 'text-stone-500 hover:text-stone-700'}`}
+                            >
+                                Young Men
+                            </button>
+                            <button 
+                                onClick={() => setYouthGroup('yw')}
+                                className={`flex-1 sm:flex-none px-8 py-2 rounded-lg font-bold transition-all ${youthGroup === 'yw' ? 'bg-white shadow-sm text-amber-700' : 'text-stone-500 hover:text-stone-700'}`}
+                            >
+                                Young Women
+                            </button>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 relative overflow-hidden">
+                            {/* Decorative Top Border */}
+                            <div className={`absolute top-0 left-0 w-full h-2 ${youthGroup === 'ym' ? 'bg-blue-600' : 'bg-pink-500'}`}></div>
+
+                            <h2 className="text-2xl font-serif font-bold text-stone-800 mt-4 mb-4">{data.title}</h2>
+                            <p className="text-stone-600 leading-relaxed">{data.text}</p>
+                            
+                            <div className="mt-6 p-5 bg-stone-50 rounded-xl border border-stone-100">
+                                <h3 className="font-bold text-stone-800 mb-2">{data.prompt.split(':')[0]}</h3>
+                                <p className="text-stone-600">{data.prompt.split(':').slice(1).join(':')}</p>
+                            </div>
+                             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {data.scriptureLink && (
+                                    <a href={data.scriptureLink} target="_blank" className={`flex items-center justify-center gap-2 text-white py-3 rounded-lg font-medium transition ${youthGroup === 'ym' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-pink-500 hover:bg-pink-600'}`}>
+                                        <IconBookOpen className="w-4 h-4" /> Read Scripture: {data.scriptureRef}
+                                    </a>
+                                )}
+                                <a href={data.lessonLink} target="_blank" className="flex items-center justify-center gap-2 bg-stone-200 text-stone-700 py-3 rounded-lg font-medium hover:bg-stone-300 transition">
+                                    <IconLink className="w-4 h-4" /> Full Lesson
+                                </a>
+                            </div>
+                             <button 
+                                onClick={() => copyToClipboard(data)}
+                                className="w-full mt-4 py-4 border-t border-stone-100 text-stone-500 hover:text-stone-800 font-medium flex items-center justify-center gap-2 transition-colors"
+                            >
+                                <IconShare className="w-4 h-4" /> Share Content
+                            </button>
+                        </div>
+                    </div>
+                );
+            };
+
+            const renderSongs = () => {
+                const data = getActiveData(SONGS_DATA);
+                return (
+                    <div className="fade-in max-w-3xl mx-auto">
+                         <div className="text-center bg-white p-6 rounded-2xl shadow-sm border border-stone-200 mb-6">
+                            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <IconMusic className="w-6 h-6 text-amber-700" />
+                            </div>
+                            <h2 className="text-2xl font-serif font-bold text-stone-800">Songs of the Soul</h2>
+                            <p className="mt-2 text-stone-500 text-sm">Music to invite the Spirit into your daily study.</p>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                            <h3 className="text-lg font-bold text-stone-400 uppercase tracking-wider mb-4">Daily Selection</h3>
+                            <h2 className="text-xl font-bold text-stone-800 mb-2">{data.title}</h2>
+                            <p className="text-stone-600 italic mb-8 text-sm border-l-2 border-amber-300 pl-4">{data.devotionalText}</p>
+                            
+                            <div className="space-y-8">
+                                {/* Hymn Section */}
+                                <div>
+                                    <span className="text-xs font-bold text-amber-600 tracking-widest uppercase mb-2 block flex items-center gap-2">
+                                        <IconMusic className="w-3 h-3" /> Hymn Selection
+                                    </span>
+                                    <div className="flex items-start justify-between gap-4">
+                                        <h3 className="text-xl font-serif font-bold text-stone-800">{data.hymnTitle}</h3>
+                                        <a href={data.hymnLink} target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700 transition-colors" aria-label="Play Song">
+                                            <IconPlayCircle className="w-8 h-8" />
+                                        </a>
+                                    </div>
+                                    <p className="mt-2 text-stone-600 text-sm leading-relaxed">{data.hymnAnalysis}</p>
+                                </div>
+
+                                <hr className="border-stone-100" />
+
+                                {/* Song Section */}
+                                <div>
+                                    <span className="text-xs font-bold text-sky-600 tracking-widest uppercase mb-2 block flex items-center gap-2">
+                                        <IconMusic className="w-3 h-3" /> Contemporary Song
+                                    </span>
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div>
+                                            <h3 className="text-xl font-serif font-bold text-stone-800">{data.songTitle}</h3>
+                                            <p className="text-xs text-stone-400 mb-2">by {data.songArtist}</p>
+                                        </div>
+                                        <a href={data.songLink} target="_blank" rel="noopener noreferrer" className="text-sky-600 hover:text-sky-700 transition-colors" aria-label="Play Song">
+                                            <IconPlayCircle className="w-8 h-8" />
+                                        </a>
+                                    </div>
+                                    <p className="mt-2 text-stone-600 text-sm leading-relaxed">{data.songAnalysis}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            const renderStudy = () => {
+                return (
+                    <div className="fade-in max-w-6xl mx-auto pb-12">
+                         <div id="printable-study-section" className="bg-white p-8 rounded-2xl shadow-sm border border-stone-200 relative">
+                            
+                            <div className="flex justify-between items-start mb-2">
+                                 <div className="w-full">
+                                    <h1 className="text-3xl font-serif font-bold text-center text-amber-800">Discussion Guide</h1>
+                                 </div>
+                                 <button 
+                                    onClick={() => window.print()} 
+                                    className="no-print absolute top-6 right-6 text-stone-400 hover:text-stone-600 hover:bg-stone-100 p-2 rounded-full transition-all"
+                                    aria-label="Print Discussion Guide"
+                                    title="Print Discussion Guide"
+                                >
+                                    <IconPrinter className="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            <p className="text-center text-stone-500 mb-8 italic">"{WEEK_INFO.title}"</p>
+                            
+                            {/* --- ADDED IMAGE HERE --- */}
+                            <div className="mb-8">
+                                <img 
+                                    src="135-136 WhtBrd.jpg" 
+                                    alt="Lesson Diagram: Sealed with Blood & Guided Journey" 
+                                    className="w-full h-auto rounded-lg shadow-md border border-stone-200"
+                                    onError={(e) => {e.target.style.display = 'none'}} 
+                                />
+                            </div>
+                            {/* ------------------------ */}
+                            
+                            {STUDY_GUIDE_DATA.map((section, idx) => (
+                                <div key={idx} className="mb-10 last:mb-0">
+                                    <h2 className="text-xl font-bold text-stone-800 mb-3 border-b border-amber-100 pb-2">{section.title}</h2>
+                                    
+                                    {section.content && section.content.map((p, i) => (
+                                        <p key={i} className="text-stone-700 mb-3 leading-relaxed">{p}</p>
+                                    ))}
+
+                                    {section.discussionPoint && (
+                                        <div className="mb-4">
+                                            <h3 className="text-amber-700 font-semibold text-sm uppercase mb-1">Context</h3>
+                                            <p className="text-stone-700">{section.discussionPoint}</p>
+                                        </div>
+                                    )}
+
+                                    {section.quote && (
+                                        <blockquote className="border-l-4 border-stone-300 pl-4 py-1 my-4 text-stone-600 italic bg-stone-50 p-3 rounded-r-lg">
+                                            {section.quote}
+                                        </blockquote>
+                                    )}
+
+                                    {section.question && (
+                                        <ToggleAnswer question={section.question} answer={section.answer} />
+                                    )}
+
+                                    {section.questions && section.questions.map((qItem, qIdx) => (
+                                        <ToggleAnswer key={qIdx} question={qItem.q} answer={qItem.a} />
+                                    ))}
+                                </div>
+                            ))}
+
+                            <div className="mt-12 pt-8 border-t border-stone-200 text-center">
+                                <p className="text-stone-800 font-medium">Lesson Summary</p>
+                                <p className="text-stone-600 mt-2 text-sm">This week's lesson is a powerful reminder that the Lord is hastening His work and preparing the world for His glorious return. He calls us to leave the wickedness of the world (Babylon) and gather to the safety and righteousness of Zion.</p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            // Dynamic Footer based on view
+            const renderFooter = () => (
+                <footer className="p-6 text-center text-stone-400 text-xs">
+                    <p>{WEEK_INFO.valediction}</p>
+                </footer>
+            );
+
+            return (
+                <div className="flex flex-col h-full bg-stone-100">
+                    {/* Header */}
+                    <header className="bg-white border-b border-stone-200 pt-6 pb-2 px-4 shadow-sm z-10">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h1 className="text-xs font-bold tracking-[0.2em] text-stone-400 uppercase mb-1">Come, Follow Me</h1>
+                            <h2 className="text-lg sm:text-xl font-serif font-bold text-stone-800 leading-tight">{WEEK_INFO.title}</h2>
+                            <p className="text-stone-500 text-xs mt-1 mb-4">{WEEK_INFO.dateRange}</p>
+
+                            {/* Main Nav Tabs */}
+                            <div className="flex justify-center space-x-1 sm:space-x-4 mt-4 overflow-x-auto hide-scrollbar pb-2">
+                                <button onClick={() => setActiveTab('devotional')} className={`flex flex-col sm:flex-row items-center gap-2 px-4 py-2 rounded-xl transition-all ${activeTab === 'devotional' ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' : 'text-stone-400 hover:text-stone-600'}`}>
+                                    <IconSun className="w-5 h-5" />
+                                    <span className="text-xs sm:text-sm font-medium">Daily</span>
+                                </button>
+                                <button onClick={() => setActiveTab('youth')} className={`flex flex-col sm:flex-row items-center gap-2 px-4 py-2 rounded-xl transition-all ${activeTab === 'youth' ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' : 'text-stone-400 hover:text-stone-600'}`}>
+                                    <IconUsers className="w-5 h-5" />
+                                    <span className="text-xs sm:text-sm font-medium">Youth</span>
+                                </button>
+                                <button onClick={() => setActiveTab('songs')} className={`flex flex-col sm:flex-row items-center gap-2 px-4 py-2 rounded-xl transition-all ${activeTab === 'songs' ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' : 'text-stone-400 hover:text-stone-600'}`}>
+                                    <IconMusic className="w-5 h-5" />
+                                    <span className="text-xs sm:text-sm font-medium">Music</span>
+                                </button>
+                                <button onClick={() => setActiveTab('study')} className={`flex flex-col sm:flex-row items-center gap-2 px-4 py-2 rounded-xl transition-all ${activeTab === 'study' ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' : 'text-stone-400 hover:text-stone-600'}`}>
+                                    <IconBookOpen className="w-5 h-5" />
+                                    <span className="text-xs sm:text-sm font-medium">Study</span>
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Secondary Day Navigation (Horizontal Scroll) - Only show for Daily, Youth, Songs */}
+                    {activeTab !== 'study' && (
+                        <div className="bg-white border-b border-stone-200 py-2 px-4 shadow-sm z-10">
+                            <div className="max-w-4xl mx-auto">
+                                <div className="flex space-x-3 overflow-x-auto hide-scrollbar pb-1 sm:justify-center">
+                                    {DEVOTIONAL_DATA.map((d) => (
+                                        <button
+                                            key={d.id}
+                                            onClick={() => setActiveDayId(d.id)}
+                                            className={`flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-lg transition-all border ${activeDayId === d.id ? 'bg-stone-800 text-white border-stone-800 shadow-md transform scale-105' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-300'}`}
+                                        >
+                                            <span className="text-[10px] font-bold uppercase">{d.day}</span>
+                                            <span className={`text-lg font-bold leading-none ${activeDayId === d.id ? 'text-amber-400' : 'text-stone-800'}`}>{d.date.split(' ')[1]}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Content Area - Scrollable */}
+                    <main className="flex-1 overflow-y-auto p-4 pb-20">
+                        {activeTab === 'devotional' && renderDevotional()}
+                        {activeTab === 'youth' && renderYouth()}
+                        {activeTab === 'songs' && renderSongs()}
+                        {activeTab === 'study' && renderStudy()}
+                        {renderFooter()}
+                    </main>
+
+                    <Toast message="Copied to Clipboard!" show={showToast} onClose={() => setShowToast(false)} />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>

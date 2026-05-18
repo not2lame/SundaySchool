@@ -3,545 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Come, Follow Me Companion</title>
-    
-    <!-- Tailwind CSS (Styling) -->
+    <title>Sunday School - Website Retired</title>
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts: Inter (Body) and Merriweather (Headings) -->
+    <!-- Google Fonts for Gospel-study style typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel (to compile JSX in browser) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-
     <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
-                    },
                     colors: {
-                        stone: { 50: '#fafaf9', 100: '#f5f5f4', 200: '#e7e5e4', 300: '#d6d3d1', 400: '#a8a29e', 500: '#78716c', 600: '#57534e', 700: '#44403c', 800: '#292524', 900: '#1c1917' },
-                        amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309', 800: '#92400e', 900: '#78350f' }
+                        brand: {
+                            blue: '#0B3A5A', /* A classic navy blue */
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Merriweather', 'serif'],
+                        sans: ['Open Sans', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-
     <style>
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Print Styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printable-study-section, #printable-study-section * {
-                visibility: visible;
-            }
-            #printable-study-section {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                border: none;
-                box-shadow: none;
-            }
-            .no-print {
-                display: none !important;
-            }
+        body {
+            background-color: #f8fafc;
+            color: #334155;
         }
     </style>
 </head>
-<body class="bg-stone-100 text-stone-800 h-screen flex flex-col overflow-hidden">
-
-    <!-- Loading Fallback -->
-    <div id="root" class="h-full flex flex-col">
-        <div class="flex items-center justify-center h-full bg-stone-100 text-stone-500 p-4 text-center">
-            <div>
-                <h2 class="text-xl font-bold mb-2">Loading App...</h2>
-                <p class="text-sm">If this takes longer than a few seconds, your network may be blocking the script libraries (React).</p>
-            </div>
+<body class="min-h-screen flex items-center justify-center p-4 antialiased">
+    <div class="max-w-2xl w-full bg-white rounded-xl shadow-lg border-t-8 border-brand-blue overflow-hidden">
+        <div class="p-8 md:p-14 text-center">
+            
+            <!-- Book Icon -->
+            <svg class="w-16 h-16 text-brand-blue mx-auto mb-6 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+            
+            <h1 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-5 tracking-tight">
+                This Website is No Longer Being Updated
+            </h1>
+            
+            <p class="text-lg md:text-xl font-sans text-gray-600 mb-10 leading-relaxed max-w-lg mx-auto">
+                If you are interested in studying the gospel of Jesus Christ through the 
+                <em class="text-gray-800 font-serif font-medium italic">Come, Follow Me</em> program, please visit the official Church website.
+            </p>
+            
+            <!-- Validated Link -->
+            <a href="https://www.churchofjesuschrist.org/study/come-follow-me?lang=eng" 
+               class="inline-flex items-center justify-center font-sans px-8 py-4 text-lg font-semibold text-white bg-brand-blue rounded-full hover:bg-opacity-90 hover:shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue">
+                <span>Visit Come, Follow Me</span>
+                <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                </svg>
+            </a>
+            
+        </div>
+        
+        <!-- Footer -->
+        <div class="bg-gray-50 p-5 text-center border-t border-gray-100">
+            <p class="text-sm font-sans text-gray-500">
+                Thank you for your past visits and continued study.
+            </p>
         </div>
     </div>
-
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
-
-        // ==========================================
-        // DATA CONSTANTS
-        // ==========================================
-
-        const WEEK_INFO = {
-            title: "Beware Lest Thou Forget the Lord",
-            dateRange: "May 11 – May 17, 2026",
-            valediction: "Remember the Lord's greatness, keep His covenants etched in your heart, choose life by letting God prevail, and serve others generously as you journey to the promised land."
-        };
-
-        const DEVOTIONAL_DATA = [
-            { id: 'monday', day: 'Mon', fullDay: 'Monday', date: 'May 11', title: 'Our Ultimate Priority 🥇', text: 'Moses pleaded with Israel to love God with all their heart, soul, and might. Relating this to our busy adult lives, President M. Russell Ballard asked if we love the Savior more than the things of this world—our careers, our bank accounts, or our digital distractions. Putting Heavenly Father and Jesus Christ first is the absolute foundation of our spiritual survival.', prompt: 'Reflection: Are there any worldly distractions or priorities competing for your time, attention, and devotion to the Savior today?', scriptureRef: 'Deuteronomy 6:5', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/6?lang=eng&id=p5', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'tuesday', day: 'Tue', fullDay: 'Tuesday', date: 'May 12', title: 'Beware Lest Thou Forget 🧠✨', text: 'After warning Israel not to forget the Lord, Moses reminded them of their miraculous deliverance. Elder Dale G. Renlund taught that reflecting every day on the goodness and greatness of God actually transforms us. When we intentionally remember His past blessings, we become more spiritually receptive, humble, and Christlike in our daily lives.', prompt: 'Challenge: Take three minutes today to specifically write down or mentally ponder three "great things" the Lord has done for your family.', scriptureRef: 'Deuteronomy 6:12', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/6?lang=eng&id=p12', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'wednesday', day: 'Wed', fullDay: 'Wednesday', date: 'May 13', title: 'God\'s Treasured Possession 💎', text: 'The Lord told the Israelites they were a "special people" to Him. The original Hebrew word used is *segullah*, which means "valued property" or "treasure." President Russell M. Nelson taught that when we make covenants with God, it changes our relationship with Him forever, giving us an extra measure of His love and making us His "peculiar treasure."', prompt: 'Reflection: How does understanding that your covenants make you Heavenly Father\'s "valued treasure" change how you view your self-worth and your relationship with Him?', scriptureRef: 'Deuteronomy 7:6', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/7?lang=eng&id=p6', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'thursday', day: 'Thu', fullDay: 'Thursday', date: 'May 14', title: 'Open Thine Hand Wide 🤲', text: 'The Lord commanded the Israelites to "open thine hand wide" to the poor and needy in their communities. We are commanded to help those in need because we have all been spiritually bankrupt at times, and the Lord has generously redeemed us. When we care for others with a willing heart and a generous hand, we beautifully reflect the ultimate generosity of Jesus Christ.', prompt: 'Challenge: Look for an opportunity today to "open your hand wide" to someone in need, whether that means a physical donation, a listening ear, or a text message of encouragement.', scriptureRef: 'Deuteronomy 15:11', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/15?lang=eng&id=p11', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'friday', day: 'Fri', fullDay: 'Friday', date: 'May 15', title: 'A Circumcised Heart ❤️‍🔥', text: 'Moses taught the people about having a "circumcised heart." This deeply symbolic language means that our covenants have become a fundamental part of our nature. Elder Dale G. Renlund taught that true conversion means our commitment to God is so etched in our hearts that we never forget it, no matter what other stresses or trials are happening in our adult lives.', prompt: 'Reflection: Has your commitment to the Lord become so deeply embedded in your heart that it naturally guides your daily decisions without hesitation?', scriptureRef: 'Deuteronomy 30:6', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/30?lang=eng&id=p6', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'saturday', day: 'Sat', fullDay: 'Saturday', date: 'May 16', title: 'Therefore Choose Life 🌱', text: 'In his final pleas to Israel, Moses set before them life and death, blessing and cursing, and then explicitly invited them to "choose life." As adults navigating complex challenges, we are constantly invited to choose the Savior, who *is* the Life. Every small, daily choice to obey is a choice to bind ourselves to Him and invite His eternal blessings into our homes.', prompt: 'Challenge: When faced with a difficult or frustrating decision today, pause and intentionally ask yourself which option allows you to "choose life" and follow the Savior\'s example.', scriptureRef: 'Deuteronomy 30:19', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/30?lang=eng&id=p19', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'sunday', day: 'Sun', fullDay: 'Sunday', date: 'May 17', title: 'Preserving the Covenant Voice 🗣️', text: 'Moses commanded the Israelites to teach God\'s words diligently to their children. Brother Jan E. Newman taught that it isn’t enough for faith to be just a family tradition; the rising generation must own it. By consistently sharing our testimonies and reading scriptures together, we preserve the voice of the covenant and help the youth deeply know Jesus Christ for themselves.', prompt: 'Reflection: As you partake of the sacrament today, ponder how you can more intentionally share your testimony of the Savior with the children, grandchildren, or youth in your life this week.', scriptureRef: 'Deuteronomy 6:7', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/6?lang=eng&id=p7', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' }
-        ];
-
-        const YM_DATA = [
-            { id: 'monday', day: 'Mon', date: 'May 11', title: 'Who Takes the Trophy? 🏆', text: 'Moses told the Israelites to love God with *all* their heart and might. Relating this to us today, President M. Russell Ballard asked if we love the Savior more than the things of this world. It’s totally fine to love sports, video games, or hanging out with your friends, but Heavenly Father needs to hold the #1 spot in your life. If He is your ultimate priority, everything else will fall into its proper place!', prompt: 'Reflection: Look at your screen time or how you spend your weekends. Does your schedule show that God takes the top spot in your life, or is something else taking the trophy?', scriptureRef: 'Deuteronomy 6:5', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/6?lang=eng&id=p5', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'tuesday', day: 'Tue', date: 'May 12', title: 'Don\'t Get Amnesia 🧠⚡', text: 'Moses warned the Israelites not to forget the crazy miracles God performed to free them. Spiritual amnesia is real! When life gets stressful with school or drama, it’s super easy to forget the times you\'ve felt the Spirit. Elder Dale G. Renlund taught that taking time every single day to remember God’s greatness actually transforms you and makes you spiritually stronger and more confident.', prompt: 'Challenge: Set a reminder on your phone right now. Take 2 minutes tonight before you go to sleep to think of one awesome thing God has done for you recently.', scriptureRef: 'Deuteronomy 6:12', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/6?lang=eng&id=p12', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'wednesday', day: 'Wed', date: 'May 13', title: 'God’s MVP 🏅', text: 'The Lord told the Israelites they were a "special people" to Him. The original Hebrew word is *segullah*, which literally translates to "valued property" or "treasure." When you made covenants at baptism, you leveled up your relationship with God. You aren\'t just another guy in the crowd; as an Aaronic Priesthood holder, you are God\'s highly valued, VIP treasure!', prompt: 'Reflection: How does knowing you are Heavenly Father\'s ultimate "treasure" give you confidence when the world or social media tries to bring you down?', scriptureRef: 'Deuteronomy 7:6', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/7?lang=eng&id=p6', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'thursday', day: 'Thu', date: 'May 14', title: 'Open Your Hand 🤝', text: 'In the Old Testament, the Lord commanded His people to "open thine hand wide" to help the poor and needy. Today, "poor and needy" doesn\'t just mean someone who needs money. It could be the new kid sitting alone at lunch, a friend struggling with anxiety, or a sibling who needs help with homework. A true priesthood man is always looking out for the underdog!', prompt: 'Challenge: Who is someone in your ward, school, or family who might need a helping hand today? Send them an encouraging text or step up to help them out.', scriptureRef: 'Deuteronomy 15:11', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/15?lang=eng&id=p11', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'friday', day: 'Fri', date: 'May 15', title: 'Carved in Stone 🪨', text: 'Moses taught the Israelites about having a "circumcised heart." That sounds intense, but it just means your covenants become a permanent part of who you are. Elder Dale G. Renlund taught that true conversion means your commitment to God is etched into your heart—just like you never forget your own name, you never forget you are a disciple of Jesus Christ, no matter where you are or who you are with.', prompt: 'Reflection: Is your commitment to the Savior "carved" into your heart so deeply that it guides your choices even when your parents or quorum leaders aren\'t watching?', scriptureRef: 'Deuteronomy 30:6', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/30?lang=eng&id=p6', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'saturday', day: 'Sat', date: 'May 16', title: 'The Ultimate Choice 🎮', text: 'In his final speech, Moses gave the Israelites the ultimate choice: he set before them life and death, and then basically said, "Choose life!" Every single day, you are faced with choices. Clicking on a bad link or hanging with a toxic crowd is choosing spiritual death. But every time you keep a commandment, read your scriptures, or take the sacrament, you are actively choosing the Savior, who *is* Life!', prompt: 'Challenge: When you are faced with a tough decision or temptation this weekend, pause and ask yourself, "Which choice leads to life and peace?"', scriptureRef: 'Deuteronomy 30:19', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/30?lang=eng&id=p19', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'sunday', day: 'Sun', date: 'May 17', title: 'Own Your Faith 🔥', text: 'Moses commanded the Israelites to talk about the gospel constantly. Why? Because the next generation needed to own their faith! Brother Jan E. Newman warned that it isn\'t enough for your belief in Jesus Christ to just be a "family tradition." You can\'t survive on your parents\' testimonies alone. As a young man, you have to dig deep and build your own solid rock foundation on Jesus Christ.', prompt: 'Reflection: As you pass or prepare the sacrament today, think about your own testimony. Are you relying entirely on your family\'s faith, or are you doing the spiritual work to "own" it for yourself?', scriptureRef: 'Deuteronomy 6:7', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/6?lang=eng&id=p7', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' }
-        ];
-
-        const YW_DATA = [
-            { id: 'monday', day: 'Mon', date: 'May 11', title: 'Who Gets Your Top Spot? 🥇', text: 'Moses told the Israelites to love God with *all* their heart and might. Relating this to us today, President M. Russell Ballard asked if we love the Savior more than the things of this world. It’s completely okay to love fashion, your friends, or scrolling through your favorite apps, but Heavenly Father needs to hold the #1 spot in your heart. When He is your ultimate priority, everything else in your life will beautifully fall into place!', prompt: 'Reflection: If someone looked at your screen time or how you spend your weekends, would they know that Heavenly Father and Jesus Christ are your biggest priorities?', scriptureRef: 'Deuteronomy 6:5', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/6?lang=eng&id=p5', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'tuesday', day: 'Tue', date: 'May 12', title: 'Cure for Spiritual Amnesia 🧠✨', text: 'Moses warned the Israelites not to forget the crazy miracles God performed to free them. When life gets stressful with school, homework, or friend drama, "spiritual amnesia" is a real thing! Elder Dale G. Renlund taught that taking time every single day to remember God’s greatness actually transforms you, making you spiritually stronger and more confident.', prompt: 'Challenge: Set a reminder on your phone right now! Take two minutes tonight before you go to sleep to write down or think of one awesome thing God has done for you recently.', scriptureRef: 'Deuteronomy 6:12', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/6?lang=eng&id=p12', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'wednesday', day: 'Wed', date: 'May 13', title: 'You Are the Ultimate Treasure 💎', text: 'The Lord told the Israelites they were a "special people" to Him. The original Hebrew word is *segullah*, which literally translates to "valued property" or "treasure." When you made covenants at baptism, you leveled up your relationship with God. You aren\'t just another girl trying to fit into the crowd; as a covenant daughter of God, you are His highly valued, VIP treasure!', prompt: 'Reflection: How does knowing you are Heavenly Father\'s ultimate "treasure" give you confidence when you are tempted to compare yourself to others on social media?', scriptureRef: 'Deuteronomy 7:6', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/7?lang=eng&id=p6', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'thursday', day: 'Thu', date: 'May 14', title: 'Open Your Hand 🤝💖', text: 'In the Old Testament, the Lord commanded His people to "open thine hand wide" to help the poor and needy. Today, "needy" doesn\'t just mean someone who needs money. It could be the new girl sitting alone at lunch, a friend struggling with severe anxiety, or a younger sibling who needs help with homework. A true covenant woman is always looking out for the lonely!', prompt: 'Challenge: Who is someone in your ward, school, or family who might need a helping hand today? Send them a sweet text or sit next to them to lift them up.', scriptureRef: 'Deuteronomy 15:11', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/15?lang=eng&id=p11', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'friday', day: 'Fri', date: 'May 15', title: 'Etched in Your Heart ✍️', text: 'Moses taught the Israelites about having a "circumcised heart." That sounds intense, but it just means your covenants become a permanent part of who you are. Elder Dale G. Renlund taught that true conversion means your commitment to God is etched into your heart. Just like you never forget your own name, you never forget you are a disciple of Jesus Christ, no matter what crowd you are hanging out with!', prompt: 'Reflection: Is your love for the Savior "etched" into your heart so deeply that it guides your choices even when your parents or Young Women leaders aren\'t watching?', scriptureRef: 'Deuteronomy 30:6', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/30?lang=eng&id=p6', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'saturday', day: 'Sat', date: 'May 16', title: 'The Ultimate Choice 🌸', text: 'In his final speech, Moses gave the Israelites the ultimate choice: he set before them life and death, and then basically pleaded with them to "Choose life!" Every single day, you are faced with choices. Participating in toxic gossip or viewing bad media is choosing spiritual death. But every time you keep a standard, read your scriptures, or uplift a friend, you are actively choosing the Savior, who *is* Life!', prompt: 'Challenge: When you are faced with a tough decision or temptation this weekend, pause and ask yourself, "Which choice leads to light, peace, and life?"', scriptureRef: 'Deuteronomy 30:19', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/30?lang=eng&id=p19', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' },
-            { id: 'sunday', day: 'Sun', date: 'May 17', title: 'Own Your Faith 🔥', text: 'Moses commanded the Israelites to talk about the gospel constantly. Why? Because the next generation needed to own their faith! Brother Jan E. Newman warned that it isn\'t enough for your belief in Jesus Christ to just be a "family tradition." You can\'t survive on your parents\' testimonies alone. As a Young Woman, you get to dig deep and build your own beautiful, solid foundation on Jesus Christ.', prompt: 'Reflection: As you take the sacrament today, think about your own testimony. Are you relying entirely on your family\'s faith, or are you doing the spiritual work to "own" it for yourself?', scriptureRef: 'Deuteronomy 6:7', scriptureLink: 'https://www.churchofjesuschrist.org/study/scriptures/ot/deut/6?lang=eng&id=p7', lessonLink: 'https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng' }
-        ];
-
-        const SONGS_DATA = [
-            { id: 'monday', day: 'Mon', title: 'Our Ultimate Priority 🥇', devotionalText: 'Moses pleaded with Israel to love God with all their heart, soul, and might. Relating this to our busy adult lives, President M. Russell Ballard asked if we love the Savior more than the things of this world—our careers, our bank accounts, or our digital distractions. Putting Heavenly Father and Jesus Christ first is the absolute foundation of our spiritual survival.', 
-                hymnTitle: 'Nearer, My God, to Thee', hymnLink: 'https://www.youtube.com/watch?v=WyxXGdG3-Io', hymnAnalysis: 'The devotional challenges us to prioritize the Savior over our digital distractions and worldly careers. BYU Vocal Point’s stunning a cappella arrangement of "Nearer, My God, to Thee" brings fresh urgency to this classic hymn. The soaring harmonies reflect the upward pull of dedicating our heart, soul, and might entirely to Heavenly Father, leaving the passing things of this world behind.\nListening to this passionate performance inspires us to evaluate our daily focus. The repeating plea to draw nearer to God serves as a personal declaration, beautifully reinforcing the day\'s reflection question. It reminds us that drawing near to the Savior is the ultimate foundation of our spiritual survival and must remain our absolute priority.' ,
-                songTitle: '10,000 Reasons (Bless the Lord)', songArtist: 'Matt Redman', songLink: 'https://www.youtube.com/watch?v=DXDGE_lRI0E', songAnalysis: 'Putting God first requires an intentional, daily focus on worship. Matt Redman’s beloved contemporary anthem challenges us to find "10,000 reasons" to bless His holy name, no matter what worldly distractions or career stresses exist. The gentle acoustic start building into a powerful chorus mirrors how a daily commitment to the Lord grows into an unshakeable priority in our busy lives.\nThis song grounds our attention entirely on the Savior\'s goodness. By choosing to "sing like never before," we actively set aside our digital distractions and place our devotion back where it belongs, fulfilling Moses’s plea to love God with all our might.' },
-            { id: 'tuesday', day: 'Tue', title: 'Beware Lest Thou Forget 🧠✨', devotionalText: 'After warning Israel not to forget the Lord, Moses reminded them of their miraculous deliverance. Elder Dale G. Renlund taught that reflecting every day on the goodness and greatness of God actually transforms us. When we intentionally remember His past blessings, we become more spiritually receptive, humble, and Christlike in our daily lives.', 
-                hymnTitle: 'How Great Thou Art', hymnLink: 'https://www.youtube.com/watch?v=e4BthL6pcLM', hymnAnalysis: 'Moses warned Israel to never forget their miraculous deliverance. "How Great Thou Art" is an exultant hymn of remembrance, specifically reminding us to ponder the Savior\'s ultimate sacrifice and the worlds His hands have made. This breathtaking and deeply reverent performance instills a profound sense of awe, directly supporting Elder Renlund\'s teaching that remembering God’s greatness transforms us.\nAs the music swells, it keeps us spiritually receptive and anchored in deep gratitude. It serves as the perfect soundtrack for the day\'s challenge, inviting us to mentally ponder the "great things" the Lord has done, softening our hearts, and fostering a Christlike humility as we journey forward.' ,
-                songTitle: 'I Can Only Imagine', songArtist: 'MercyMe', songLink: 'https://www.youtube.com/watch?v=N_lrrq_opng', songAnalysis: 'This contemporary classic perfectly pairs with the challenge to remember the "great things" of God by keeping our eyes focused on eternity. By looking forward to the ultimate blessing of standing before Jesus Christ, we are humbled in our present circumstances and reminded of His continuous grace and past deliverance.\nThe deeply emotional crescendo helps shift our minds from daily stresses to eternal promises, keeping us spiritually grounded. It perfectly aligns with the day\'s challenge to pause and reflect on the miraculous future we have been promised, transforming our perspective for the rest of the day.' },
-            { id: 'wednesday', day: 'Wed', title: 'God\'s Treasured Possession 💎', devotionalText: 'The Lord told the Israelites they were a "special people" to Him. The original Hebrew word used is segullah, which means "valued property" or "treasure." President Russell M. Nelson taught that when we make covenants with God, it changes our relationship with Him forever, giving us an extra measure of His love and making us His "peculiar treasure."', 
-                hymnTitle: 'I Am a Child of God', hymnLink: 'https://www.youtube.com/watch?v=xglz6kryORQ', hymnAnalysis: 'The concept of being God\'s "valued treasure" is beautifully distilled in the simple, profound lyrics of "I Am a Child of God." The devotional teaches that our covenants give us an extra measure of His love. This cherished choral performance anchors our self-worth entirely in that divine, relational heritage.\nListening to this beloved hymn reminds us that before any worldly title, our eternal identity as Heavenly Father\'s peculiar treasure is absolute and unchanging. It directly answers the day\'s reflection question by drastically altering how we view our potential, reminding us of the loving relationship He desires to cultivate with us through covenants.' ,
-                songTitle: 'You Say', songArtist: 'Lauren Daigle', songLink: 'https://www.youtube.com/watch?v=sIaT8Jl2zpI', songAnalysis: 'Lauren Daigle\'s Grammy-winning track is the ultimate modern anthem of divine self-worth. When the world makes us feel inadequate or average, the lyrics proclaim, "You say I am loved when I can\'t feel a thing." This directly echoes President Nelson\'s teaching that our covenant relationship with God gives us a special measure of belonging.\nThe soulful, piano-driven melody reinforces our identity as His segullah (treasured possession), hushing the negative voices of the world. It is a powerful reminder that our self-worth is not dictated by our adult stresses or societal standards, but by the eternal promises of a God who calls us His own.' },
-            { id: 'thursday', day: 'Thu', title: 'Open Thine Hand Wide 🤲', devotionalText: 'The Lord commanded the Israelites to "open thine hand wide" to the poor and needy in their communities. We are commanded to help those in need because we have all been spiritually bankrupt at times, and the Lord has generously redeemed us. When we care for others with a willing heart and a generous hand, we beautifully reflect the ultimate generosity of Jesus Christ.', 
-                hymnTitle: 'A Poor Wayfaring Man of Grief', hymnLink: 'https://www.youtube.com/watch?v=vnNT5aak4ZI', hymnAnalysis: 'The Lord’s command to "open thine hand wide" to the poor and needy is deeply connected to recognizing our own spiritual bankruptcy. "A Poor Wayfaring Man of Grief" is a powerful narrative hymn about encountering the Savior in the guise of the marginalized and suffering. The devotional points out that the Lord has generously redeemed us, which should be the primary motivation for our charity.\nThis reverent performance inspires a willing heart, encouraging us to look for practical ways to divide our gifts with those in need today. It reminds us that when we offer a listening ear or a generous hand, we are directly serving and reflecting the ultimate generosity of Jesus Christ.' ,
-                songTitle: 'Do Something', songArtist: 'Matthew West', songLink: 'https://www.youtube.com/watch?v=b_RjndG0IX8', songAnalysis: 'When we observe the immense needs in our communities, it is natural to feel overwhelmed and wish someone would step in. Matthew West’s "Do Something" shakes us out of that complacency with a striking realization: "I shook my fist at Heaven [and] said, \'God, why don\'t You do something?\' He said, \'I did. I created you.\'"\nThis modern, upbeat track is a driving call to action that perfectly aligns with Deuteronomy\'s command to open our hands wide. Its high-energy tempo transforms the ancient law into a vibrant, modern-day mission. It inspires us to stop waiting for others and actively fulfill the day\'s challenge by offering encouragement, a donation, or our time today.' },
-            { id: 'friday', day: 'Fri', title: 'A Circumcised Heart ❤️‍🔥', devotionalText: 'Moses taught the people about having a "circumcised heart." This deeply symbolic language means that our covenants have become a fundamental part of our nature. Elder Dale G. Renlund taught that true conversion means our commitment to God is so etched in our hearts that we never forget it, no matter what other stresses or trials are happening in our adult lives.', 
-                hymnTitle: 'I Need Thee Every Hour', hymnLink: 'https://www.youtube.com/watch?v=PPEdmbgga_o', hymnAnalysis: 'A "circumcised heart" means our covenants have become a fundamental part of our nature, deeply etched within us so we can withstand the trials of adult life. "I Need Thee Every Hour" expresses the profound humility and constant reliance on the Lord that characterizes a truly converted heart.\nThe Choir\'s tender performance fortifies our spiritual resolve. It reminds us that navigating unpredictable stresses requires staying close to the Savior. When our core nature is aligned with Him, we naturally seek His steady guidance without hesitation, embedding His presence deeply into our daily decisions.' ,
-                songTitle: 'Oceans (Where Feet May Fail)', songArtist: 'Hillsong UNITED', songLink: 'https://www.youtube.com/watch?v=dy9nwe9_xzw', songAnalysis: 'A circumcised heart implies a trust in God so profound that it guides us through any unknown. "Oceans" is a masterful, atmospheric song about stepping out into deep waters with absolute, unchanging faith. As the music swells, the lyrics declare, "Spirit lead me where my trust is without borders," illustrating a commitment that supersedes fear.\nThis modern worship track mirrors the devotional\'s reflection question, asking if our commitment to the Lord is so etched in our nature that we will follow His daily guidance through the harshest trials of our adult lives. It invites a level of surrender that defines true, lasting conversion.' },
-            { id: 'saturday', day: 'Sat', title: 'Therefore Choose Life 🌱', devotionalText: 'In his final pleas to Israel, Moses set before them life and death, blessing and cursing, and then explicitly invited them to "choose life." As adults navigating complex challenges, we are constantly invited to choose the Savior, who is the Life. Every small, daily choice to obey is a choice to bind ourselves to Him and invite His eternal blessings into our homes.', 
-                hymnTitle: 'Choose the Right', hymnLink: 'https://www.youtube.com/watch?v=gIqKsJ5xG9c', hymnAnalysis: 'Moses explicitly invited Israel to "choose life" and bind themselves to God. The classic anthem "Choose the Right" acts as a spiritual clarion call to action, reminding us that God\'s light is continually marching before us. The lyrics call us to stand firmly on the side of the Savior amidst the complex challenges of mortality.\nThe Tabernacle Choir\'s majestic performance instills a profound spiritual courage. It reinforces the day\'s challenge, reminding us that every small daily choice to obey is a choice to actively align with eternity, choosing life and inviting His unshakeable blessings into our homes.' ,
-                songTitle: 'Chain Breaker', songArtist: 'Zach Williams', songLink: 'https://www.youtube.com/watch?v=JGYjKR69M6U', songAnalysis: 'Choosing the Savior—the ultimate "Life"—means choosing freedom from the spiritual death of sin, pride, and frustration. Zach Williams’s "Chain Breaker" is a bold, southern-rock-infused testimony of Christ\'s power to deliver us when we finally choose to turn to Him. The lyrics lay out the clear options before us: "If you\'ve got pain, He\'s a pain taker; if you feel lost, He\'s a way maker."\nThe song’s raw energy forcefully motivates the day\'s challenge. It reminds us that our small, daily choices to obey are not restrictive rules, but rather the very actions that break the chains of our bad habits and complex struggles, allowing us to walk in the abundant life He offers.' },
-            { id: 'sunday', day: 'Sun', title: 'Preserving the Covenant Voice 🗣️', devotionalText: 'Moses commanded the Israelites to teach God\'s words diligently to their children. Brother Jan E. Newman taught that it isn’t enough for faith to be just a family tradition; the rising generation must own it. By consistently sharing our testimonies and reading scriptures together, we preserve the voice of the covenant and help the youth deeply know Jesus Christ for themselves.', 
-                hymnTitle: 'Teach Me to Walk in the Light', hymnLink: 'https://www.youtube.com/watch?v=kK7XnmUzUUA', hymnAnalysis: 'The solemn commandment to teach God’s words diligently to our children is captured beautifully in the hymn "Teach Me to Walk in the Light." The devotional highlights that faith cannot merely be a passive tradition; it must be taught and caught by the rising generation. As the hymn’s verses ask parents to "teach me to pray to my Father above," it underscores our essential role in preserving the covenant voice.\nThis beautiful choral performance perfectly models the intergenerational sharing of testimony required to build a Zion society. It inspires us to intentionally guide the youth in our lives toward their own profound relationship with Jesus Christ, answering the day\'s reflection to be more deliberate in our teaching.' ,
-                songTitle: 'Glorious', songArtist: 'David Archuleta and One Voice Children’s Choir', songLink: 'https://www.youtube.com/watch?v=nomxXk6Q1rk', songAnalysis: 'Preserving the covenant voice helps the youth discover their own divine potential in Jesus Christ. David Archuleta\'s uplifting track "Glorious" is a vibrant, empowering anthem for the rising generation. It teaches that every individual is like a unique, essential note in a grand symphony, needing to discover their voice.\nThe bright energy of the song perfectly complements the day\'s reflection to intentionally uplift the youth. It serves as a reminder that as we diligently teach them, we are equipping them to add their own confident, converted voices to the ongoing, glorious melody of the Restoration, ensuring they truly own their faith.' }
-        ];
-
-        const STUDY_GUIDE_DATA = [
-            {
-                title: "Background and Context",
-                content: [
-                    "The book of Deuteronomy serves as the legal and spiritual \"closing argument\" of Moses’s ministry. Its title, derived from Greek and Hebrew terms, means the \"second law\" or \"repetition of the law,\" as it contains Moses’s final three sermons to a new generation of Israelites. Unlike their parents, who perished in the wilderness, these people stood on the threshold of the promised land and required a deep spiritual foundation to remain loyal to God. The structure of the book meticulously follows ancient covenant-making patterns—including preambles, historical prologues, and stipulations of blessings and curses—designed to bind the people’s hearts to Jehovah. Deuteronomy holds a place of profound significance in the scriptural canon; it is the book most often quoted by Old Testament prophets, and it was the primary source Jesus Christ used to counter the temptations of Satan and to define the greatest commandment of the law.",
-                    "Introduction: The Mountaintop Ministry of Moses\nMoses’s mission was a journey between two peaks: it began at a burning bush on a mountain in Horeb and concluded forty years later on the summit of Mount Nebo. This transition is strategically vital, representing the move from physical deliverance (the Exodus) to spiritual maturity. While Moses was shown the physical land \"flowing with milk and honey,\" his final work was to ensure the people possessed the spiritual vision required to keep their covenants once he was gone. He understood that while Joshua would lead them across the Jordan, only their internal conversion would keep them in the land.",
-                    <span>Full Lesson: <a href="https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng" target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:underline break-all">https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=eng</a></span>
-                ],
-                discussionPoint: "The overarching theme of Moses’s life was preparation. He did not merely seek the survival of a nation but the sanctification of a people. He taught that entering the \"promised land\"—whether ancient Canaan or the eternal presence of God—requires us to become a certain kind of person through faith and faithfulness.\n\nDeuteronomy 34:1–4\n\" 1  And Moses went up from the plains of Moab unto the mountain of Nebo, to the top of Pisgah, that is over against Jericho. And the Lord shewed him all the land of Gilead, unto Dan,  2  And all Naphtali, and the land of Ephraim, and Manasseh, and all the land of Judah, unto the utmost sea,  3  And the south, and the plain of the valley of Jericho, the city of palm trees, unto Zoar.  4  And the Lord said unto him, This is the land which I sware unto Abraham, unto Isaac, and unto Jacob, saying, I will give it unto thy seed: I have caused thee to see it with thine eyes, but thou shalt not go over thither.\"\n\nAbout These Verses:  These verses depict the poignant end of Moses’s earthly ministry. From the heights of Pisgah, he is granted a prophetic vision of the inheritance promised to the patriarchs. Though he was not to \"go over thither\" in mortality, his faithfulness ensured his own place in the ultimate promised land, as the Lord eventually took him unto Himself as a translated being.",
-                questions: [
-                    {
-                        q: "How does Moses’s experience on Mount Nebo symbolize our own journey toward the \"promised land\" of eternal life?",
-                        a: "[Possible Answers: It teaches that our preparation is more about the process of becoming than the final destination; it shows that even if we don't see the full fulfillment of every blessing in this life, our loyalty to God ensures our eternal reward; it demonstrates that God honors a life of effort and faith, regardless of where the mortal journey ends.]\n\nConnective Tissue:  Just as Moses gazed from the physical heights of Nebo to see the land, Israel had to cultivate a spiritual \"inward sight\" to remain worthy of that land."
-                    }
-                ]
-            },
-            {
-                title: "The Spiritual Condition of the Heart (Deuteronomy 6; 8; 29; 30)",
-                content: [
-                    "Moses’s sermons evaluate a critical differentiator in true conversion: the \"inward state\" of the believer versus \"outward rituals.\" He introduced the concept of a \"circumcised heart\" to describe a state where the covenant is no longer a set of rules but a fundamental change in nature. Elder Dale G. Renlund provided a masterful insight into this inward state, teaching that when a commitment is truly etched in our hearts, it becomes part of our very identity. Like our own name, which we never forget even when we are thinking of other things, a heart-centered covenant is always present within us."
-                ],
-                discussionPoint: "Moses provides a \"spiritual checkup\" for Israel, warning that when they are \"full\" and prosperous, their hearts may \"wax proud.\" To have the word of God \"in thine heart\" is the only protection against the pride that leads to spiritual decay.\n\nDeuteronomy 6:4–6\n\" 4  Hear, O Israel: The Lord our God is one Lord:  5  And thou shalt love the Lord thy God with all thine heart, and with all thy soul, and with all thy might.  6  And these words, which I command thee this day, shall be in thine heart.\"\n\nAbout These Verses:  Known as the Shema (meaning \"hear\"), these verses are a fundamental pledge of commitment. They command a love for God that is total and exclusive, requiring the devotion of one's entire being—every thought, feeling, and ounce of strength.",
-                questions: [
-                    {
-                        q: "Elder Dale G. Renlund spoke of a \"new heart\" and a \"new spirit.\" How does remembering the goodness of God transform a \"stony heart\" into a \"heart of flesh\"?",
-                        a: "[Possible Answers: Remembering God’s mercy and compassion makes us more humble and prayerful; gratitude for the gift of the Atonement—a gift we could not provide for ourselves—changes our nature from prideful to submissive; it binds our \"wandering hearts\" to Him, making us more spiritually sensitive.]\n\nIncorporate Prophetic Voice:  Regarding the rising generation, Brother Jan E. Newman taught that faith cannot simply be a \"tradition of the fathers.\" He noted that each individual must \"dig deep\" to find the rock of their own foundation, ensuring that their spiritual house is built to withstand the storms of life.\n\nConnective Tissue:  A heart that is truly converted to the Lord is a heart that is less likely to fall into the trap of forgetfulness."
-                    }
-                ]
-            },
-            {
-                title: "\"Beware Lest Thou Forget\": The Power of Remembrance",
-                content: [
-                    "Remembrance is a strategic necessity for the covenant people. Moses understood that prosperity often breeds a \"forgetfulness\" that is more dangerous to spiritual survival than any desert trial. When we enjoy blessings we did not labor for, we are at risk of taking credit for our success and distancing ourselves from the Source of those blessings. To counter this, Moses instructed Israel to make remembrance a daily, physical, and familial priority."
-                ],
-                discussionPoint: "Moses commanded Israel to use \"frontlets\" (phylacteries) and to write the law on their doorframes (mezuzahs) to keep the word of God literally before their eyes. He emphasized that parents must teach these things diligently to their children at all times—when they sit, walk, lie down, or rise up.\n\nDeuteronomy 6:10–12\n\" 10  And it shall be, when the Lord thy God shall have brought thee into the land... to give thee great and goodly cities, which thou buildedst not,  11  And houses full of all good things, which thou filledst not, and wells digged, which thou diggedst not, vineyards and olive trees, which thou plantedst not; when thou shalt have eaten and be full;  12  Then beware lest thou forget the Lord, which brought thee forth out of the land of Egypt, from the house of bondage.\"\n\nAbout These Verses:  Moses warns that the ease of the promised land creates a unique spiritual danger. By enjoying the fruits of labor they did not perform, the Israelites might forget their absolute dependence on the Lord who delivered them from slavery.",
-                questions: [
-                    {
-                        q: "In his talk, Elder Renlund shared the story of Thomas Nielson and his grandson’s heart. How did Thomas’s daily remembrance of that gift change his character, and how can we apply this to the gift of the Atonement?",
-                        a: "[Possible Answers: Thomas became more solemn, thoughtful, and kindhearted because he never took his life for granted; he lived with a sense of purpose and generosity because he knew his life came at a great cost; we can treat our covenants with similar reverence, realizing our spiritual life was purchased by the Savior at an incomprehensible price.]\n\nIncorporate Prophetic Voice:  President M. Russell Ballard highlighted our need for focus by repeating the Savior's question: \"Lovest thou me more than these?\" He urged us to consider whether we value worldly influences and distractions more than our relationship with the Savior.\n\nConnective Tissue:  When we remember our own redemption from bondage, we are naturally moved to show that same mercy to others."
-                    }
-                ]
-            },
-            {
-                title: "Generous Hands and Willing Hearts (Deuteronomy 15)",
-                content: [
-                    "The Sabbatical year, occurring every seven years, was a practical application of covenant remembrance. Debts were released and those in bondage were set free. This was not merely an economic policy; it was a ritual remembrance of the \"opening of the Red Sea.\" By opening their \"hand wide\" to the poor, Israel was commanded to remember their own redemption from Egyptian bondage. The \"So What?\" of these laws is clear: we serve because we have been served by God."
-                ],
-                discussionPoint: "The Lord emphasized that the attitude of the giver was as important as the gift. A covenant person should not have a \"grieving heart\" when helping the needy. Instead, we should recognize that we are all \"beggars\" before God, depending entirely on His grace.\n\nDeuteronomy 15:7–8\n\" 7  If there be among you a poor man of one of thy brethren... thou shalt not harden thine heart, nor shut thine hand from thy poor brother:  8  But thou shalt open thine hand wide unto him, and shalt surely lend him sufficient for his need, in that which he wanteth.\"\n\nAbout These Verses:  These verses command active, responsive generosity. The Lord warns against a hardened heart and directs His people to recognize the personal needs of their brothers and sisters as their own responsibility.",
-                questions: [
-                    {
-                        q: "How does our own \"redemption from bondage\" (through the Savior) influence the way we should treat those in need today?",
-                        a: "[Possible Answers: It helps us realize that everything we possess is a gift from God; we recognize that just as the Savior provided for our \"need\" that we could not fulfill ourselves, we should do the same for others; it transforms our service from a chore into an act of gratitude.]\n\nConnective Tissue:  This spirit of deliverance and mediation points directly toward the ultimate Prophet and Deliverer whom Moses foresaw."
-                    }
-                ]
-            },
-            {
-                title: "The Prophet Like Unto Moses (Deuteronomy 18)",
-                content: [
-                    "Moses’s prophecy of a future Prophet is a vital bridge between the Law of Moses and the mission of Jesus Christ. This prophecy helped the Israelites understand that the law was not an end in itself, but a preparation for a greater Mediator. Moses and Jesus Christ share striking similarities in their divine roles: both served as deliverers of their people, both were lawgivers who established the terms of the covenant, and both functioned as mediators between God and man."
-                ],
-                discussionPoint: "The prophecy in Deuteronomy 18 was so significant that Jesus Christ Himself confirmed it after His Resurrection. Speaking to the Nephites, the Savior declared that He was the very Prophet Moses had spoken of, and He warned that those who would not \"hearken\" to Him would be \"cut off\" from among the people.\n\nDeuteronomy 18:15\n\" 15  The Lord thy God will raise up unto thee a Prophet from the midst of thee, of thy brethren, like unto me; unto him ye shall hearken.\"\n\nAbout This Verse:  This is a direct prophecy of the Messiah. It commands the people to listen to this future Prophet with the same level of obedience and reverence they gave to Moses, identifying Him as the ultimate source of divine truth.",
-                questions: [
-                    {
-                        q: "The Lord told Moses He would put His words in the mouth of this Prophet. How does \"Hearing Him\" (the Savior) today protect us from modern \"Canaanite\" influences or false gods?",
-                        a: "[Possible Answers: His words provide a sure foundation that helps us discern truth from error; following the Prophet helps us keep our covenants in a world full of distractions; listening to His voice allows us to remain a \"special people\" and resist worldly pressures.]\n\nConnective Tissue:  Hearing the voice of the Prophet leads us to the most important decision of mortality: the choice between life and death."
-                    }
-                ]
-            },
-            {
-                title: "Choosing Life and the Covenant Relationship (Deuteronomy 29–30)",
-                content: [
-                    "Moses’s final appeal was for the people to enter into a \"Covenant Path\"—a reciprocal relationship where they would be His people and He would be their God. He presented this as the ultimate strategic choice: \"life and good, and death and evil.\" Moses assured them that this choice was not too difficult or \"far off,\" but that the word was \"very nigh\" unto them, accessible to anyone willing to return to Him with all their heart."
-                ],
-                discussionPoint: "Moses prophesied that even if Israel were scattered for their disobedience, God would \"gather\" them as they returned to Him. In our day, this gathering happens as we make and keep covenants. As President Nelson has taught, the very name \"Israel\" means \"let God prevail.\"\n\nDeuteronomy 30:19–20\n\" 19  I call heaven and earth to record this day against you, that I have set before you life and death, blessing and cursing: therefore choose life, that both thou and thy seed may live:  20  That thou mayest love the Lord thy God, and that thou mayest obey his voice, and that thou mayest cleave unto him: for he is thy life, and the length of thy days.\"\n\nAbout These Verses:  In his final appeal, Moses pleads with the people to \"choose life.\" He defines this choice as loving God, obeying His voice, and \"cleaving\" to Him, identifying the Lord Himself as the source of their existence and longevity.",
-                questions: [
-                    {
-                        q: "President Nelson taught that \"Israel\" means \"let God prevail.\" How does letting God prevail in our lives help us \"choose life\" daily?",
-                        a: "[Possible Answers: It simplifies our decisions by making His voice the priority; it ensures that His influence is the most important in our lives; it allows us to secure blessings He is eager to grant, conditioned on our willingness to follow His will.]\n\nConnective Tissue:  Moses’s ministry ended with the people prepared to choose, reminding us that every commandment is an invitation to a personal commitment to act."
-                    }
-                ]
-            },
-            {
-                title: "Summary of the Lesson",
-                content: [
-                    "The core message of Deuteronomy is that the \"goodness and greatness of God\" must be internalized through intentional heart-conversion and covenant loyalty. By remembering the \"great things\" the Lord has done—from the deliverance of Israel out of Egypt to the individual gift of the Atonement—we are transformed into a \"special people\" (or  segullah , His valued treasure). Moses’s mortal ministry ended on Mount Nebo, but his work for the house of Israel did not. Because of his faith, he was translated—taken from the earth without experiencing mortal death—so that he could later return in the flesh. This allowed him to appear centuries later on the Mount of Transfiguration to restore essential priesthood keys to Peter, James, and John. This proves that God’s work for His children is eternal, and that those who \"choose life\" by cleaving to Him will eventually enter the greatest promised land of all."
-                ]
-            }
-        ];
-
-        // ==========================================
-        // ICONS (Inline SVG Components)
-        // ==========================================
-        const IconSun = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>;
-        const IconUsers = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
-        const IconMusic = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>;
-        const IconBookOpen = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>;
-        const IconShare = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>;
-        const IconChevronDown = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m6 9 6 6 6-6"/></svg>;
-        const IconChevronRight = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m9 18 6-6-6-6"/></svg>;
-        const IconLink = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>;
-        const IconPlayCircle = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>;
-        const IconPrinter = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>;
-
-        // ==========================================
-        // COMPONENTS
-        // ==========================================
-
-        const Toast = ({ message, show, onClose }) => {
-            useEffect(() => {
-                if (show) {
-                    const timer = setTimeout(onClose, 3000);
-                    return () => clearTimeout(timer);
-                }
-            }, [show, onClose]);
-            if (!show) return null;
-            return (
-                <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-stone-800 text-white px-6 py-3 rounded-full shadow-lg z-50 flex items-center gap-2 animate-bounce toast-notification">
-                    <span className="text-green-400">&#10003;</span>
-                    {message}
-                </div>
-            );
-        };
-
-        const ToggleAnswer = ({ question, answer }) => {
-            const [isOpen, setIsOpen] = useState(false);
-            return (
-                <div className="mb-6 border-l-4 border-amber-200 pl-4">
-                    <button 
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="text-left font-bold text-amber-900 w-full hover:text-amber-700 transition-colors flex items-start gap-2"
-                    >
-                        <span className="mt-1">{isOpen ? <IconChevronDown className="w-5 h-5" /> : <IconChevronRight className="w-5 h-5" />}</span>
-                        <span>{question}</span>
-                    </button>
-                    {isOpen && (
-                        <div className="mt-3 p-4 bg-stone-100 rounded-lg text-stone-700 italic border border-stone-200 fade-in">
-                            <span className="font-bold not-italic text-stone-500 text-xs uppercase tracking-wider block mb-1">Possible Answer</span>
-                            <div className="whitespace-pre-line">{answer}</div>
-                        </div>
-                    )}
-                </div>
-            );
-        };
-
-        const App = () => {
-            const [activeTab, setActiveTab] = useState('devotional');
-            const [activeDayId, setActiveDayId] = useState('');
-            const [showToast, setShowToast] = useState(false);
-            const [youthGroup, setYouthGroup] = useState('ym'); 
-
-            useEffect(() => {
-                const dayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-                const todayIndex = new Date().getDay();
-                setActiveDayId(dayMap[todayIndex]);
-            }, []);
-
-            const getActiveData = (dataArray) => {
-                return dataArray.find(d => d.id === activeDayId) || dataArray[0];
-            };
-
-            const copyToClipboard = (dayData) => {
-                const promptParts = dayData.prompt.split(':');
-                const promptLabel = promptParts[0];
-                const promptText = promptParts.slice(1).join(':').trim();
-                const scriptureText = (dayData.scriptureRef && dayData.scriptureLink)
-                    ? `Scripture: ${dayData.scriptureRef}\n${dayData.scriptureLink}\n\n`
-                    : ""; 
-                const dateStr = dayData.date ? dayData.date : "";
-                const textToCopy = `✨ Daily Devotional ✨\n\n${dateStr}\n*${dayData.title}*\n\n${dayData.text}\n\n*${promptLabel}:* ${promptText}\n\n${scriptureText}Full Lesson:\n${dayData.lessonLink}`;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                      navigator.clipboard.writeText(textToCopy).then(() => {
-                        setShowToast(true);
-                    }).catch(err => {
-                        fallbackCopy(textToCopy);
-                    });
-                } else {
-                    fallbackCopy(textToCopy);
-                }
-            };
-
-            const fallbackCopy = (text) => {
-                 try {
-                    const textArea = document.createElement("textarea");
-                    textArea.value = text;
-                    textArea.style.top = "0";
-                    textArea.style.left = "0";
-                    textArea.style.position = "fixed";
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    setShowToast(true);
-                 } catch (err) {
-                     console.error("Fallback copy failed", err);
-                 }
-            };
-
-            const renderDevotional = () => {
-                const data = getActiveData(DEVOTIONAL_DATA);
-                return (
-                    <div className="space-y-6 fade-in max-w-2xl mx-auto">
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest">{data.date}</span>
-                            <h2 className="text-3xl font-serif font-bold text-stone-800 mt-2 mb-4">{data.title}</h2>
-                            <p className="text-stone-600 leading-relaxed text-lg">{data.text}</p>
-                            <div className="mt-8 p-5 bg-amber-50 rounded-xl border border-amber-100">
-                                <h3 className="font-bold text-amber-900 mb-2 flex items-center gap-2">
-                                    <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-                                    {data.prompt.split(':')[0]}
-                                </h3>
-                                <p className="text-stone-700 italic">{data.prompt.split(':').slice(1).join(':')}</p>
-                            </div>
-                            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                {data.scriptureLink && (
-                                    <a href={data.scriptureLink} target="_blank" className="flex items-center justify-center gap-2 bg-amber-600 text-white py-3 rounded-lg font-medium hover:bg-amber-700 transition">
-                                        <IconBookOpen className="w-4 h-4" /> Read Scripture: {data.scriptureRef}
-                                    </a>
-                                )}
-                                <a href={data.lessonLink} target="_blank" className="flex items-center justify-center gap-2 bg-stone-200 text-stone-700 py-3 rounded-lg font-medium hover:bg-stone-300 transition">
-                                    <IconLink className="w-4 h-4" /> Full Lesson
-                                </a>
-                            </div>
-                            <button onClick={() => copyToClipboard(data)} className="w-full mt-4 py-4 border-t border-stone-100 text-stone-500 hover:text-amber-600 font-medium flex items-center justify-center gap-2 transition-colors">
-                                <IconShare className="w-4 h-4" /> Share Devotional
-                            </button>
-                        </div>
-                    </div>
-                );
-            };
-
-            const renderYouth = () => {
-                const data = getActiveData(youthGroup === 'ym' ? YM_DATA : YW_DATA);
-                return (
-                    <div className="fade-in max-w-3xl mx-auto">
-                        <div className="flex justify-center mb-6 bg-stone-200 p-1 rounded-xl inline-flex w-full sm:w-auto mx-auto">
-                            <button onClick={() => setYouthGroup('ym')} className={`flex-1 sm:flex-none px-8 py-2 rounded-lg font-bold transition-all ${youthGroup === 'ym' ? 'bg-white shadow-sm text-amber-700' : 'text-stone-500 hover:text-stone-700'}`}>Young Men</button>
-                            <button onClick={() => setYouthGroup('yw')} className={`flex-1 sm:flex-none px-8 py-2 rounded-lg font-bold transition-all ${youthGroup === 'yw' ? 'bg-white shadow-sm text-amber-700' : 'text-stone-500 hover:text-stone-700'}`}>Young Women</button>
-                        </div>
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 relative overflow-hidden">
-                            <div className={`absolute top-0 left-0 w-full h-2 ${youthGroup === 'ym' ? 'bg-blue-600' : 'bg-pink-500'}`}></div>
-                            <h2 className="text-2xl font-serif font-bold text-stone-800 mt-4 mb-4">{data.title}</h2>
-                            <p className="text-stone-600 leading-relaxed">{data.text}</p>
-                            <div className="mt-6 p-5 bg-stone-50 rounded-xl border border-stone-100">
-                                <h3 className="font-bold text-stone-800 mb-2">{data.prompt.split(':')[0]}</h3>
-                                <p className="text-stone-600">{data.prompt.split(':').slice(1).join(':')}</p>
-                            </div>
-                             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                {data.scriptureLink && (
-                                    <a href={data.scriptureLink} target="_blank" className={`flex items-center justify-center gap-2 text-white py-3 rounded-lg font-medium transition ${youthGroup === 'ym' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-pink-500 hover:bg-pink-600'}`}>
-                                        <IconBookOpen className="w-4 h-4" /> Read Scripture: {data.scriptureRef}
-                                    </a>
-                                )}
-                                <a href={data.lessonLink} target="_blank" className="flex items-center justify-center gap-2 bg-stone-200 text-stone-700 py-3 rounded-lg font-medium hover:bg-stone-300 transition">
-                                    <IconLink className="w-4 h-4" /> Full Lesson
-                                </a>
-                            </div>
-                             <button onClick={() => copyToClipboard(data)} className="w-full mt-4 py-4 border-t border-stone-100 text-stone-500 hover:text-stone-800 font-medium flex items-center justify-center gap-2 transition-colors">
-                                <IconShare className="w-4 h-4" /> Share Content
-                            </button>
-                        </div>
-                    </div>
-                );
-            };
-
-            const renderSongs = () => {
-                const data = getActiveData(SONGS_DATA);
-                return (
-                    <div className="fade-in max-w-3xl mx-auto">
-                         <div className="text-center bg-white p-6 rounded-2xl shadow-sm border border-stone-200 mb-6">
-                            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <IconMusic className="w-6 h-6 text-amber-700" />
-                            </div>
-                            <h2 className="text-2xl font-serif font-bold text-stone-800">Songs of the Restoration</h2>
-                            <p className="mt-2 text-stone-500 text-sm">Choosing Life: A Thematic Musical Companion</p>
-                        </div>
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                            <h3 className="text-lg font-bold text-stone-400 uppercase tracking-wider mb-4">Daily Selection</h3>
-                            <h2 className="text-xl font-bold text-stone-800 mb-2">{data.title}</h2>
-                            <p className="text-stone-600 italic mb-8 text-sm border-l-2 border-amber-300 pl-4">{data.devotionalText}</p>
-                            <div className="space-y-8">
-                                <div>
-                                    <span className="text-xs font-bold text-amber-600 tracking-widest uppercase mb-2 block flex items-center gap-2"><IconMusic className="w-3 h-3" /> Hymn Selection</span>
-                                    <div className="flex items-start justify-between gap-4">
-                                        <h3 className="text-xl font-serif font-bold text-stone-800">{data.hymnTitle}</h3>
-                                        <a href={data.hymnLink} target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700 transition-colors"><IconPlayCircle className="w-8 h-8" /></a>
-                                    </div>
-                                    <p className="mt-2 text-stone-600 text-sm leading-relaxed">{data.hymnAnalysis}</p>
-                                </div>
-                                <hr className="border-stone-100" />
-                                <div>
-                                    <span className="text-xs font-bold text-sky-600 tracking-widest uppercase mb-2 block flex items-center gap-2"><IconMusic className="w-3 h-3" /> Contemporary Song</span>
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div>
-                                            <h3 className="text-xl font-serif font-bold text-stone-800">{data.songTitle}</h3>
-                                            <p className="text-xs text-stone-400 mb-2">by {data.songArtist}</p>
-                                        </div>
-                                        <a href={data.songLink} target="_blank" rel="noopener noreferrer" className="text-sky-600 hover:text-sky-700 transition-colors"><IconPlayCircle className="w-8 h-8" /></a>
-                                    </div>
-                                    <p className="mt-2 text-stone-600 text-sm leading-relaxed">{data.songAnalysis}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            };
-
-            const renderStudy = () => {
-                return (
-                    <div className="fade-in max-w-6xl mx-auto pb-12">
-                         <div id="printable-study-section" className="bg-white p-8 rounded-2xl shadow-sm border border-stone-200 relative">
-                            <div className="flex justify-between items-start mb-2">
-                                 <div className="w-full"><h1 className="text-3xl font-serif font-bold text-center text-amber-800">Discussion Guide</h1></div>
-                                 <button onClick={() => window.print()} className="no-print absolute top-6 right-6 text-stone-400 hover:text-stone-600 hover:bg-stone-100 p-2 rounded-full transition-all" aria-label="Print Discussion Guide"><IconPrinter className="w-6 h-6" /></button>
-                            </div>
-                            <p className="text-center text-stone-500 mb-8 italic">"{WEEK_INFO.title}"</p>
-                            <div className="mb-8">
-                                <img src="Graphic.jpg" alt="Infographic: Old Testament" className="w-full h-auto rounded-lg shadow-md border border-stone-200" onError={(e) => {e.target.style.display = 'none'}} />
-                            </div>
-                            {STUDY_GUIDE_DATA.map((section, idx) => (
-                                <div key={idx} className="mb-10 last:mb-0">
-                                    <h2 className="text-xl font-bold text-stone-800 mb-3 border-b border-amber-100 pb-2">{section.title}</h2>
-                                    {section.content && section.content.map((p, i) => (
-                                        typeof p === 'string' ? <p key={i} className="text-stone-700 mb-3 leading-relaxed whitespace-pre-line">{p}</p> : <React.Fragment key={i}>{p}</React.Fragment>
-                                    ))}
-                                    {section.discussionPoint && (
-                                        <div className="mb-4">
-                                            <h3 className="text-amber-700 font-semibold text-sm uppercase mb-1">Context</h3>
-                                            <p className="text-stone-700 whitespace-pre-line">{section.discussionPoint}</p>
-                                        </div>
-                                    )}
-                                    {section.questions && section.questions.map((qItem, qIdx) => (<ToggleAnswer key={qIdx} question={qItem.q} answer={qItem.a} />))}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                );
-            };
-
-            const renderFooter = () => (
-                <footer className="p-6 text-center text-stone-400 text-xs">
-                    <p>{WEEK_INFO.valediction}</p>
-                </footer>
-            );
-
-            return (
-                <div className="flex flex-col h-full bg-stone-100">
-                    <header className="bg-white border-b border-stone-200 pt-6 pb-2 px-4 shadow-sm z-10">
-                        <div className="max-w-4xl mx-auto text-center">
-                            <h1 className="text-xs font-bold tracking-[0.2em] text-stone-400 uppercase mb-1">Come, Follow Me</h1>
-                            <h2 className="text-lg sm:text-xl font-serif font-bold text-stone-800 leading-tight">{WEEK_INFO.title}</h2>
-                            <p className="text-stone-500 text-xs mt-1 mb-4">{WEEK_INFO.dateRange}</p>
-                            <div className="flex justify-center space-x-1 sm:space-x-4 mt-4 overflow-x-auto hide-scrollbar pb-2">
-                                <button onClick={() => setActiveTab('devotional')} className={`flex flex-col sm:flex-row items-center gap-2 px-4 py-2 rounded-xl transition-all ${activeTab === 'devotional' ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' : 'text-stone-400 hover:text-stone-600'}`}>
-                                    <IconSun className="w-5 h-5" /><span className="text-xs sm:text-sm font-medium">Daily</span>
-                                </button>
-                                <button onClick={() => setActiveTab('youth')} className={`flex flex-col sm:flex-row items-center gap-2 px-4 py-2 rounded-xl transition-all ${activeTab === 'youth' ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' : 'text-stone-400 hover:text-stone-600'}`}>
-                                    <IconUsers className="w-5 h-5" /><span className="text-xs sm:text-sm font-medium">Youth</span>
-                                </button>
-                                <button onClick={() => setActiveTab('songs')} className={`flex flex-col sm:flex-row items-center gap-2 px-4 py-2 rounded-xl transition-all ${activeTab === 'songs' ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' : 'text-stone-400 hover:text-stone-600'}`}>
-                                    <IconMusic className="w-5 h-5" /><span className="text-xs sm:text-sm font-medium">Music</span>
-                                </button>
-                                <button onClick={() => setActiveTab('study')} className={`flex flex-col sm:flex-row items-center gap-2 px-4 py-2 rounded-xl transition-all ${activeTab === 'study' ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' : 'text-stone-400 hover:text-stone-600'}`}>
-                                    <IconBookOpen className="w-5 h-5" /><span className="text-xs sm:text-sm font-medium">Study</span>
-                                </button>
-                            </div>
-                        </div>
-                    </header>
-                    {activeTab !== 'study' && (
-                        <div className="bg-white border-b border-stone-200 py-2 px-4 shadow-sm z-10">
-                            <div className="max-w-4xl mx-auto">
-                                <div className="flex space-x-3 overflow-x-auto hide-scrollbar pb-1 sm:justify-center">
-                                    {DEVOTIONAL_DATA.map((d) => (
-                                        <button key={d.id} onClick={() => setActiveDayId(d.id)} className={`flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-lg transition-all border ${activeDayId === d.id ? 'bg-stone-800 text-white border-stone-800 shadow-md transform scale-105' : 'bg-white text-stone-500 border-stone-200 hover:border-stone-300'}`}>
-                                            <span className="text-[10px] font-bold uppercase">{d.day}</span>
-                                            <span className={`text-lg font-bold leading-none ${activeDayId === d.id ? 'text-amber-400' : 'text-stone-800'}`}>{d.date.split(' ')[1]}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    <main className="flex-1 overflow-y-auto p-4 pb-20">
-                        {activeTab === 'devotional' && renderDevotional()}
-                        {activeTab === 'youth' && renderYouth()}
-                        {activeTab === 'songs' && renderSongs()}
-                        {activeTab === 'study' && renderStudy()}
-                        {renderFooter()}
-                    </main>
-                    <Toast message="Copied to Clipboard!" show={showToast} onClose={() => setShowToast(false)} />
-                </div>
-            );
-        };
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
 </body>
 </html>
